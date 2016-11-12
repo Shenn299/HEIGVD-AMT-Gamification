@@ -2,9 +2,9 @@
 
 
 Software quality engineers:
-** FRANCHINI Fabien
-** HENNEBERGER Sébastien
+* FRANCHINI Fabien
+* HENNEBERGER Sébastien
 
 Software developers:
-** SEKLEY Pascal
-** TCHUENSU POUOPSE Rodrigue
+* SEKLEY Pascal
+* TCHUENSU POUOPSE Rodrigue
