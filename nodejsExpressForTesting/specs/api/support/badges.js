@@ -1,9 +1,9 @@
-var apiPrefix = "http://localhost:9090/amtBootcampApp-1.0/api";
+var apiPrefix = "http://localhost:7070/v1/rfpsapi";
 var api = require("supertest-as-promised")(apiPrefix);
 
 function getBadges() {
     return api
-    .get("/users")
+    .get("/badges")
     .set("Accept", "application/json")
     .send()
     .then(function (response) {
