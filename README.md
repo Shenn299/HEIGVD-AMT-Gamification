@@ -10,4 +10,4 @@ Software developers:
 * TCHUENSU POUOPSE Rodrigue
 
 ### Instruction for running automatised Mocha Tests
-run `npm test` in nodejsExpressForTesting directory
+run `npm test` in nodejsExpressForTesting `directory`
