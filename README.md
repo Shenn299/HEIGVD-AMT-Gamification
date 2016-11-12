@@ -8,3 +8,6 @@ Software quality engineers:
 Software developers:
 * SEKLEY Pascal
 * TCHUENSU POUOPSE Rodrigue
+
+### Instruction for running automatised Mocha Tests
+run `npm test` in nodejsExpressForTesting directory
