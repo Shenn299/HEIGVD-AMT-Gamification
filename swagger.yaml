@@ -1,0 +1,145 @@
+swagger: '2.0'
+info:
+  title: RFPS API
+  description: Move your app forward with the RFPS API.
+  version: "1.0.0"
+# the domain of the service
+host: localhost:7070
+# array of all schemes that your API supports
+schemes:
+  - http
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /badges:
+    get:
+      description: 
+        The Badges endpoint returns information about badges
+        which are available. The response includes the id, the name, the description, and the image of each badge. This response is a list of badge sorted by the id.
+      produces:
+        - application/json
+      tags:
+        - Badges
+      responses:
+        200:
+          description: Success, an array of badges.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Badge'
+        500:
+          description: If database isn't reachable.
+              
+    post:
+      description: Create a new badge.
+      responses:
+        201:
+          description: Created, returns the URL to access the new badge.
+          schema:
+            $ref: '#/definitions/BadgeURL'
+        401:
+          description: Bad request,
+                       if one of mandatory fields isn't specified,
+                       if one of mandatory fields is empty (or contains only space),
+                       if one of mandaory fields is more long than 45 characters.
+        409:
+          description: Conflict, if badge name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely all existing badges.
+      responses:
+        501:
+          description: Not implemened.
+          
+    patch:
+      description: Update partially all existing badges.
+      responses:
+        501:
+          description: Not implemened.
+          
+    delete:
+      description: Delete all existing badges.
+      responses:
+        501:
+          description: Not implemened.
+          
+
+  /badges/{id}:
+    get:
+      description: Returns the badge which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired badge.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Found
+          schema:
+            $ref: '#/definitions/Badge'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing badge which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the badge to modify.
+          required: true
+          type: string
+
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+
+    delete:
+      description: Delete the badge which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired badge.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+            
+definitions:
+  Badge:
+    type: object
+    properties:
+      badge_id:
+        type: string
+        description: Unique identifier representing a specific badge.
+      name:
+        type: string
+        description: Display name of badge.
+      description:
+        type: string
+        description: Description of badge.
+      image:
+        type: string
+        description: Image URL representing the badge.
+        
+  BadgeURL:
+    type: string
+    properties:
+      url:
+        type: string
+        description: Unique URL to access the new badge created.
