@@ -49,24 +49,6 @@ paths:
         500:
           description: If database isn't reachable.
           
-    put:
-      description: Modify completely all existing badges.
-      responses:
-        501:
-          description: Not implemened.
-          
-    patch:
-      description: Update partially all existing badges.
-      responses:
-        501:
-          description: Not implemened.
-          
-    delete:
-      description: Delete all existing badges.
-      responses:
-        501:
-          description: Not implemened.
-          
 
   /badges/{id}:
     get:
@@ -95,7 +77,22 @@ paths:
           description: The id of the badge to modify.
           required: true
           type: string
-
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    patch:
+      description: Update partially or completely an existing badge which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the badge to update.
+          required: true
+          type: string
       responses:
         200:
           description: OK

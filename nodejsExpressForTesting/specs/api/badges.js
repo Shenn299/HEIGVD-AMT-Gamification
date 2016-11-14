@@ -6,7 +6,6 @@ chai.should();
 
 describe("The /badges endpoint", function () {
     it("should allow an unauthenticated user to get the list of all badges", itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges);
-
 });
 
 
