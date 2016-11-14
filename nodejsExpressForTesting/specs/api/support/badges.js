@@ -11,6 +11,17 @@ function getBadges() {
     });
 }
 
+function createBadge(badge) {
+    return api
+    .post("/badges")
+    .set("Content-type", "application/json")
+    .send(badge)
+    .then(function (response) {
+        return response
+    });
+}
+
 module.exports = {
-  getBadges: getBadges
+  getBadges: getBadges,
+  createBadge: createBadge
 };
