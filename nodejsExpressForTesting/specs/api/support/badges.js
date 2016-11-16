@@ -1,5 +1,5 @@
 // If we don't specify an API URL at run time, system takes the API URL specified in env.json under "default"
-var apiURL = require('../../../env.json')[process.env.NODE_ENV || 'default'];
+var apiURL = require('../../../env.json')[process.env.API_URL || 'default'];
 var api = require("supertest-as-promised")(apiURL);
 
 // GET all created badges
