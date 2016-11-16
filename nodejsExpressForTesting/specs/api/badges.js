@@ -11,24 +11,26 @@ describe("The /badges endpoint", function () {
 
 function itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges() {
     return badges.getBadges()
-    .then(function(response) {
-        response.status.should.equal(200);
-        response.body.should.be.an("array");
-        // We have to inspect the array content too
-        return response;
-    })
+        .then(function (response) {
+            response.status.should.equal(200);
+
+            response.body.should.be.an("array");
+
+            response.body.sould.have.property("name");
+            response.body.sould.have.property("description");
+            response.body.sould.have.property("image");
+
+            return response;
+        })
 }
 
 function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
-    var badge = {
-        name: "Java Expert",
-        description: "This badge reward people who proposed at least 50 approuved solutions",
-        image: "http://fake-url.com"
-    }
+    var badge = generateBadge();
     return badges.createBadge(badge)
-    .then(function(response) {
-        response.status.should.equal(201);
-        response.body.should.be.an("string");
-        return response;
-    })
+        .then(function (response) {
+            response.status.should.equal(201);
+            // Response must contain the URL to access the new badge created
+            response.body.should.be.an("string");
+            return response;
+        })
 }
