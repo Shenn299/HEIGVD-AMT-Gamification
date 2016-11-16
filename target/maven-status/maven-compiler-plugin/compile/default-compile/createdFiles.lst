@@ -1,3 +1,4 @@
-ch\heigvd\amt\gamification\model\rest\RestApplication.class
+ch\heigvd\amt\gamification\RestApplication.class
+ch\heigvd\amt\gamification\services\BadgeRepository.class
+ch\heigvd\amt\gamification\rest\BadgeRestController.class
 ch\heigvd\amt\gamification\model\Badge.class
-ch\heigvd\amt\gamification\model\rest\BadgeRepository.class
