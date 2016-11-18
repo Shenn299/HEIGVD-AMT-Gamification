@@ -29,8 +29,8 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
     return badges.createBadge(badge)
         .then(function (response) {
             response.status.should.equal(201);
-            // Response must contain the URL to access the new badge created
-            response.body.should.be.an("string");
+            // Response must contain the URL to access the new badge created in location header
+            response.location.should.an("string");
             return response;
         })
 }
