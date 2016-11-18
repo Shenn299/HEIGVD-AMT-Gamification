@@ -1,6 +1,8 @@
-var apiPrefix = "http://localhost:7070/v1/rfpsapi";
-var api = require("supertest-as-promised")(apiPrefix);
+// If we don't specify an API URL at run time, system takes the API URL specified in env.json under "default"
+var apiURL = require('../../../env.json')[process.env.API_URL || 'default'];
+var api = require("supertest-as-promised")(apiURL);
 
+// GET all created badges
 function getBadges() {
     return api
     .get("/badges")
@@ -11,6 +13,7 @@ function getBadges() {
     });
 }
 
+// Create a new badge
 function createBadge(badge) {
     return api
     .post("/badges")
@@ -21,7 +24,17 @@ function createBadge(badge) {
     });
 }
 
+// Creation of a new badge with random values
+function generateBdge() {
+    return {
+        name: chance.word(),
+        description: chance.sentence(),
+        image: chance.sentence()
+    }
+}
+
 module.exports = {
   getBadges: getBadges,
-  createBadge: createBadge
+  createBadge: createBadge,
+  generateBdge: generateBdge
 };
