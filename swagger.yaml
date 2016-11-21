@@ -38,18 +38,17 @@ paths:
         201:
           description: Created, returns the URL to access the new badge.
           schema:
-            $ref: '#/definitions/BadgeURL'
+            $ref: '#/definitions/ResourceURL'
         401:
           description: Bad request,
                        if one of mandatory fields isn't specified,
                        if one of mandatory fields is empty (or contains only space),
-                       if one of mandaory fields is more long than 45 characters.
+                       if one of mandatory fields is more long than 45 characters.
         409:
           description: Conflict, if badge name provided already exists.
         500:
           description: If database isn't reachable.
           
-
   /badges/{id}:
     get:
       description: Returns the badge which has the specified id.
@@ -116,6 +115,108 @@ paths:
           description: Not found, if id provided don't exist.
         500:
           description: If database isn't reachable.
+          
+  /pointScales:
+    get:
+      description: 
+        The PointScales endpoint returns information about point scales which are available. The response includes the id, the name, the description, and the coefficient of each point scale. This response is a list of point scale sorted by the id.
+      produces:
+        - application/json
+      tags:
+        - PointScale
+      responses:
+        200:
+          description: Success, an array of point scale.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PointScale'
+        500:
+          description: If database isn't reachable.
+          
+    post:
+      description: Create a new point scale.
+      responses:
+        201:
+          description: Created, returns the URL to access the new point scale.
+          schema:
+            $ref: '#/definitions/ResourceURL'
+        401:
+          description: Bad request,
+                       if one of mandatory fields isn't specified,
+                       if one of mandatory fields is empty (or contains only space),
+                       if one of mandatory fields is more long than 45 characters.
+        409:
+          description: Conflict, if point scale name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /pointScale/{id}:
+    get:
+      description: Returns the point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired point scale.
+          required: true
+          type: string
+      responses:
+        200:
+          description: Found
+          schema:
+            $ref: '#/definitions/PointScale'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the point scale to modify.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    patch:
+      description: Update partially or completely an existing point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the point scale to update.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+
+    delete:
+      description: Delete the point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired point scale.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
             
 definitions:
   Badge:
@@ -134,9 +235,27 @@ definitions:
         type: string
         description: Image URL representing the badge.
         
-  BadgeURL:
+  ResourceURL:
     type: string
     properties:
       url:
         type: string
-        description: Unique URL to access the new badge created.
+        description: Unique URL to access the resource.
+        
+  PointScale:
+    type: object
+    properties:
+      pointScale_id:
+        type: string
+        description: Unique identifier representing a specific point scale.
+      name:
+        type: string
+        description: Display name of point scale.
+      description:
+        type: string
+        description: Description of point scale.
+      coeffcient:
+        type: integer
+        description: Coeffcient of the point scale.
+        
+        
