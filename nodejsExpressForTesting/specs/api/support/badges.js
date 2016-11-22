@@ -1,6 +1,8 @@
-// If we don't specify an API URL at run time, system takes the API URL specified in env.json under "default"
+// If no API URL address is specified at run time, then system takes the API URL specified in env.json file under "default"
 var apiURL = require('../../../env.json')[process.env.API_URL || 'default'];
 var api = require("supertest-as-promised")(apiURL);
+var Chance = require("chance");
+var chance = new Chance();
 
 // GET all created badges
 function getBadges() {
@@ -25,7 +27,7 @@ function createBadge(badge) {
 }
 
 // Creation of a new badge with random values
-function generateBdge() {
+function generateBadge() {
     return {
         name: chance.word(),
         description: chance.sentence(),
@@ -36,5 +38,5 @@ function generateBdge() {
 module.exports = {
   getBadges: getBadges,
   createBadge: createBadge,
-  generateBdge: generateBdge
+  generateBadge: generateBadge
 };
