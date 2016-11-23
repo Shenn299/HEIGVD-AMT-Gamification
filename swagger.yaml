@@ -39,13 +39,13 @@ paths:
           description: Created, returns the URL to access the new badge.
           schema:
             $ref: '#/definitions/ResourceURL'
-        401:
-          description: Bad request,
-                       if one of mandatory fields isn't specified,
-                       if one of mandatory fields is empty (or contains only space),
-                       if one of mandatory fields is more long than 45 characters.
         409:
           description: Conflict, if badge name provided already exists.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields don't contain at least 1 character,
+                       if mandatory fields contain more than 45 characters.
         500:
           description: If database isn't reachable.
           
@@ -141,11 +141,11 @@ paths:
           description: Created, returns the URL to access the new point scale.
           schema:
             $ref: '#/definitions/ResourceURL'
-        401:
-          description: Bad request,
-                       if one of mandatory fields isn't specified,
-                       if one of mandatory fields is empty (or contains only space),
-                       if one of mandatory fields is more long than 45 characters.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields don't contain at least 1 character,
+                       if mandatory fields contain more than 45 characters.
         409:
           description: Conflict, if point scale name provided already exists.
         500:
