@@ -39,13 +39,12 @@ paths:
           description: Created, returns the URL to access the new badge.
           schema:
             $ref: '#/definitions/ResourceURL'
-        409:
-          description: Conflict, if badge name provided already exists.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
                        if mandatory fields don't contain at least 1 character,
-                       if mandatory fields contain more than 45 characters.
+                       if mandatory fields contain more than 45 characters,
+                       if badge name provided already exists.
         500:
           description: If database isn't reachable.
           
@@ -145,9 +144,8 @@ paths:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
                        if mandatory fields don't contain at least 1 character,
-                       if mandatory fields contain more than 45 characters.
-        409:
-          description: Conflict, if point scale name provided already exists.
+                       if mandatory fields contain more than 45 characters,
+                       if point scale name provided already exists.
         500:
           description: If database isn't reachable.
           
