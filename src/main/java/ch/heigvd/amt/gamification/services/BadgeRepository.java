@@ -21,6 +21,6 @@ public interface BadgeRepository extends JpaRepository<Badge, Long>{
     
     //List<Badge> findByName (String name);
     Badge findOne(long badgeId);
-    List<Badge> findAll ();
+    List<Badge> findAll();
     
 }

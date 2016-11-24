@@ -13,20 +13,20 @@ import javax.persistence.Id;
  * @author Sekley Pascal <pascal.sekley@heig-vd.ch>
  */
 @Entity
-public class Badge implements Serializable {
+public class PointScale implements Serializable {
 
+    //private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-
+    
     private String name;
     private String image;
     private String description;
 
-    public Badge(){}
-
-    public Badge(String name, String image, String description) {
+    public PointScale(){}
+    
+     public PointScale(String name, String image, String description) {
         this.name = name;
         this.image = image;
         this.description = description;
@@ -59,6 +59,10 @@ public class Badge implements Serializable {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
 }
