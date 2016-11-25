@@ -15,32 +15,51 @@ describe("The API application :", function () {
 // badges endpoint
 describe("The /badges endpoint :", function () {
 
-    // GET success
+    // Success
+    // GET
     it("should allow an unauthenticated user to get the list of all badges", itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges);
     
-    // POST success
+    // POST
     it("should allow an unauthenticated user to create a new badges", itShouldAllowUnauthenticatedUserToCreateNewBadge);
 
-    // POST failures
+    // PUT
+    it("should allow an unauthenticated user to completely update an existing badge");
+
+    // PATCH
+    it("should allow an unauthenticated user to partially update an existing badge");
+
+    // Delete
+    it("should allow an unauthenticated user to delete an existing badge");
+    
+    // Failures
+    // POST
     it("should refuse an unauthenticated user to create a new badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided);
     it("should refuse an unauthenticated user to create a new badge if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    it("should refuse an unauthenticated user to create a new badge if name contains more than 80 charcters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Charcters);
-    it("should refuse an unauthenticated user to create a new badge if description or image URL contain more than 255 charcters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Charcters);
+    it("should refuse an unauthenticated user to create a new badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters);
+    it("should refuse an unauthenticated user to create a new badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
     it("should refuse an unauthenticated user to create a new badge if the badge name provided already exists", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlreadyExists);
     it("should refuse an unauthenticated user to create a new badge if image URL isn't accessible");
 
-    // PUT success
+    // PUT
+    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided");
+    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces");
+    it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters");
+    it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters");
+    it("should refuse an unauthenticated user to completely update an existing badge if the badge name provided already exists");
+    it("should refuse an unauthenticated user to completely update an existing badge if image URL isn't accessible");
+    it("should refuse an unauthenticated user to completely update an existing badge if badge id provided does not exist");
 
-    // PUT failures
+    // PATCH
+    it("should refuse an unauthenticated user to partially update an existing badge if at least one field is not provided");
+    it("should refuse an unauthenticated user to partially update an existing badge if fields provided are empty or contain only spaces");
+    it("should refuse an unauthenticated user to partially update an existing badge if name is provided and contains more than 80 characters");
+    it("should refuse an unauthenticated user to partially update an existing badge if description or image URL is provided and contain more than 255 characters");
+    it("should refuse an unauthenticated user to partially update an existing badge if name is provided and it already exists");
+    it("should refuse an unauthenticated user to partially update an existing badge if image URL is provided and it isn't accessible");
+    it("should refuse an unauthenticated user to partially update an existing badge if badge id provided does not exist");
 
-    // PATCH success
-
-    // PATCH failures
-
-    // Delete success
-
-    // Delete failures
-
+    // Delete
+    it("should refuse an unauthenticated user to delete an existing badge if badge id provided does not exist");
 
 });
 
@@ -64,6 +83,7 @@ function itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges() {
 }
 
 function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
+    // Generation of a new badge
     var badge = badges.generateBadge();
     return badges.createBadge(badge)
         .then(function (response) {
@@ -139,7 +159,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmpty
         });
 }
 
-function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Charcters() {
+function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters() {
     // Generation of a new badge
     var badge = badges.generateBadge();
     // Change the length of the badge name to 81 characters
@@ -155,7 +175,7 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan8
         })
 }
 
-function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Charcters() {
+function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters() {
     // Generation of a new badge as payload
     var payload = badges.generateBadge();
     // Creation of a string with the payload

@@ -3,29 +3,41 @@ var badges = require("../api/support/badges.js");
 
 chai.should();
 
-// API tests with scenarios
-describe("Create a new badge workflow :", function () {
+// API tests with workflow
+describe("Workflows :", function() {
 
-    it("A new badge just created should be present in the list returned by GET request", aNewBadgeJustCreatedShouldBePresentInTheListReturnedByTheGetRequest);
+    // CRUD operations on badges endpoint
+    describe("CRUD operation on badges endpoint :", function () {
+        it("A new badge created should be present in the list returned by GET request and should contain all provided fields", aNewBadgeCreatedShouldBePresentInTheListReturnedByTheGetRequestAndShouldContainAllPostedFields);
+        it("An existing badge that is completely updated should be present in the list returned by GET request and should contain all updated fields");
+        it("An existing badge that is partially updated should be present in the list returned by GET request and should contain updated fields");
+        it("An existing badge that is deleted should not be present in the list returned by GET request");
+
+    });
 
 });
 
-function aNewBadgeJustCreatedShouldBePresentInTheListReturnedByTheGetRequest() {
+function aNewBadgeCreatedShouldBePresentInTheListReturnedByTheGetRequestAndShouldContainAllPostedFields() {
+    // Generation of a new badge
     var badge = badges.generateBadge();
+    // Creation of the new badge
     return badges.createBadge(badge)
         .then(function (response) {
+
+            // Get all created badges
             return badges.getBadges()
                 .then(function (response) {
                     var nbBadges = response.body.length;
                     var arrayOfBadge = response.body[nbBadges-1];
 
-                    // HTTP response body should contain the new badge created with these properties
+                    // HTTP response body should contain the new badge created with all posted fields
                     arrayOfBadge.should.have.property("id");
-                    arrayOfBadge.should.have.property("name");
-                    arrayOfBadge.should.have.property("description");
-                    arrayOfBadge.should.have.property("image");
+                    arrayOfBadge.should.have.property("name", badge.name);
+                    arrayOfBadge.should.have.property("description", badge.description);
+                    arrayOfBadge.should.have.property("image", badge.image);
 
                 });
 
         });
 }
+
