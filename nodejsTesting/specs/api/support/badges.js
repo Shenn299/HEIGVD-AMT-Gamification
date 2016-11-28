@@ -7,26 +7,59 @@ var chance = new Chance();
 // GET all created badges
 function getBadges() {
     return api
-    .get("/badges")
-    .set("Accept", "application/json")
-    .send()
-    .then(function (response) {
-        return response
-    });
+        .get("/badges")
+        .set("Accept", "application/json")
+        .send()
+        .then(function (response) {
+            return response
+        });
 }
 
-// Create a new badge
+// POST a new badge
 function createBadge(badge) {
     return api
-    .post("/badges")
-    .set("Content-type", "application/json")
-    .send(badge)
-    .then(function (response) {
-        return response
-    });
+        .post("/badges")
+        .set("Content-type", "application/json")
+        .send(badge)
+        .then(function (response) {
+            return response
+        });
 }
 
-// Creation of a new badge with random values
+// PUT an existing badge
+function updateCompletelyBadge(id, badge) {
+    return api
+        .put("/badges/" + id.toString())
+        .set("Content-type", "application/json")
+        .send(badge)
+        .then(function (response) {
+            return response
+        });
+}
+
+// PATCH an existing badge
+function updatePartiallyBadge(id, badge) {
+    return api
+        .patch("/badges/" + id.toString())
+        .set("Content-type", "application/json")
+        .send(badge)
+        .then(function (response) {
+            return response
+        });
+}
+
+// DELETE an existing badge
+function deleteBadge(id, badge) {
+    return api
+        .delete("/badges/" + id.toString())
+        .set("Content-type", "application/json")
+        .send(badge)
+        .then(function (response) {
+            return response
+        });
+}
+
+// Generation of a new badge with random values
 function generateBadge() {
     return {
         name: chance.word(),
@@ -36,7 +69,10 @@ function generateBadge() {
 }
 
 module.exports = {
-  getBadges: getBadges,
-  createBadge: createBadge,
-  generateBadge: generateBadge
+    getBadges: getBadges,
+    createBadge: createBadge,
+    updateCompletelyBadge: updateCompletelyBadge,
+    updatePartiallyBadge: updatePartiallyBadge,
+    deleteBadge: deleteBadge,
+    generateBadge: generateBadge,
 };

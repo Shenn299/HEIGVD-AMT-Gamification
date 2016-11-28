@@ -54,12 +54,6 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>ch.heigvd.amt</groupId>
-            <artifactId>HEIGVD-AMT-Gamification</artifactId>
-            <version>1.0-SNAPSHOT</version>
-            <type>jar</type>
-        </dependency>
-        <dependency>
             <groupId>org.hibernate</groupId>
             <artifactId>hibernate-entitymanager</artifactId>
             <version>4.1.9.Final</version>

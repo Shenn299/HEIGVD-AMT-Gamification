@@ -4,7 +4,7 @@ var badges = require("../api/support/badges.js");
 chai.should();
 
 // API tests with workflow
-describe("Workflows :", function() {
+describe("Workflows :", function () {
 
     // CRUD operations on badges endpoint
     describe("CRUD operation on badges endpoint :", function () {
@@ -28,13 +28,13 @@ function aNewBadgeCreatedShouldBePresentInTheListReturnedByTheGetRequestAndShoul
             return badges.getBadges()
                 .then(function (response) {
                     var nbBadges = response.body.length;
-                    var arrayOfBadge = response.body[nbBadges-1];
+                    var badge = response.body[nbBadges - 1];
 
                     // HTTP response body should contain the new badge created with all posted fields
-                    arrayOfBadge.should.have.property("id");
-                    arrayOfBadge.should.have.property("name", badge.name);
-                    arrayOfBadge.should.have.property("description", badge.description);
-                    arrayOfBadge.should.have.property("image", badge.image);
+                    badge.should.have.property("id");
+                    badge.should.have.property("name", badge.name);
+                    badge.should.have.property("description", badge.description);
+                    badge.should.have.property("image", badge.image);
 
                 });
 
