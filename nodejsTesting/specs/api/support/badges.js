@@ -37,17 +37,6 @@ function updateCompletelyBadge(id, badge) {
         });
 }
 
-// PATCH an existing badge
-function updatePartiallyBadge(id, badge) {
-    return api
-        .patch("/badges/" + id.toString())
-        .set("Content-type", "application/json")
-        .send(badge)
-        .then(function (response) {
-            return response
-        });
-}
-
 // DELETE an existing badge
 function deleteBadge(id, badge) {
     return api

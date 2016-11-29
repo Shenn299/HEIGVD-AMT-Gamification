@@ -20,9 +20,6 @@ describe("The /badges endpoint :", function () {
     // PUT
     it("should allow an unauthenticated user to completely update an existing badge", shouldAllowUnauthenticatedUserToCompletelyUpdateBadge);
 
-    // PATCH
-    it("should allow an unauthenticated user to partially update an existing badge", shouldAllowUnauthenticatedUserToPartiallyUpdateBadge);
-
     // Delete
     it("should allow an unauthenticated user to delete an existing badge", shoulAllowUnauthenticatedUserToDeleteBadge);
 
@@ -43,15 +40,6 @@ describe("The /badges endpoint :", function () {
     it("should refuse an unauthenticated user to completely update an existing badge if the badge name provided already exists");
     it("should refuse an unauthenticated user to completely update an existing badge if image URL isn't accessible");
     it("should refuse an unauthenticated user to completely update an existing badge if badge id provided does not exist");
-
-    // PATCH
-    it("should refuse an unauthenticated user to partially update an existing badge if at least one field is not provided");
-    it("should refuse an unauthenticated user to partially update an existing badge if fields provided are empty or contain only spaces");
-    it("should refuse an unauthenticated user to partially update an existing badge if name is provided and contains more than 80 characters");
-    it("should refuse an unauthenticated user to partially update an existing badge if description or image URL is provided and contain more than 255 characters");
-    it("should refuse an unauthenticated user to partially update an existing badge if name is provided and it already exists");
-    it("should refuse an unauthenticated user to partially update an existing badge if image URL is provided and it isn't accessible");
-    it("should refuse an unauthenticated user to partially update an existing badge if badge id provided does not exist");
 
     // Delete
     it("should refuse an unauthenticated user to delete an existing badge if badge id provided does not exist");
@@ -113,57 +101,6 @@ function shouldAllowUnauthenticatedUserToCompletelyUpdateBadge() {
 
                             // HTTP response status should equal 204 NO CONTENT
                             response.status.should.equal(204);
-
-                        });
-
-                });
-
-        });
-
-}
-
-function shouldAllowUnauthenticatedUserToPartiallyUpdateBadge() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
-        .then(function (response) {
-
-            // Get all created badges
-            return badges.getBadges()
-                .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.id;
-
-                    // Creation of three partial badge payloads
-                    var partialBadge1 = {
-                        name: chance.word()
-                    }
-
-                    var partialBadge2 = {
-                        description: chance.sentence()
-                    }
-
-                    var partialBadge3 = {
-                        image: chance.sentence()
-                    }
-
-                    var partialBadges = [];
-                    partialBadges.push(partialBadge1);
-                    partialBadges.push(partialBadge2);
-                    partialBadges.push(partialBadge3);
-
-                    // Creation of an array of promise
-                    // Try to update partially badge with each payload
-                    var promises = partialBadges.map(p => (badges.updatePartiallyBadge(p)));
-
-                    // When all requests have provided a response
-                    return Promise.all(promises)
-                        .then(function (responses) {
-
-                            // Each HTTP responses status should equal 204 NO CONTENT  
-                            responses.forEach(r => (r.status.should.equal(204)));
 
                         });
 
