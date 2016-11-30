@@ -1,0 +1,296 @@
+swagger: '2.0'
+info:
+  title: RFPS API
+  description: Move your app forward with the RFPS API.
+  version: "1.0.0"
+# the domain of the service
+host: localhost:8080
+# array of all schemes that your API supports
+schemes:
+  - http
+  - https
+# will be prefixed to all paths
+basePath: /v1
+paths:
+  /badges:
+    get:
+      description: 
+        The Badges endpoint returns information about badges
+        which are available. The response includes the id, the name, the description, and the image of each badge. This response is a list of badge sorted by the id.
+      produces:
+        - application/json
+      tags:
+        - Badges
+      responses:
+        200:
+          description: OK, an array of badges.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BadgeOutputDTO'
+        500:
+          description: If database isn't reachable.
+              
+    post:
+      description: Create a new badge.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: badge
+          description: Badge object that needs to be added to the database.
+          required: true
+          schema:
+              $ref: '#/definitions/BadgeInputDTO'
+      responses:
+        201:
+          description: Created, returns the URL to access the new badge.
+          schema:
+            $ref: '#/definitions/LocationBadge'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if description or imageUrl provided contain more than 255 characters,
+                       if badge name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /badges/{id}:
+    get:
+      description: Returns the badge which has the specified id.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired badge.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/BadgeOutputDTO'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing badge which has the specified id.
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the badge to modify.
+          required: true
+          type: string
+        - name: badge
+          in: body
+          description: Badge to be updated
+          required: true
+          schema:
+              $ref: '#/definitions/BadgeInputDTO'
+          
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if description or imageUrl provided contain more than 255 characters,
+                       if badge name provided already exists.
+          
+
+    delete:
+      description: Delete the badge which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired badge.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+  /pointScales:
+    get:
+      description: 
+        The PointScales endpoint returns information about point scales which are available. The response includes the id, the name, the description, and the coefficient of each point scale. This response is a list of point scale sorted by the id.
+      produces:
+        - application/json
+      tags:
+        - PointScale
+      responses:
+        200:
+          description: OK, an array of point scale.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/PointScaleGet'
+        500:
+          description: If database isn't reachable.
+          
+    post:
+      description: Create a new point scale.
+      responses:
+        201:
+          description: Created, returns the URL to access the new point scale.
+          schema:
+            $ref: '#/definitions/PointScalePost'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields don't contain at least 1 character,
+                       if mandatory fields contain more than 45 characters,
+                       if point scale name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /pointScale/{id}:
+    get:
+      description: Returns the point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired point scale.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/PointScaleGet'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the point scale to modify.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          schema:
+            $ref: '#/definitions/PointScalePost'
+          
+    patch:
+      description: Update partially or completely an existing point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the point scale to update.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+
+    delete:
+      description: Delete the point scale which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired point scale.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+            
+definitions:
+  BadgeOutputDTO:
+    type: object
+    required: [badge_id, name, description, imageURL]
+    properties:
+      badge_id:
+        type: string
+        description: Unique identifier representing a specific badge.
+      name:
+        type: string
+        description: Display name of badge.
+      description:
+        type: string
+        description: Description of badge.
+      imageURL:
+        type: string
+        description: Image URL representing the badge.
+        
+  BadgeInputDTO:
+    type: object
+    required: [name,description, imageURL]
+    properties:
+      name:
+        type: string
+        description: Display name of badge.
+      description:
+        type: string
+        description: Description of badge.
+      imageURL:
+        type: string
+        description: The URL of the image
+
+  LocationBadge:
+      type: string
+      required: [locationBadge]
+      properties:
+        locationBadge:
+          type: string
+          description: Unique URL to access the new object created.
+          
+        
+  PointScaleGet:
+    type: object
+    properties:
+      pointScale_id:
+        type: string
+        description: Unique identifier representing a specific point scale.
+      name:
+        type: string
+        description: Display name of point scale.
+      description:
+        type: string
+        description: Description of point scale.
+      coeffcient:
+        type: integer
+        description: Coeffcient of the point scale.
+        
+  PointScalePost:
+    type: string
+    properties:
+      url:
+        type: string
+        description: Unique URL to access the resource.
+        
