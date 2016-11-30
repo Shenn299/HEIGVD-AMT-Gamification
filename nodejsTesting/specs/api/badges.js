@@ -75,7 +75,10 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
             response.status.should.equal(201);
 
             // HTTP header response should contain the URL to access the new badge created in the location field
-            response.header['location'].should.include('http://localhost:8080/badges')
+            var location = response.header['Location'];
+            var indexOfLastSlach = location.lastIndexOf("/");
+            var idInLocation = location.substring(indexOfLastSlach, location.length); 
+            response.header['Location'].should.include('http://localhost:8080/badges')
 
             return response;
         })
