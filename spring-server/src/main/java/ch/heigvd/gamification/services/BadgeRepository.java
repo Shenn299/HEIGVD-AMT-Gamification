@@ -2,12 +2,6 @@
 package ch.heigvd.gamification.services;
 
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 //import ch.heigvd.gamification.model.Badge;
 import ch.heigvd.gamification.model.Badge;
 import java.util.List;

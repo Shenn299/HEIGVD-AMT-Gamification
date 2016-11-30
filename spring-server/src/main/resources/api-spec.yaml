@@ -134,36 +134,47 @@ paths:
       produces:
         - application/json
       tags:
-        - PointScale
+        - PointScales
       responses:
         200:
-          description: OK, an array of point scale.
+          description: OK, an array of point scales.
           schema:
             type: array
             items:
-              $ref: '#/definitions/PointScaleGet'
+              $ref: '#/definitions/PointScaleOutputDTO'
         500:
           description: If database isn't reachable.
           
     post:
       description: Create a new point scale.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: badge
+          description: PointScale object that needs to be added to the database.
+          required: true
+          schema:
+              $ref: '#/definitions/PointScaleInputDTO'
       responses:
         201:
           description: Created, returns the URL to access the new point scale.
           schema:
-            $ref: '#/definitions/PointScalePost'
+            $ref: '#/definitions/PointScaleInputDTO'
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
-                       if mandatory fields don't contain at least 1 character,
-                       if mandatory fields contain more than 45 characters,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if mandatory fields contain more than 80 characters,
                        if point scale name provided already exists.
         500:
           description: If database isn't reachable.
           
-  /pointScale/{id}:
+  /pointScales/{id}:
     get:
       description: Returns the point scale which has the specified id.
+      produces:
+        - application/json
       parameters:
         - name: id
           in: path
@@ -174,7 +185,7 @@ paths:
         200:
           description: OK
           schema:
-            $ref: '#/definitions/PointScaleGet'
+            $ref: '#/definitions/PointScaleOutputDTO'
         404:
           description: Not found, if id provided don't exist.
         500:
@@ -182,12 +193,21 @@ paths:
           
     put:
       description: Modify completely the existing point scale which has the specified id.
+      consumes:
+        - application/json
       parameters:
         - name: id
           in: path
           description: The id of the point scale to modify.
           required: true
           type: string
+        - name: pointScale
+          in: body
+          description: PointScale to be updated
+          required: true
+          schema:
+              $ref: '#/definitions/PointScaleInputDTO'
+              
       responses:
         204:
           description: No content, if success.
@@ -196,23 +216,14 @@ paths:
         500:
           description: If database isn't reachable.
           schema:
-            $ref: '#/definitions/PointScalePost'
+            $ref: '#/definitions/PointScaleInputDTO'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if pointScale name provided already exists.
           
-    patch:
-      description: Update partially or completely an existing point scale which has the specified id.
-      parameters:
-        - name: id
-          in: path
-          description: The id of the point scale to update.
-          required: true
-          type: string
-      responses:
-        204:
-          description: No content
-        404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
 
     delete:
       description: Delete the point scale which has the specified id.
@@ -271,8 +282,9 @@ definitions:
           description: Unique URL to access the new object created.
           
         
-  PointScaleGet:
+  PointScaleOutputDTO:
     type: object
+    required: [name,description, coefficient]
     properties:
       pointScale_id:
         type: string
@@ -283,14 +295,30 @@ definitions:
       description:
         type: string
         description: Description of point scale.
-      coeffcient:
+      coefficient:
         type: integer
         description: Coeffcient of the point scale.
         
-  PointScalePost:
-    type: string
+  PointScaleInputDTO:
+    type: object
+    required: [name,description, coefficient]
     properties:
-      url:
+      name:
         type: string
-        description: Unique URL to access the resource.
+        description: Display name of point scale.
+      description:
+        type: string
+        description: Description of point scale.
+      coefficient:
+        type: integer
+        description: Coeffcient of the point scale.
+  
+  LocationPointScale:
+    type: string 
+    required: [locationPointScale]
+    properties:
+      locationPointScale:
+        type: string
+        description: Unique URL to access the new object created.
+  
         

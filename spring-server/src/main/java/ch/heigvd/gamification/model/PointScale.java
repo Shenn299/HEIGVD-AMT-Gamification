@@ -21,14 +21,15 @@ public class PointScale implements Serializable {
     private Long id;
     
     private String name;
-    private String image;
+    //private String image;
     private String description;
+    private int coefficient;
 
     public PointScale(){}
     
-     public PointScale(String name, String image, String description) {
+     public PointScale(String name, int coefficient, String description) {
         this.name = name;
-        this.image = image;
+        this.coefficient = coefficient;
         this.description = description;
     }
 
@@ -41,9 +42,15 @@ public class PointScale implements Serializable {
         return name;
     }
 
-    public String getImage() {
-        return image;
+//    public String getImage() {
+//        return image;
+//    }
+
+    public int getCoefficient() {
+        return coefficient;
     }
+    
+    
 
     public String getDescription() {
         return description;
@@ -53,9 +60,15 @@ public class PointScale implements Serializable {
         this.name = name;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+//    public void setImage(String image) {
+//        this.image = image;
+//    }
+
+    public void setCoefficient(int coefficient) {
+        this.coefficient = coefficient;
     }
+    
+    
 
     public void setDescription(String description) {
         this.description = description;
