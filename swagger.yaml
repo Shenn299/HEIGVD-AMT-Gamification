@@ -42,8 +42,9 @@ paths:
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
-                       if mandatory fields don't contain at least 1 character,
-                       if mandatory fields contain more than 45 characters,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if description or imageUrl provided contain more than 255 characters,
                        if badge name provided already exists.
         500:
           description: If database isn't reachable.
@@ -77,7 +78,7 @@ paths:
           type: string
       responses:
         204:
-          description: No content
+          description: No content, if success.
         404:
           description: Not found, if id provided don't exist.
         500:
@@ -93,7 +94,7 @@ paths:
           type: string
       responses:
         204:
-          description: No content
+          description: No content, if success.
         404:
           description: Not found, if id provided don't exist.
         500:
@@ -109,7 +110,7 @@ paths:
           type: string
       responses:
         204:
-          description: No content
+          description: No content, if success.
         404:
           description: Not found, if id provided don't exist.
         500:
@@ -178,7 +179,7 @@ paths:
           type: string
       responses:
         204:
-          description: No content
+          description: No content, if success.
         404:
           description: Not found, if id provided don't exist.
         500:
@@ -210,7 +211,7 @@ paths:
           type: string
       responses:
         204:
-          description: No content
+          description: No content, if success.
         404:
           description: Not found, if id provided don't exist.
         500:
