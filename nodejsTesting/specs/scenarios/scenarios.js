@@ -31,10 +31,10 @@ function aNewBadgeCreatedShouldBePresentInTheListReturnedByTheGetRequestAndShoul
                     var badge = response.body[nbBadges - 1];
 
                     // HTTP response body should contain the new badge created with all posted fields
-                    badge.should.have.property("id");
+                    badge.should.have.property("badgeId");
                     badge.should.have.property("name", badge.name);
                     badge.should.have.property("description", badge.description);
-                    badge.should.have.property("image", badge.image);
+                    badge.should.have.property("imageURL", badge.image);
 
                 });
 

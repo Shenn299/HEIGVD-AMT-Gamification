@@ -29,7 +29,7 @@ function createBadge(badge) {
 // PUT an existing badge
 function updateCompletelyBadge(id, badge) {
     return api
-        .put("/badges/" + id.toString())
+        .put("/badges/" + id)
         .set("Content-type", "application/json")
         .send(badge)
         .then(function (response) {
@@ -38,11 +38,10 @@ function updateCompletelyBadge(id, badge) {
 }
 
 // DELETE an existing badge
-function deleteBadge(id, badge) {
+function deleteBadge(id) {
     return api
-        .delete("/badges/" + id.toString())
-        .set("Content-type", "application/json")
-        .send(badge)
+        .delete("/badges/" + id)
+        .send()
         .then(function (response) {
             return response
         });
@@ -53,7 +52,7 @@ function generateBadge() {
     return {
         name: chance.word(),
         description: chance.sentence(),
-        image: chance.sentence()
+        imageURL: chance.sentence()
     }
 }
 

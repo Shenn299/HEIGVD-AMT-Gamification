@@ -101,11 +101,24 @@ public class BadgesEndpoint implements BadgesApi{
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<LocationBadge> badgesPost(@RequestBody BadgeInputDTO badge) {
+       
+       // TO DO: We've got to check if the badge is not in the database before saving
+       
+       // Test if the request isn't valid (http error 422 unprocessable entity)
+       boolean httpErrorUnprocessableEntity = false;
         
-        // TO DO: We've got to check if the badge is not in the database before saving
        if(badge.getName()==null || badge.getDescription()==null || badge.getImageURL()==null){
-           
-           return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+           httpErrorUnprocessableEntity = true;
+       }
+       else if (badge.getName().trim().isEmpty() || badge.getDescription().trim().isEmpty() || badge.getImageURL().trim().isEmpty()) {
+          httpErrorUnprocessableEntity = true;
+       }
+       else if (badge.getName().length() > 80 || badge.getDescription().length() > 255 || badge.getImageURL().length() > 255) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       if (httpErrorUnprocessableEntity) {
+          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
        }
         
         Badge newBadge = fromDTO(badge);
@@ -117,8 +130,7 @@ public class BadgesEndpoint implements BadgesApi{
         headers.add("Location", location);
         return new ResponseEntity<>(headers, HttpStatus.CREATED);
         
-    }
-    
+    }    
     
     public BadgeOutputDTO toDTO(Badge badge){
         BadgeOutputDTO dto = new BadgeOutputDTO();

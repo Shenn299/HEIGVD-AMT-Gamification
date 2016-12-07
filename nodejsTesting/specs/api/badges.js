@@ -1,3 +1,4 @@
+var apiURL = process.env.API_URL || require('../../env.json').default.API_URL;
 var chai = require("chai");
 var badges = require("./support/badges.js");
 var Chance = require("chance");
@@ -33,7 +34,7 @@ describe("The /badges endpoint :", function () {
     it("should refuse an unauthenticated user to create a new badge if image URL isn't accessible");
 
     // PUT
-    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCompletelyUpdateBadgeIfMandatoryFieldsAreNotProvided);
+    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided");
     it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces");
     it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters");
     it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters");
@@ -86,10 +87,10 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
                 .then(function (response) {
                     var nbBadges = response.body.length;
                     var badge = response.body[nbBadges - 1];
-                    var id = badge.id;
+                    var id = badge.badgeId;
             
-                    // HTTP header response should contain the URL to access the new badge created in the location field
-                    location.should.equal('http://localhost:8080/badges/' + id);
+                    // HTTP Location header response should contain the URL to access the new badge created
+                    location.should.equal(apiURL + '/badges/' + id);
 
                 })
 
@@ -110,7 +111,7 @@ function shouldAllowUnauthenticatedUserToCompletelyUpdateBadge() {
                 .then(function (response) {
                     var nbBadges = response.body.length;
                     var badge = response.body[nbBadges - 1];
-                    var id = badge.id;
+                    var id = badge.badgeId;
 
                     // Update completely an existing badge
                     return badges.updateCompletelyBadge(id, badge)
@@ -141,10 +142,10 @@ function shoulAllowUnauthenticatedUserToDeleteBadge() {
                 .then(function (response) {
                     var nbBadges = response.body.length;
                     var badge = response.body[nbBadges - 1];
-                    var id = badge.id;
+                    var id = badge.badgeId;
 
                     // Delete an existing badge
-                    return badges.deleteBadge(id, badge)
+                    return badges.deleteBadge(id)
                         .then(function (response) {
 
                             // HTTP response status should equal 204 NO CONTENT
@@ -174,7 +175,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotPr
     }
     delete wrongPayloads[0].name;
     delete wrongPayloads[1].description;
-    delete wrongPayloads[2].image;
+    delete wrongPayloads[2].imageURL;
 
     // Creation of an array of promise
     // Try to create new badge with each wrong payload
@@ -207,7 +208,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmpty
     }
     wrongPayloads[0].name = "  ";
     wrongPayloads[1].description = "  ";
-    wrongPayloads[2].image = "  ";
+    wrongPayloads[2].imageURL = "  ";
 
     // Creation of an array of promise
     // Try to create new badge with each wrong payload
@@ -256,7 +257,7 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrl
         wrongPayloads.push(JSON.parse(original));
     }
     wrongPayloads[0].description = chance.word({ length: 256 });
-    wrongPayloads[1].image = chance.word({ length: 256 });
+    wrongPayloads[1].imageURL = chance.word({ length: 256 });
 
     // Creation of an array of promise
     // Try to create new badge with each wrong payload
@@ -296,6 +297,3 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedA
 
 // Failure 
 // PUT
-function itShouldRefuseUnauthenticatedUserToCompletelyUpdateBadgeIfMandatoryFieldsAreNotProvided() {
-    
-}
