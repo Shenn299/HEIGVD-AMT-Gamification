@@ -33,7 +33,7 @@ describe("The /badges endpoint :", function () {
     it("should refuse an unauthenticated user to create a new badge if image URL isn't accessible");
 
     // PUT
-    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided");
+    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCompletelyUpdateBadgeIfMandatoryFieldsAreNotProvided);
     it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces");
     it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters");
     it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters");
@@ -51,6 +51,8 @@ describe("The /pointScales endpoint :", function () {
     it("should allow an unauthenticated user to get the list of all point scales");
 });
 
+// Success
+// GET
 function itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges() {
     return badges.getBadges()
         .then(function (response) {
@@ -65,6 +67,8 @@ function itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges() {
         })
 }
 
+// Success
+// POST
 function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
     // Generation of a new badge
     var badge = badges.generateBadge();
@@ -92,6 +96,8 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
         })
 }
 
+// Success
+// PUT
 function shouldAllowUnauthenticatedUserToCompletelyUpdateBadge() {
     // Generation of a new badge
     var badge = badges.generateBadge();
@@ -121,6 +127,8 @@ function shouldAllowUnauthenticatedUserToCompletelyUpdateBadge() {
 
 }
 
+// Success
+// DELETE
 function shoulAllowUnauthenticatedUserToDeleteBadge() {
     // Generation of a new badge
     var badge = badges.generateBadge();
@@ -150,6 +158,8 @@ function shoulAllowUnauthenticatedUserToDeleteBadge() {
 
 }
 
+// Failure
+// POST
 function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided() {
     // Generation of a new badge as payload
     var payload = badges.generateBadge();
@@ -181,6 +191,8 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotPr
 
 }
 
+// Failure
+// POST
 function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
     // Generation of a new badge as payload
     var payload = badges.generateBadge();
@@ -211,6 +223,8 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmpty
         });
 }
 
+// Failure
+// POST
 function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters() {
     // Generation of a new badge
     var badge = badges.generateBadge();
@@ -227,6 +241,8 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan8
         })
 }
 
+// Failure
+// POST
 function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters() {
     // Generation of a new badge as payload
     var payload = badges.generateBadge();
@@ -256,6 +272,8 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrl
         });
 }
 
+// Failure
+// POST
 function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlreadyExists() {
     // Generation of a new badge
     var badge = badges.generateBadge();
@@ -274,4 +292,10 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedA
 
         });
 
+}
+
+// Failure 
+// PUT
+function itShouldRefuseUnauthenticatedUserToCompletelyUpdateBadgeIfMandatoryFieldsAreNotProvided() {
+    
 }
