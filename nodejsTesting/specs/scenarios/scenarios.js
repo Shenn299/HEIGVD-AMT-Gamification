@@ -34,7 +34,7 @@ function aNewBadgeCreatedShouldBePresentInTheListReturnedByTheGetRequestAndShoul
                     badge.should.have.property("badgeId");
                     badge.should.have.property("name", badge.name);
                     badge.should.have.property("description", badge.description);
-                    badge.should.have.property("imageURL", badge.image);
+                    badge.should.have.property("imageURL", badge.imageURL);
 
                 });
 
