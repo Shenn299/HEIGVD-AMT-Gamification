@@ -74,13 +74,21 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
             // HTTP response status should equal 201 CREATED
             response.status.should.equal(201);
 
-            // HTTP header response should contain the URL to access the new badge created in the location field
-            var location = response.header['Location'];
-            var indexOfLastSlach = location.lastIndexOf("/");
-            var idInLocation = location.substring(indexOfLastSlach, location.length); 
-            response.header['Location'].should.include('http://localhost:8080/badges')
+            // Saving of the HTTP  header
+            var location = response.header['location'];
 
-            return response;
+            // Get all created badges
+            return badges.getBadges()
+                .then(function (response) {
+                    var nbBadges = response.body.length;
+                    var badge = response.body[nbBadges - 1];
+                    var id = badge.id;
+            
+                    // HTTP header response should contain the URL to access the new badge created in the location field
+                    location.should.equal('http://localhost:8080/badges/' + id);
+
+                })
+
         })
 }
 

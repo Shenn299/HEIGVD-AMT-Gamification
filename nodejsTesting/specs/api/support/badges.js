@@ -61,7 +61,6 @@ module.exports = {
     getBadges: getBadges,
     createBadge: createBadge,
     updateCompletelyBadge: updateCompletelyBadge,
-    updatePartiallyBadge: updatePartiallyBadge,
     deleteBadge: deleteBadge,
     generateBadge: generateBadge,
 };
