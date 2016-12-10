@@ -5,6 +5,7 @@
  */
 package ch.heigvd.gamification.api;
 
+import ch.heigvd.gamification.api.dto.LocationPointScale;
 import ch.heigvd.gamification.api.dto.PointScaleInputDTO;
 import ch.heigvd.gamification.api.dto.PointScaleOutputDTO;
 import ch.heigvd.gamification.model.PointScale;
@@ -104,11 +105,31 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<PointScaleInputDTO> pointScalesPost(PointScaleInputDTO pointScale) {
-        
-        if(pointScale.getName()==null || pointScale.getDescription()==null || pointScale.getCoefficient()==null){
-           
-           return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+    public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale) {
+       
+       // Test if the request isn't valid (http error 422 unprocessable entity)
+       boolean httpErrorUnprocessableEntity = false;
+       
+       // TODO: Check if the badge is already in this application
+       //Badge badgePosted = badgeRepository.findByName(badge.getName());     
+       
+       // Check if name, description or imageURL is null
+       if(pointScale.getName()==null || pointScale.getDescription()==null || pointScale.getCoefficient()==null) {
+           httpErrorUnprocessableEntity = true;
+       }
+       
+       // Check if name, description or coefficient is empty
+       else if (pointScale.getName().trim().isEmpty() || pointScale.getDescription().trim().isEmpty()) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       // Check if name length > 80 OR if description or imageURL length > 255
+       else if (pointScale.getName().length() > 80 || pointScale.getDescription().length() > 255 || pointScale.getCoefficient() > 10) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       if (httpErrorUnprocessableEntity) {
+          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
        }
         
         PointScale newPointScale = fromDTO(pointScale);

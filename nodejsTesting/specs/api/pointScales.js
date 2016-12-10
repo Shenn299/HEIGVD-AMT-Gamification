@@ -1,6 +1,6 @@
 var apiURL = process.env.API_URL || require('../../env.json').default.API_URL;
 var chai = require("chai");
-var badges = require("./support/badges.js");
+var pointScales = require("./support/pointScales.js");
 var Chance = require("chance");
 var chance = new Chance();
 
@@ -8,47 +8,47 @@ chai.should();
 
 // API tests
 
-// badges endpoint
-describe("The /badges endpoint :", function () {
+// pointScale endpoint
+describe("The /pointScale endpoint :", function () {
 
     // Success
     // GET
-    it("should allow an unauthenticated user to get the list of all badges", itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges);
+    it("should allow an unauthenticated user to get the list of all pointScales", itShouldAllowUnauthenticatedUserToGetTheListOfAllPointScales);
 
     // POST
-    it("should allow an unauthenticated user to create a new badge", itShouldAllowUnauthenticatedUserToCreateNewBadge);
+    it("should allow an unauthenticated user to create a new pointScale", itShouldAllowUnauthenticatedUserToCreateNewPointScale);
 
     // PUT
-    it("should allow an unauthenticated user to completely update an existing badge", shouldAllowUnauthenticatedUserToCompletelyUpdateBadge);
+    it("should allow an unauthenticated user to completely update an existing pointScale", shouldAllowUnauthenticatedUserToCompletelyUpdatePointScale);
 
     // Delete
-    it("should allow an unauthenticated user to delete an existing badge", shoulAllowUnauthenticatedUserToDeleteBadge);
+    //it("should allow an unauthenticated user to delete an existing badge", shoulAllowUnauthenticatedUserToDeleteBadge);
 
     // Failures
     // POST
-    it("should refuse an unauthenticated user to create a new badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided);
-    it("should refuse an unauthenticated user to create a new badge if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    it("should refuse an unauthenticated user to create a new badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters);
-    it("should refuse an unauthenticated user to create a new badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
-    it("should refuse an unauthenticated user to create a new badge if the badge name provided already exists in this application");
+    //it("should refuse an unauthenticated user to create a new badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided);
+    //it("should refuse an unauthenticated user to create a new badge if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+    //it("should refuse an unauthenticated user to create a new badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters);
+    //it("should refuse an unauthenticated user to create a new badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
+    //it("should refuse an unauthenticated user to create a new badge if the badge name provided already exists in this application");
 
     // PUT
-    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreNotProvided);
-    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfNameContainsMoreThan80Characters);
-    it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
-    it("should refuse an unauthenticated user to completely update an existing badge if the badge name provided already exists");
-    it("should refuse an unauthenticated user to completely update an existing badge if badge id provided does not exist", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
+    //it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreNotProvided);
+    //it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+    //it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfNameContainsMoreThan80Characters);
+    //it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
+    //it("should refuse an unauthenticated user to completely update an existing badge if the badge name provided already exists");
+    //it("should refuse an unauthenticated user to completely update an existing badge if badge id provided does not exist", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
 
     // Delete
-    it("should refuse an unauthenticated user to delete an existing badge if badge id provided does not exist", itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
+    //it("should refuse an unauthenticated user to delete an existing badge if badge id provided does not exist", itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
 
 });
 
 // Success
 // GET
-function itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges() {
-    return badges.getBadges()
+function itShouldAllowUnauthenticatedUserToGetTheListOfAllPointScales() {
+    return pointScales.getPointScales()
         .then(function (response) {
 
             // HTTP response status should equal 200 OK
@@ -63,10 +63,10 @@ function itShouldAllowUnauthenticatedUserToGetTheListOfAllBadges() {
 
 // Success
 // POST
-function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    return badges.createBadge(badge)
+function itShouldAllowUnauthenticatedUserToCreateNewPointScale() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
             // HTTP response status should equal 201 CREATED
@@ -75,15 +75,15 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
             // Saving of the HTTP header
             var location = response.header['location'];
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScales
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
                     // HTTP Location header response should contain the URL to access the new badge created
-                    location.should.equal(apiURL + '/badges/' + id);
+                    location.should.equal(apiURL + '/pointScales/' + id);
 
                 })
 
@@ -92,22 +92,22 @@ function itShouldAllowUnauthenticatedUserToCreateNewBadge() {
 
 // Success
 // PUT
-function shouldAllowUnauthenticatedUserToCompletelyUpdateBadge() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+function shouldAllowUnauthenticatedUserToCompletelyUpdatePointScale() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScales
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
-                    // Update completely an existing badge
-                    return badges.updateCompletelyBadge(id, badge)
+                    // Update completely an existing pointScale
+                    return pointScales.updateCompletelyPointScale(id, pointScale)
                         .then(function (response) {
 
                             // HTTP response status should equal 204 NO CONTENT

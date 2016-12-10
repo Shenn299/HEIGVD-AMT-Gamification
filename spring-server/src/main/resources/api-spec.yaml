@@ -160,7 +160,7 @@ paths:
         201:
           description: Created, returns the URL to access the new point scale.
           schema:
-            $ref: '#/definitions/PointScaleInputDTO'
+            $ref: '#/definitions/LocationPointScale'
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,

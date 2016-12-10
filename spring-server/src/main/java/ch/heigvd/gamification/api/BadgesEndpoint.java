@@ -82,9 +82,30 @@ public class BadgesEndpoint implements BadgesApi{
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> badgesIdPut(@PathVariable("id")String id, @RequestBody BadgeInputDTO badge) {
         
-        if (badge.getName() == null || badge.getDescription() == null || badge.getImageURL() == null) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+       // Test if the request isn't valid (http error 422 unprocessable entity)
+       boolean httpErrorUnprocessableEntity = false;
+       
+       // TODO: Check if the badge is already in this application before saving
+       //Badge badgePosted = badgeRepository.findByName(badge.getName());
+       
+       // Check if name, description or imageURL is null
+       if(badge.getName()==null || badge.getDescription()==null || badge.getImageURL()==null){
+           httpErrorUnprocessableEntity = true;
+       }
+       
+       // Check if name, description or imageURL is empty
+       else if (badge.getName().trim().isEmpty() || badge.getDescription().trim().isEmpty() || badge.getImageURL().trim().isEmpty()) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       // Check if name length > 80 OR if description or imageURL length > 255
+       else if (badge.getName().length() > 80 || badge.getDescription().length() > 255 || badge.getImageURL().length() > 255) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       if (httpErrorUnprocessableEntity) {
+          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+       }
         
         Badge currentBadge = badgeRepository.findOne(Long.valueOf(id));
         if(currentBadge == null){
@@ -105,14 +126,11 @@ public class BadgesEndpoint implements BadgesApi{
        // Test if the request isn't valid (http error 422 unprocessable entity)
        boolean httpErrorUnprocessableEntity = false;
        
-       // Check if the badge is already in the database before saving
-       Badge badgePosted = badgeRepository.findByName(badge.getName());
-       if (badgePosted != null){
-          httpErrorUnprocessableEntity = true;
-       }        
+       // TODO: Check if the badge is already in this application
+       //Badge badgePosted = badgeRepository.findByName(badge.getName());     
        
        // Check if name, description or imageURL is null
-       else if(badge.getName()==null || badge.getDescription()==null || badge.getImageURL()==null){
+       if(badge.getName()==null || badge.getDescription()==null || badge.getImageURL()==null){
            httpErrorUnprocessableEntity = true;
        }
        

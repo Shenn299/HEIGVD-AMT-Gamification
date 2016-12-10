@@ -4,10 +4,10 @@ var api = require("supertest-as-promised")(apiURL);
 var Chance = require("chance");
 var chance = new Chance();
 
-// GET all created badges
-function getBadges() {
+// GET all created pointScales
+function getPointScales() {
     return api
-        .get("/badges")
+        .get("/pointScales")
         .set("Accept", "application/json")
         .send()
         .then(function (response) {
@@ -15,51 +15,51 @@ function getBadges() {
         });
 }
 
-// POST a new badge
-function createBadge(badge) {
+// POST a new pointScale
+function createPointScale(pointScale) {
     return api
-        .post("/badges")
+        .post("/pointScales")
         .set("Content-type", "application/json")
-        .send(badge)
+        .send(pointScale)
         .then(function (response) {
             return response
         });
 }
 
-// PUT an existing badge
-function updateCompletelyBadge(id, badge) {
+// PUT an existing pointScale
+function updateCompletelyPointScale(id, pointScale) {
     return api
-        .put("/badges/" + id)
+        .put("/pointScales/" + id)
         .set("Content-type", "application/json")
-        .send(badge)
+        .send(pointScale)
         .then(function (response) {
             return response
         });
 }
 
-// DELETE an existing badge
-function deleteBadge(id) {
+// DELETE an existing pointScale
+function deletePointScale(id) {
     return api
-        .delete("/badges/" + id)
+        .delete("/pointScales/" + id)
         .send()
         .then(function (response) {
             return response
         });
 }
 
-// Generation of a new badge with random values
-function generateBadge() {
+// Generation of a new pointScale with random values
+function generatePointScale() {
     return {
         name: chance.word(),
         description: chance.sentence(),
-        imageURL: chance.sentence()
+        coefficient: chance.integer({min: 1, max: 10})
     }
 }
 
 module.exports = {
-    getBadges: getBadges,
-    createBadge: createBadge,
-    updateCompletelyBadge: updateCompletelyBadge,
-    deleteBadge: deleteBadge,
-    generateBadge: generateBadge
+    getPointScales: getPointScales,
+    createPointScale: createPointScale,
+    updateCompletelyPointScale: updateCompletelyPointScale,
+    deletePointScale: deletePointScale,
+    generatePointScale: generatePointScale
 };
