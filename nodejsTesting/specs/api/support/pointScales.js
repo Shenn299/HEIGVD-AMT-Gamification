@@ -52,7 +52,7 @@ function generatePointScale() {
     return {
         name: chance.word(),
         description: chance.sentence(),
-        coefficient: chance.integer({min: 1, max: 10})
+        coefficient: chance.integer({min: 1, max: 1000})
     }
 }
 

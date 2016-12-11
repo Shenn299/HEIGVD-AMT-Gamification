@@ -22,26 +22,28 @@ describe("The /pointScale endpoint :", function () {
     it("should allow an unauthenticated user to completely update an existing pointScale", shouldAllowUnauthenticatedUserToCompletelyUpdatePointScale);
 
     // Delete
-    //it("should allow an unauthenticated user to delete an existing badge", shoulAllowUnauthenticatedUserToDeleteBadge);
+    it("should allow an unauthenticated user to delete an existing pointScale", shoulAllowUnauthenticatedUserToDeletePointScale);
 
     // Failures
     // POST
-    //it("should refuse an unauthenticated user to create a new badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided);
-    //it("should refuse an unauthenticated user to create a new badge if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    //it("should refuse an unauthenticated user to create a new badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters);
-    //it("should refuse an unauthenticated user to create a new badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
-    //it("should refuse an unauthenticated user to create a new badge if the badge name provided already exists in this application");
+    it("should refuse an unauthenticated user to create a new pointScale if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreatePointScaleIfMandatoryFieldsAreNotProvided);
+    it("should refuse an unauthenticated user to create a new pointScale if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreatePointScaleIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+    it("should refuse an unauthenticated user to create a new pointScale if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCreatePointScaleIfNameContainsMoreThan80Characters);
+    it("should refuse an unauthenticated user to create a new pointScale if description contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCreatePointScaleIfDescriptionContainMoreThan255Characters);
+    it("should refuse an unauthenticated user to create a new pointScale if coefficient is greater than 1000 or is less than 1", itShouldRefuseAnUnauthenticatedUserToCreatePointScaleIfCoefficientIsGreaterThan1000OrIsLessThan1);
+    it("should refuse an unauthenticated user to create a new pointScale if the pointScale name provided already exists in this application");
 
     // PUT
-    //it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreNotProvided);
-    //it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    //it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfNameContainsMoreThan80Characters);
-    //it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfDescriptionOrImageUrlContainMoreThan255Characters);
-    //it("should refuse an unauthenticated user to completely update an existing badge if the badge name provided already exists");
-    //it("should refuse an unauthenticated user to completely update an existing badge if badge id provided does not exist", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
+    it("should refuse an unauthenticated user to completely update an existing pointScale if mandatory fields are not provided", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfMandatoryFieldsAreNotProvided);
+    it("should refuse an unauthenticated user to completely update an existing pointScale if mandatory fields are empty or contain only spaces", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+    it("should refuse an unauthenticated user to completely update an existing pointScale if name contains more than 80 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfNameContainsMoreThan80Characters);
+    it("should refuse an unauthenticated user to completely update an existing pointScale if description contain more than 255 characters", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfDescriptionContainMoreThan255Characters);
+    it("should refuse an unauthenticated user to completely update an existing pointScale if the pointScale name provided already exists");
+    it("should refuse an unauthenticated user to completely update an existing pointScale if coefficient is greater than 1000 or is less than 1", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfCoefficientIsGreaterThan1000OrIsLessThan1);
+    it("should refuse an unauthenticated user to completely update an existing pointScale if pointScale id provided does not exist", itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfPointScaleIdProvidedDoesNotExist);
 
     // Delete
-    //it("should refuse an unauthenticated user to delete an existing badge if badge id provided does not exist", itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
+    it("should refuse an unauthenticated user to delete an existing pointScale if pointScale id provided does not exist", itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingPointScaleIfPointScaleIdProvidedDoesNotExist);
 
 });
 
@@ -123,22 +125,22 @@ function shouldAllowUnauthenticatedUserToCompletelyUpdatePointScale() {
 
 // Success
 // DELETE
-function shoulAllowUnauthenticatedUserToDeleteBadge() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+function shoulAllowUnauthenticatedUserToDeletePointScale() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScales
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
-                    // Delete an existing badge
-                    return badges.deleteBadge(id)
+                    // Delete an existing pointScale
+                    return pointScales.deletePointScale(id)
                         .then(function (response) {
 
                             // HTTP response status should equal 204 NO CONTENT
@@ -154,9 +156,9 @@ function shoulAllowUnauthenticatedUserToDeleteBadge() {
 
 // Failure
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided() {
-    // Generation of a new badge as payload
-    var payload = badges.generateBadge();
+function itShouldRefuseUnauthenticatedUserToCreatePointScaleIfMandatoryFieldsAreNotProvided() {
+    // Generation of a new pointScale as payload
+    var payload = pointScales.generatePointScale();
     // Creation of a string with the payload
     var original = JSON.stringify(payload);
 
@@ -168,11 +170,11 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotPr
     }
     delete wrongPayloads[0].name;
     delete wrongPayloads[1].description;
-    delete wrongPayloads[2].imageURL;
+    delete wrongPayloads[2].coefficient;
 
     // Creation of an array of promise
-    // Try to create new badge with each wrong payload
-    var promises = wrongPayloads.map(p => (badges.createBadge(p)));
+    // Try to create new pointScale with each wrong payload
+    var promises = wrongPayloads.map(p => (pointScales.createPointScale(p)));
 
     // When all requests have provided a response
     return Promise.all(promises)
@@ -187,25 +189,24 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotPr
 
 // Failure
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
-    // Generation of a new badge as payload
-    var payload = badges.generateBadge();
+function itShouldRefuseUnauthenticatedUserToCreatePointScaleIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
+    // Generation of a new pointScale as payload
+    var payload = pointScales.generatePointScale();
     // Creation of a string with the payload
     var original = JSON.stringify(payload);
 
     // Creation of wrong payloads
     // Each wrong payload have one mandatory field that contains only two spaces
     var wrongPayloads = [];
-    for (var i = 0; i < 3; ++i) {
+    for (var i = 0; i < 2; ++i) {
         wrongPayloads.push(JSON.parse(original));
     }
     wrongPayloads[0].name = "  ";
     wrongPayloads[1].description = "  ";
-    wrongPayloads[2].imageURL = "  ";
 
     // Creation of an array of promise
-    // Try to create new badge with each wrong payload
-    var promises = wrongPayloads.map(p => (badges.createBadge(p)));
+    // Try to create new pointScale with each wrong payload
+    var promises = wrongPayloads.map(p => (pointScales.createPointScale(p)));
 
     // When all requests have provided a response
     return Promise.all(promises)
@@ -219,22 +220,22 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmpty
 
 // Failure
 // POST
-function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Change the length of the badge name to 81 characters
-    badge.name = chance.word({ length: 81 });
+function itShouldRefuseAnUnauthenticatedUserToCreatePointScaleIfNameContainsMoreThan80Characters() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Change the length of the pointScale name to 81 characters
+    pointScale.name = chance.word({ length: 81 });
 
-    return badges.createBadge(badge)
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
             // HTTP response status should equal 422 UNPROCESSABLE ENTITY
             response.status.should.equal(422);
 
-            // Change the length of the badge name to 80 characters
-            badge.name = chance.word({ length: 80 });
+            // Change the length of the pointScale name to 80 characters
+            pointScale.name = chance.word({ length: 80 });
 
-            return badges.createBadge(badge)
+            return pointScales.createPointScale(pointScale)
                 .then(function (response) {
 
                     // HTTP response status should equal 201 CREATED
@@ -248,50 +249,66 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan8
 
 // Failure
 // POST
-function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfDescriptionOrImageUrlContainMoreThan255Characters() {
-    // Generation of a new badge as payload
-    var payload = badges.generateBadge();
-    // Creation of a string with the payload
-    var original = JSON.stringify(payload);
+function itShouldRefuseAnUnauthenticatedUserToCreatePointScaleIfDescriptionContainMoreThan255Characters() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Change the length of the pointScale description to 256 characters
+    pointScale.description = chance.word({ length: 256 });
 
-    // Creation of wrong payloads
-    // Each wrong payload have description or imageURL that contain 256 characters
-    var wrongPayloads = [];
-    for (var i = 0; i < 2; ++i) {
-        wrongPayloads.push(JSON.parse(original));
-    }
-    wrongPayloads[0].description = chance.word({ length: 256 });
-    wrongPayloads[1].imageURL = chance.word({ length: 256 });
+    return pointScales.createPointScale(pointScale)
+        .then(function (response) {
 
-    // Creation of an array of promise
-    // Try to create new badge with each wrong payload
-    var promises = wrongPayloads.map(p => (badges.createBadge(p)));
+            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+            response.status.should.equal(422);
 
-    // When all requests have provided a response
-    return Promise.all(promises)
-        .then(function (responses) {
+            // Change the length of the pointScale name to 255 characters
+            pointScale.description = chance.word({ length: 255 });
 
-            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
-            responses.forEach(r => (r.status.should.equal(422)));
+            return pointScales.createPointScale(pointScale)
+                .then(function (response) {
 
-            // Creation of correct payloads
-            // Each correct payload have description or imageURL that contain 255 characters
-            for (var i = 0; i < 2; ++i) {
-                wrongPayloads.push(JSON.parse(original));
-            }
-            wrongPayloads[0].description = chance.word({ length: 255 });
-            wrongPayloads[1].imageURL = chance.word({ length: 255 });
+                    // HTTP response status should equal 201 CREATED
+                    response.status.should.equal(201);
 
-            // Creation of an array of promise
-            // Try to create new badge with each correct payload
-            var promises = wrongPayloads.map(p => (badges.createBadge(p)));
+                });
 
-            // When all requests have provided a response
-            return Promise.all(promises)
-                .then(function (responses) {
+        });
 
-                    // Each HTTP responses status should equal 201 CREATED
-                    responses.forEach(r => (r.status.should.equal(201)));
+}
+
+// Falure
+// POST
+function itShouldRefuseAnUnauthenticatedUserToCreatePointScaleIfCoefficientIsGreaterThan1000OrIsLessThan1() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Change the value of the coefficient to 1001
+    pointScale.coefficient = 1001;
+
+    return pointScales.createPointScale(pointScale)
+        .then(function (response) {
+
+            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+            response.status.should.equal(422);
+
+            // Change the value of the coefficient to 1000
+            pointScale.coefficient = 1000;
+
+            return pointScales.createPointScale(pointScale)
+                .then(function (response) {
+
+                    // HTTP response status should equal 201 CREATED
+                    response.status.should.equal(201);
+
+                    // Change the value of the coefficient to 0
+                    pointScale.coefficient = 0;
+
+                    return pointScales.createPointScale(pointScale)
+                        .then(function (response) {
+
+                            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+                            response.status.should.equal(422);
+
+                        });
 
                 });
 
@@ -324,23 +341,23 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedA
 
 // Failure 
 // PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreNotProvided() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfMandatoryFieldsAreNotProvided() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScale
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
-                    // Update completely an existing badge with wrong payloads
-                    // Generation of a new badge as payload
-                    var payload = badges.generateBadge();
+                    // Update completely an existing pointScale with wrong payloads
+                    // Generation of a new pointScale as payload
+                    var payload = pointScales.generatePointScale();
                     // Creation of a string with the payload
                     var original = JSON.stringify(payload);
 
@@ -352,11 +369,11 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfM
                     }
                     delete wrongPayloads[0].name;
                     delete wrongPayloads[1].description;
-                    delete wrongPayloads[2].imageURL;
+                    delete wrongPayloads[2].coefficient;
 
                     // Creation of an array of promise
-                    // Try to completely update badge with each wrong payload
-                    var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+                    // Try to completely update pointScale with each wrong payload
+                    var promises = wrongPayloads.map(p => (pointScales.updateCompletelyPointScale(id, p)));
 
                     // When all requests have provided a response
                     return Promise.all(promises)
@@ -375,39 +392,38 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfM
 
 // Failure
 // PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScales
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
-                    // Update completely an existing badge with wrong payloads
-                    // Generation of a new badge as payload
-                    var payload = badges.generateBadge();
+                    // Update completely an existing pointScale with wrong payloads
+                    // Generation of a new pointScale as payload
+                    var payload = pointScales.generatePointScale();
                     // Creation of a string with the payload
                     var original = JSON.stringify(payload);
 
                     // Creation of wrong payloads
                     // Each wrong payload have one mandatory field that contains only two spaces
                     var wrongPayloads = [];
-                    for (var i = 0; i < 3; ++i) {
+                    for (var i = 0; i < 2; ++i) {
                         wrongPayloads.push(JSON.parse(original));
                     }
                     wrongPayloads[0].name = "  ";
                     wrongPayloads[1].description = "  ";
-                    wrongPayloads[2].imageURL = "  ";
 
                     // Creation of an array of promise
-                    // Try to completely update badge with each wrong payload
-                    var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+                    // Try to completely update pointScale with each wrong payload
+                    var promises = wrongPayloads.map(p => (pointScales.updateCompletelyPointScale(id, p)));
 
                     // When all requests have provided a response
                     return Promise.all(promises)
@@ -425,32 +441,32 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfM
 
 // Failure
 // PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfNameContainsMoreThan80Characters() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfNameContainsMoreThan80Characters() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScales
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
-                    // Change the length of the badge name to 81 characters
-                    badge.name = chance.word({ length: 81 });
+                    // Change the length of the pointScale name to 81 characters
+                    pointScale.name = chance.word({ length: 81 });
 
-                    return badges.updateCompletelyBadge(id, badge)
+                    return pointScales.updateCompletelyPointScale(id, pointScale)
                         .then(function (response) {
 
                             // HTTP response status should equal 422 UNPROCESSABLE ENTITY
                             response.status.should.equal(422);
 
-                            // Change the length of the badge name to 80 characters
-                            badge.name = chance.word({ length: 80 });
-                            return badges.updateCompletelyBadge(id, badge)
+                            // Change the length of the pointScale name to 80 characters
+                            pointScale.name = chance.word({ length: 80 });
+                            return pointScales.updateCompletelyPointScale(id, pointScale)
                                 .then(function (response) {
 
                                     // HTTP response status should equal 204 NO CONTENT
@@ -468,67 +484,41 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfN
 
 // Failure
 // PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfDescriptionOrImageUrlContainMoreThan255Characters() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfDescriptionContainMoreThan255Characters() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
+            // Get all created pointScales
+            return pointScales.getPointScales()
                 .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
 
-                    // Update completely an existing badge with wrong payloads
-                    // Generation of a new badge as payload
-                    var payload = badges.generateBadge();
-                    // Creation of a string with the payload
-                    var original = JSON.stringify(payload);
+                    // Change the length of the description to 256 characters
+                    pointScale.description = chance.word({ length: 256 });
 
-                    // Creation of wrong payloads
-                    // Each wrong payload have description or imageURL that contains 256 characters
-                    var wrongPayloads = [];
-                    for (var i = 0; i < 2; ++i) {
-                        wrongPayloads.push(JSON.parse(original));
-                    }
-                    wrongPayloads[0].description = chance.word({ length: 256 });
-                    wrongPayloads[1].imageURL = chance.word({ length: 256 });
+                    // Try to update pointScale with wrong payload
+                    return pointScales.updateCompletelyPointScale(id, pointScale)
+                        .then(function (response) {
 
-                    // Creation of an array of promise
-                    // Try to completely update badge with each wrong payload
-                    var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+                            // HTTP responses status should equal 422 UNPROCESSABLE ENTITY
+                            response.status.should.equal(422);
 
-                    // When all requests have provided a response
-                    return Promise.all(promises)
-                        .then(function (responses) {
+                            // Change the length of the description to 255 characters
+                            pointScale.description = chance.word({ length: 255 });
 
-                            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
-                            responses.forEach(r => (r.status.should.equal(422)));
-
-                            // Creation of correct payloads
-                            // Each correct payload have description or imageURL that contains 255 characters
-                            for (var i = 0; i < 2; ++i) {
-                                wrongPayloads.push(JSON.parse(original));
-                            }
-                            wrongPayloads[0].description = chance.word({ length: 255 });
-                            wrongPayloads[1].imageURL = chance.word({ legth: 255 });
-
-                            // Creation of an array of promise
-                            // Try to completely update badge with each correct payload
-                            var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
-
-                            // When all requests have provided a response
-                            return Promise.all(promises)
-                                .then(function (responses) {
+                            // Update pointScale with correct payload
+                            return pointScales.updateCompletelyPointScale(id, pointScale)
+                                .then(function (response) {
 
                                     // Each HTTP responses status should equal 204 NO CONTENT
-                                    responses.forEach(r => (r.status.should.equal(204)));
+                                    response.status.should.equal(204);
 
                                 });
-
 
                         });
 
@@ -537,13 +527,68 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfD
         });
 }
 
+// Failure 
+// PUT
+function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfCoefficientIsGreaterThan1000OrIsLessThan1() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Creation of the new pointScale
+    return pointScales.createPointScale(pointScale)
+        .then(function (response) {
+
+            // Get all created pointScales
+            return pointScales.getPointScales()
+                .then(function (response) {
+                    var nbPointScales = response.body.length;
+                    var pointScale = response.body[nbPointScales - 1];
+                    var id = pointScale.pointScaleId;
+
+                    // Change the value of the coefficient to 1001
+                    pointScale.coefficient = 1001;
+
+                    return pointScales.updateCompletelyPointScale(id, pointScale)
+                        .then(function (response) {
+
+                            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+                            response.status.should.equal(422);
+
+                            // Change the value of the coefficient to 1000
+                            pointScale.coefficient = 1000;
+
+                            return pointScales.updateCompletelyPointScale(id, pointScale)
+                                .then(function (response) {
+
+                                    // HTTP response status should equal 204 NO CONTENT
+                                    response.status.should.equal(204);
+
+                                    // Change the value of the coefficient to 0
+                                    pointScale.coefficient = 0;
+
+                                    return pointScales.updateCompletelyPointScale(id, pointScale)
+                                        .then(function (response) {
+
+                                            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+                                            response.status.should.equal(422);
+
+                                        });
+
+                                });
+
+                        });
+
+                });
+
+        });
+
+}
+
 // Failure
 // PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Update a badge that doesn't exist
-    return badges.updateCompletelyBadge(0, badge)
+function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingPointScaleIfPointScaleIdProvidedDoesNotExist() {
+    // Generation of a new pointScale
+    var pointScale = pointScales.generatePointScale();
+    // Update a pointScale that doesn't exist
+    return pointScales.updateCompletelyPointScale(0, pointScale)
         .then(function (response) {
 
             // HTTP response status should equal 404 NOT FOUND
@@ -555,9 +600,9 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfB
 
 // Failure
 // Delete
-function itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingBadgeIfBadgeIdProvidedDoesNotExist() {
-    // Delete a badge that doesn't exist
-    return badges.deleteBadge(0)
+function itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingPointScaleIfPointScaleIdProvidedDoesNotExist() {
+    // Delete a pointScale that doesn't exist
+    return pointScales.deletePointScale(0)
         .then(function (response) {
 
             // HTTP response status should equal 404 NOT FOUND

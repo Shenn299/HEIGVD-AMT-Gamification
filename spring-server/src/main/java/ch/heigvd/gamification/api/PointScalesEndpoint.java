@@ -86,9 +86,29 @@ public class PointScalesEndpoint implements PointScalesApi{
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
     public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") String id , @RequestBody PointScaleInputDTO pointScale) {
         
-        if (pointScale.getName() == null || pointScale.getDescription() == null || pointScale.getCoefficient() == null) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+       // Test if the request isn't valid (http error 422 unprocessable entity)
+       boolean httpErrorUnprocessableEntity = false;
+       
+       // TODO: Check if the pointScale name is already in this application   
+       
+       // Check if name, description or coefficient is null
+       if(pointScale.getName()==null || pointScale.getDescription()==null || pointScale.getCoefficient()==null) {
+           httpErrorUnprocessableEntity = true;
+       }
+       
+       // Check if name or description is empty
+       else if (pointScale.getName().trim().isEmpty() || pointScale.getDescription().trim().isEmpty()) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       // Check if name length > 80 OR if description length > 255 OR if coefficient > 1000 OR if coefficient < 1
+       else if (pointScale.getName().length() > 80 || pointScale.getDescription().length() > 255 || pointScale.getCoefficient() > 1000 || pointScale.getCoefficient() < 1) {
+          httpErrorUnprocessableEntity = true;
+       }
+       
+       if (httpErrorUnprocessableEntity) {
+          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+       }
         
         PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
         if(currentPointScale == null){
@@ -110,21 +130,20 @@ public class PointScalesEndpoint implements PointScalesApi{
        // Test if the request isn't valid (http error 422 unprocessable entity)
        boolean httpErrorUnprocessableEntity = false;
        
-       // TODO: Check if the badge is already in this application
-       //Badge badgePosted = badgeRepository.findByName(badge.getName());     
+       // TODO: Check if the pointScale name is already in this application    
        
-       // Check if name, description or imageURL is null
+       // Check if name, description or coefficient is null
        if(pointScale.getName()==null || pointScale.getDescription()==null || pointScale.getCoefficient()==null) {
            httpErrorUnprocessableEntity = true;
        }
        
-       // Check if name, description or coefficient is empty
+       // Check if name OR description is empty
        else if (pointScale.getName().trim().isEmpty() || pointScale.getDescription().trim().isEmpty()) {
           httpErrorUnprocessableEntity = true;
        }
        
-       // Check if name length > 80 OR if description or imageURL length > 255
-       else if (pointScale.getName().length() > 80 || pointScale.getDescription().length() > 255 || pointScale.getCoefficient() > 10) {
+       // Check if name length > 80 OR if description length > 255 OR if coefficient > 1000 OR if coefficient < 1
+       else if (pointScale.getName().length() > 80 || pointScale.getDescription().length() > 255 || pointScale.getCoefficient() > 1000 || pointScale.getCoefficient() < 1) {
           httpErrorUnprocessableEntity = true;
        }
        
