@@ -240,6 +240,164 @@ paths:
           description: Not found, if id provided don't exist.
         500:
           description: If database isn't reachable.
+          
+  /registrations:
+    get:
+      description: 
+        The Registrations endpoint returns information about registrations which are saved. The response includes the application id, the application name, the application description. This response is a list of registration sorted by the id.
+      produces:
+        - application/json
+      tags:
+        - Registrations
+      responses:
+        200:
+          description: OK, an array of registrations.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RegistrationOutputDTO'
+        500:
+          description: If database isn't reachable.
+          
+    post:
+      description: Create a new registration.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: registration
+          description: Registration object that needs to be added to the database.
+          required: true
+          schema:
+              $ref: '#/definitions/RegistrationInputDTO'
+      responses:
+        201:
+          description: Created, returns the URL to access the new registration.
+          schema:
+            $ref: '#/definitions/LocationRegistration'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name or password fields contain more than 80 characters,
+                       if description field contain more than 255 characters,
+                       if password contains less than 7 characters,
+                       if application name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /registrations/{id}:
+    get:
+      description: Returns the registration which has the specified id.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired registration.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK, the desired registration.
+          schema:
+            $ref: '#/definitions/RegistrationOutputDTO'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing registration which has the specified id.
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the registration to modify.
+          required: true
+          type: integer
+          format: int64
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+        - name: registration
+          in: body
+          description: Registration to be updated
+          required: true
+          schema:
+              $ref: '#/definitions/RegistrationInputDTO'
+              
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name or password fields contain more than 80 characters,
+                       if description field contain more than 255 characters,
+                       if password contains less than 7 characters,
+                       if application name provided already exists.
+        403:
+          description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
+        500:
+          description: If database isn't reachable.
+
+    delete:
+      description: Delete the registration which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired registration.
+          required: true
+          type: integer
+          format: int64
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content, if success.
+        403:
+          description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+  /authentications:
+    post:
+      description: Send an authentication.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: authentication
+          description: Authentication object that used to authenticate application.
+          required: true
+          schema:
+              $ref: '#/definitions/AuthenticationInputDTO'
+      responses:
+        200:
+          description: Ok, returns a Json web token.
+          schema:
+            type: string
+        401:
+          description: Unauthorized, if name or/and password are incorrect.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided.
+        500:
+          description: If database isn't reachable.
+          
             
 definitions:
   BadgeOutputDTO:
@@ -320,5 +478,54 @@ definitions:
       locationPointScale:
         type: string
         description: Unique URL to access the new object created.
+        
+        
+  RegistrationOutputDTO:
+    type: object
+    required: [registration_id, name, description]
+    properties:
+      registration_id:
+        type: integer
+        format: int64
+        description: Unique identifier representing a specific registration.
+      name:
+        type: string
+        description: Display name of application.
+      description:
+        type: string
+        description: Description of the application.
+        
+  RegistrationInputDTO:
+    type: object
+    required: [name, description, password]
+    properties:
+      name:
+        type: string
+        description: Display name of application.
+      description:
+        type: string
+        description: Description of application.
+      password:
+        type: string
+        description: Password of the application.
+        
+  LocationRegistration:
+      type: string
+      required: [locationRegistration]
+      properties:
+        locationRegistration:
+          type: string
+          description: Unique URL to access the new object created.
+          
+  AuthenticationInputDTO:
+    type: object
+    required: [name, password]
+    properties:
+      name:
+        type: string
+        description: Name of application to authenticate.
+      password:
+        type: string
+        description: Password of the application.
   
         
