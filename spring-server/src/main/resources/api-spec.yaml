@@ -1,6 +1,6 @@
 swagger: '2.0'
 info:
-  title: RFPS API
+  title: Gamification API
   description: Move your app forward with the RFPS API.
   version: "1.0.0"
 # the domain of the service
@@ -42,6 +42,12 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/BadgeInputDTO'
+        - name: token
+          in: header
+          type: integer
+          format: int64
+          description: The application for which the badge belong
+          required: true
       responses:
         201:
           description: Created, returns the URL to access the new badge.
@@ -156,6 +162,12 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/PointScaleInputDTO'
+        - name: token
+          in: header
+          type: integer
+          format: int64
+          description: The application for which the badge belong
+          required: true
       responses:
         201:
           description: Created, returns the URL to access the new point scale.
@@ -215,8 +227,6 @@ paths:
           description: Not found, if id provided don't exist.
         500:
           description: If database isn't reachable.
-          schema:
-            $ref: '#/definitions/PointScaleInputDTO'
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -398,7 +408,316 @@ paths:
         500:
           description: If database isn't reachable.
           
-            
+  
+  
+  /applications:
+    get:
+      description: 
+        The Applications endpoint returns information about an application which are available. The response includes the id, the name, the description. This response is a list of applications sorted by the id.
+      produces:
+        - application/json
+      tags:
+        - Applications
+      responses:
+        200:
+          description: OK, an array of application.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/ApplicationOutputDTO'
+        500:
+          description: If database isn't reachable.
+          
+    post:
+      description: Create a new application.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: application
+          description: Application object that needs to be added to the database.
+          required: true
+          schema:
+              $ref: '#/definitions/ApplicationInputDTO'
+      responses:
+        201:
+          description: Created, returns the URL to access the new application.
+          schema:
+            $ref: '#/definitions/LocationApplication'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if mandatory fields contain more than 80 characters,
+                       if application name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /applications/{id}:
+    get:
+      description: Returns the application which has the specified id.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired application.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/ApplicationOutputDTO'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing application which has the specified id.
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the application to modify.
+          required: true
+          type: string
+        - name: application
+          in: body
+          description: Application to be updated
+          required: true
+          schema:
+              $ref: '#/definitions/ApplicationInputDTO'
+              
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if application name provided already exists.
+          
+
+    delete:
+      description: Delete the application which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired application.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+  /applications/{id}/badges:
+    get:
+      description: Returns all the badges of the application having the specified id.
+      produces:
+        - application/json
+      tags:
+        - Applications
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired application.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        200:
+          description: OK Array of badges
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/BadgeOutputDTO'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+  /events:
+    post:
+      description: Create a new even in an application.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: event
+          description: Event object that needs to be added to an application in a database.
+          required: true
+          schema:
+              $ref: '#/definitions/EventInputDTO'
+              
+      responses:
+        201:
+          description: Created, returns the URL to access the new event.
+          schema:
+            $ref: '#/definitions/LocationEvent'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if mandatory fields contain more than 80 characters,
+                       if application name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /users:
+    get:
+      description: 
+        The Applications endpoint returns information about an users which are available.
+      produces:
+        - application/json
+      tags:
+        - Applications
+      responses:
+        200:
+          description: OK, an array of users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/UserOutputDTO'
+        500:
+          description: If database isn't reachable.
+          
+  /rules:
+    get:
+      description: 
+        The rules of the gamification platform
+      produces:
+        - application/json
+      tags:
+        - Rules
+      responses:
+        200:
+          description: OK, an array of rules.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/RuleOutputDTO'
+        500:
+          description: If database isn't reachable.
+              
+    post:
+      description: Create a new rule.
+      consumes:
+        - application/json
+      parameters:
+        - in: body
+          name: rule
+          description: Rule object that needs to be added to the database.
+          required: true
+          schema:
+              $ref: '#/definitions/RuleInputDTO'
+        - name: token
+          in: header
+          type: integer
+          format: int64
+          description: The application for which the rule belongs
+          required: true
+      responses:
+        201:
+          description: Created, returns the URL to access the new rule.
+          schema:
+            $ref: '#/definitions/LocationRule'
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if description or imageUrl provided contain more than 255 characters,
+                       if rule name provided already exists.
+        500:
+          description: If database isn't reachable.
+          
+  /rules/{id}:
+    get:
+      description: Returns the rule which has the specified id.
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          type: integer
+          format: int64
+          description: The id of the desired rule.
+          required: true
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/RuleOutputDTO'
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+    put:
+      description: Modify completely the existing rule which has the specified id.
+      consumes:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          description: The id of the rule to modify.
+          required: true
+          type: integer
+          format: int64
+        - name: rule
+          in: body
+          description: rule to be updated
+          required: true
+          schema:
+              $ref: '#/definitions/RuleInputDTO'
+          
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name provided contains more than 80 characters,
+                       if description or imageUrl provided contain more than 255 characters,
+                       if rule name provided already exists.
+          
+
+    delete:
+      description: Delete the rule which has the specified id.
+      parameters:
+        - name: id
+          in: path
+          description: The id of the desired rule.
+          required: true
+          type: integer
+          format: int64
+      responses:
+        204:
+          description: No content, if success.
+        404:
+          description: Not found, if id provided don't exist.
+        500:
+          description: If database isn't reachable.
+          
+          
+          
 definitions:
   BadgeOutputDTO:
     type: object
@@ -419,7 +738,7 @@ definitions:
         
   BadgeInputDTO:
     type: object
-    required: [name,description, imageURL]
+    required: [name,description,imageURL]
     properties:
       name:
         type: string
@@ -429,7 +748,7 @@ definitions:
         description: Description of badge.
       imageURL:
         type: string
-        description: The URL of the image
+        description: The URL of the image          
 
   LocationBadge:
       type: string
@@ -479,7 +798,131 @@ definitions:
         type: string
         description: Unique URL to access the new object created.
         
+  ApplicationOutputDTO:
+    type: object
+    required: [application_id, name, description]
+    properties:
+      application_id:
+        type: integer
+        format: int64
+        description: Unique identifier representing a specific application.
+      name:
+        type: string
+        description: Display name of the application.
+      description:
+        type: string
+        description: Description of the application.
         
+  ApplicationInputDTO:
+    type: object
+    required: [name,description]
+    properties:
+      name:
+        type: string
+        description: Display name of the application.
+      description:
+        type: string
+        description: Description of the application.
+
+  LocationApplication:
+      type: string
+      required: [locationApplication]
+      properties:
+        locationApplication:
+          type: string
+          description: Unique URL to access the new object created.
+          
+  EventInputDTO:
+    type: object
+    required: [name,description,applicationId,userAppId]
+    properties:
+      name:
+        type: string
+        description: Display name of the application.
+      description:
+        type: string
+        description: Description of the application.
+      applicationId:
+        type: integer
+        format: int64
+        description: Id of the type of the application using the gamification platform
+      userAppId:
+        type: integer
+        format: int64
+        description: Id of the user using the platform
+
+  LocationEvent:
+      type: string
+      required: [locationEvent]
+      properties:
+        locationEvent:
+          type: string
+          description: Unique URL to access the new object created.
+          
+  UserOutputDTO:
+    type: object
+    required: [user_id, userIdApp, appId]
+    properties:
+      user_id:
+        type: integer
+        description: Unique identifier representing a specific user.
+      userIdApp:
+        type: integer
+        description: Unique identifier of a user in the gamification platform.
+      appId:
+        type: integer
+        description: Unique identifier of the application
+  
+  RuleOutputDTO:
+    type: object
+    required: [rule_id, name, description, points]
+    properties:
+      rule_id:
+        type: string
+        description: Unique identifier representing a specific rule.
+      name:
+        type: string
+        description: Display rule's name.
+      description:
+        type: string
+        description: Description of rule.
+      points:
+        type: integer
+        description: Number of points to get or lose.
+      
+
+        
+  RuleInputDTO:
+    type: object
+    required: [ruleName, description, badge_id, pointScale_id, points, eventType]
+    properties:
+      ruleName:
+        type: string
+        description: Display rule's name.
+      description:
+        type: string
+        description: Description of the rule.
+      badge_id:
+        type: integer
+        description: The id of the badge to be given to a user
+      pointScale_id:
+        type: integer
+        description: The id of the pointScale to be given to a user
+      points:
+        type: integer
+        description: score of point to get/lose by this rule
+      eventType:
+        type: string
+        description: The type of the up coming event
+
+  LocationRule:
+      type: string
+      required: [locationRule]
+      properties:
+        locationRule:
+          type: string
+          description: Unique URL to access the new object created.
+          
   RegistrationOutputDTO:
     type: object
     required: [registration_id, name, description]
@@ -527,5 +970,5 @@ definitions:
       password:
         type: string
         description: Password of the application.
-  
+          
         

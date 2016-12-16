@@ -14,6 +14,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface BadgeRepository extends JpaRepository<Badge, Long>{
     
+    //List<Badge> findByName (String name);
     Badge findOne(long badgeId);
     Badge findByName(String name);
     List<Badge> findAll();
