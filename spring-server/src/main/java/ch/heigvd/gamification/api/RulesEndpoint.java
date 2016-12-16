@@ -63,9 +63,9 @@ public class RulesEndpoint implements RulesApi{
     public ResponseEntity<List<RuleOutputDTO>> rulesGet() {
         
         List<Rule> rules = this.ruleRepository.findAll();
-        if(rules.isEmpty()){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+//        if(rules.isEmpty()){
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
         List<RuleOutputDTO> rulesDTO = new ArrayList<>();
         for (int i=0; i<rules.size(); i++){
             rulesDTO.add(i, toDTO(rules.get(i)));
@@ -133,10 +133,10 @@ public class RulesEndpoint implements RulesApi{
     
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LocationRule> rulesPost(@RequestBody RuleInputDTO rule, @RequestHeader Long token) {
+    public ResponseEntity<LocationRule> rulesPost(@RequestBody RuleInputDTO rule, @RequestHeader Long applicationId) {
         
         // Let's find the target application the badge and the pointscale
-        Application targetApplication = applicationRepository.findOne(token);
+        Application targetApplication = applicationRepository.findOne(applicationId);
         Badge targetBadge = badgeRepository.findOne(rule.getBadgeId());
         PointScale targetPointScale = pointScaleRepository.findOne(rule.getPointScaleId());
         

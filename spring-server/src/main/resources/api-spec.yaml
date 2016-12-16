@@ -42,7 +42,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/BadgeInputDTO'
-        - name: token
+        - name: applicationId
           in: header
           type: integer
           format: int64
@@ -162,7 +162,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/PointScaleInputDTO'
-        - name: token
+        - name: applicationId
           in: header
           type: integer
           format: int64
@@ -622,7 +622,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/RuleInputDTO'
-        - name: token
+        - name: applicationId
           in: header
           type: integer
           format: int64

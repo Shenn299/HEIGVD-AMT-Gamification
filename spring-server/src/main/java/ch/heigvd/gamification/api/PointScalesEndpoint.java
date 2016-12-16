@@ -146,7 +146,7 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader Long token) {
+    public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader Long applicationId) {
         
 //        if(pointScale.getName()==null || pointScale.getDescription()==null || pointScale.getCoefficient()==null){
 //           
@@ -162,7 +162,7 @@ public class PointScalesEndpoint implements PointScalesApi{
 //        headers.add("Location", location);
 //        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 
-      Application application = applicationRepository.findOne(token);
+      Application application = applicationRepository.findOne(applicationId);
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;

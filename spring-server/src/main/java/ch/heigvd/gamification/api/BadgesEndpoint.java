@@ -141,9 +141,9 @@ public class BadgesEndpoint implements BadgesApi{
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LocationBadge> badgesPost(@RequestBody BadgeInputDTO badge, @RequestHeader Long token) {
+    public ResponseEntity<LocationBadge> badgesPost(@RequestBody BadgeInputDTO badge, @RequestHeader Long applicationId) {
         
-        Application application = applicationRepository.findOne(token);
+        Application application = applicationRepository.findOne(applicationId);
         
               // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
