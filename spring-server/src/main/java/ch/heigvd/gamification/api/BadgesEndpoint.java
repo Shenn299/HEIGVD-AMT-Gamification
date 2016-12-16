@@ -107,7 +107,8 @@ public class BadgesEndpoint implements BadgesApi{
 //        
 //        badgeRepository.save(currentBadge);
 //        return new ResponseEntity<>(HttpStatus.OK);
-      // Test if the request isn't valid (http error 422 unprocessable entity)
+
+        // Test if the request isn't valid (http error 422 unprocessable entity)
         boolean httpErrorUnprocessableEntity = false;
 
         // TODO: Check if the badge is already in this application before saving
@@ -143,13 +144,16 @@ public class BadgesEndpoint implements BadgesApi{
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<LocationBadge> badgesPost(@RequestBody BadgeInputDTO badge, @RequestHeader Long applicationId) {
         
-        Application application = applicationRepository.findOne(applicationId);
+      Application application = applicationRepository.findOne(applicationId);
+      
+       // TO DO: We've got to check if the badge is not in the database before saving
+
         
-              // Test if the request isn't valid (http error 422 unprocessable entity)
+      // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
 
       // TODO: Check if the badge is already in this application
-      //Badge badgePosted = badgeRepository.findByName(badge.getName());  
+      
       // Check if name, description or imageURL is null
       if (badge.getName() == null || badge.getDescription() == null || badge.getImageURL() == null) {
          httpErrorUnprocessableEntity = true;
@@ -183,22 +187,6 @@ public class BadgesEndpoint implements BadgesApi{
       headers.add("Location", location.toString());
       return new ResponseEntity<>(headers, HttpStatus.CREATED);
 
-        // TO DO: We've got to check if the badge is not in the database before saving
-//       if(badge.getName()==null || badge.getDescription()==null || badge.getImageURL()==null /*|| application==null*/){
-//           
-//           return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-//       }
-//        
-//        Badge newBadge = fromDTO(badge);
-//        newBadge.setApplication(application);
-//        newBadge = badgeRepository.save(newBadge);        
-//        
-//        Long newId = newBadge.getId();
-//        String location =request.getRequestURL() +"/"+newId;
-//        
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Location", location);
-//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
         
     }
     

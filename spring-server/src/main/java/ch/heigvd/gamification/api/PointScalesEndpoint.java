@@ -93,20 +93,6 @@ public class PointScalesEndpoint implements PointScalesApi{
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
     public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") String id , @RequestBody PointScaleInputDTO pointScale) {
         
-//        if (pointScale.getName() == null || pointScale.getDescription() == null || pointScale.getCoefficient() == null) {
-//            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-//        }
-//        
-//        PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
-//        if(currentPointScale == null){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        currentPointScale.setName(pointScale.getName());
-//        currentPointScale.setDescription(pointScale.getDescription());
-//        currentPointScale.setCoefficient(pointScale.getCoefficient());
-//        
-//        pointScaleRepository.save(currentPointScale);
-//        return new ResponseEntity<>(HttpStatus.OK);
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
@@ -148,19 +134,6 @@ public class PointScalesEndpoint implements PointScalesApi{
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader Long applicationId) {
         
-//        if(pointScale.getName()==null || pointScale.getDescription()==null || pointScale.getCoefficient()==null){
-//           
-//           return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-//       }
-//        
-//        PointScale newPointScale = fromDTO(pointScale);
-//        newPointScale = pointScaleRepository.save(newPointScale);
-//        Long newId = newPointScale.getId();
-//        String location = request.getRequestURL() +"/"+newId;
-//        
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.add("Location", location);
-//        return new ResponseEntity<>(headers, HttpStatus.CREATED);
 
       Application application = applicationRepository.findOne(applicationId);
 

@@ -60,6 +60,31 @@ public class EventsEndpoint implements EventsApi{
     @Override
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<LocationEvent> eventsPost(@RequestBody EventInputDTO event) {
+        
+       // Test if the request isn't valid (http error 422 unprocessable entity)
+          boolean httpErrorUnprocessableEntity = false;
+        
+        
+      // Check if name, description is null
+      if (event.getName() == null || event.getDescription() == null) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      // Check if name, description is empty
+      else if (event.getName().trim().isEmpty() || event.getDescription().trim().isEmpty()) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      // Check if name length > 80 OR if description length > 255
+      else if (event.getName().length() > 80 || event.getDescription().length() > 255) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      if (httpErrorUnprocessableEntity) {
+         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+      }
+        
+
         Application targetApplication = applicationRepository.findOne(event.getApplicationId());
         Long userAppId = event.getUserAppId();
         if (targetApplication == null || userAppId == null) {
@@ -80,10 +105,15 @@ public class EventsEndpoint implements EventsApi{
             
             // Save the new event in the database
             eventRepository.save(newEvent);
-
-            String location = request.getRequestURL() + "/" + newEvent.getId();
+            Long newId = newEvent.getId();
+            
+            StringBuffer location = request.getRequestURL();
+            if (!location.toString().endsWith("/")) {
+                location.append("/");
+            }
+            location.append(newId.toString());
             HttpHeaders headers = new HttpHeaders();
-            headers.add("Location", location);
+            headers.add("Location", location.toString());
             return new ResponseEntity<>(headers, HttpStatus.CREATED);
         }
 
