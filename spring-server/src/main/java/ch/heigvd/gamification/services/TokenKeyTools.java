@@ -1,3 +1,15 @@
+/*
+ -----------------------------------------------------------------------------------
+ Project 	 : Projet AMT
+ File     	 : TokenKeyTools.java
+ Author(s)       : Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien 
+ Date            : Start: 14.11.16 - End:  
+ Purpose         : The goal of this file is to allow us to create a json web token, parse it
+                   and verify if the json web token is well formed.
+ remark(s)       : n/a
+ Compiler        : jdk 1.8.0_101
+ -----------------------------------------------------------------------------------
+ */
 
 package ch.heigvd.gamification.services;
 
@@ -12,18 +24,17 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.security.Key;
 import java.util.Date;
 import java.util.Properties;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 /**
  *
- * @author seb
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @version 1.0
+ * @since 2016-11-14
  */
 public class TokenKeyTools {
 

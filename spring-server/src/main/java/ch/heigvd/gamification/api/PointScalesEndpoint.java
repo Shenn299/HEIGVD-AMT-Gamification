@@ -1,8 +1,15 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ -----------------------------------------------------------------------------------
+ Project 	 : Gamification API
+ File     	 : PointScalesEndPoint.java
+ Author(s)       : Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien  
+ Date            : Start: 14.11.16 - End:  
+ Purpose         : The goal of this class is to define a REST API on a pointScale
+ remark(s)       : n/a
+ Compiler        : jdk 1.8.0_101
+ -----------------------------------------------------------------------------------
  */
+
 package ch.heigvd.gamification.api;
 
 import ch.heigvd.gamification.api.dto.LocationPointScale;
@@ -28,7 +35,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author TCHUENSU
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @version 1.0
+ * @since 2016-11-14
  */
 
 @RestController
@@ -50,9 +59,7 @@ public class PointScalesEndpoint implements PointScalesApi{
     @Override
     public ResponseEntity<List<PointScaleOutputDTO>> pointScalesGet() {
        List<PointScale> pointScales = this.pointScaleRepository.findAll();
-//       if(pointScales.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+
         List<PointScaleOutputDTO> pointScalesDTO = new ArrayList<>();
         for (int i=0; i<pointScales.size(); i++){
             pointScalesDTO.add(i, toDTO(pointScales.get(i)));

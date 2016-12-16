@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ -----------------------------------------------------------------------------------
+ Project 	 : Gamification API
+ File     	 : ApplicationEndPoint.java
+ Author(s)       : Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien  
+ Date            : Start: 14.11.16 - End:  
+ Purpose         : The goal of this class is to define a REST API on an application
+ remark(s)       : n/a
+ Compiler        : jdk 1.8.0_101
+ -----------------------------------------------------------------------------------
  */
 
 package ch.heigvd.gamification.api;
@@ -29,7 +35,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * @author Sekley Pascal <pascal.sekley@heig-vd.ch>
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @version 1.0
+ * @since 2016-11-14
  */
 @RestController
 @RequestMapping("/applications")
@@ -48,9 +56,7 @@ public class ApplicationsEndpoint implements ApplicationsApi{
     @RequestMapping(method = RequestMethod.GET)
     public ResponseEntity<List<ApplicationOutputDTO>> applicationsGet() {
         List<Application> applications = this.applicationRepository.findAll();
-//        if(applications.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+
         List<ApplicationOutputDTO> applicationsDTO = new ArrayList<>();
         for (int i=0; i<applications.size(); i++){
             applicationsDTO.add(i, toDTO(applications.get(i)));

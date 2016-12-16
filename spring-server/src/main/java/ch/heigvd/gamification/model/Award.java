@@ -1,10 +1,21 @@
+/*
+ -----------------------------------------------------------------------------------
+ Project 	 : Gamification API
+ File     	 : Award.java
+ Author(s)       : Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien  
+ Date            : Start: 14.11.16 - End:  
+ Purpose         : The goal of this class is to define an award and what its
+                   caracteristics are.
+ remark(s)       : n/a
+ Compiler        : jdk 1.8.0_101
+ -----------------------------------------------------------------------------------
+ */
+
 
 package ch.heigvd.gamification.model;
 import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.Date;
-import javax.persistence.Basic;
-import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,7 +29,9 @@ import javax.persistence.TemporalType;
 
 /**
  *
- * @author TCHUENSU
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @version 1.0
+ * @since 2016-11-14
  */
 
 @Entity

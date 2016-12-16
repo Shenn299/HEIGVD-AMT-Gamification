@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ -----------------------------------------------------------------------------------
+ Project 	 : Gamification API
+ File     	 : RuleEndPoint.java
+ Author(s)       : Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien  
+ Date            : Start: 14.11.16 - End:  
+ Purpose         : The goal of this class is to define a REST API on a Rule
+ remark(s)       : n/a
+ Compiler        : jdk 1.8.0_101
+ -----------------------------------------------------------------------------------
  */
 
 package ch.heigvd.gamification.api;
@@ -34,7 +40,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * @author Sekley Pascal <pascal.sekley@heig-vd.ch>
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @version 1.0
+ * @since 2016-11-14
  */
 @RestController
 @RequestMapping("/rules")
@@ -63,9 +71,7 @@ public class RulesEndpoint implements RulesApi{
     public ResponseEntity<List<RuleOutputDTO>> rulesGet() {
         
         List<Rule> rules = this.ruleRepository.findAll();
-    //        if(rules.isEmpty()){
-    //            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-    //        }
+
         List<RuleOutputDTO> rulesDTO = new ArrayList<>();
         for (int i=0; i<rules.size(); i++){
             rulesDTO.add(i, toDTO(rules.get(i)));
@@ -111,20 +117,6 @@ public class RulesEndpoint implements RulesApi{
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> rulesIdPut(@PathParam("id") Long id, @RequestBody RuleInputDTO rule) {
         
-        
-//        if (rule.getRuleName() == null || rule.getDescription() == null) {
-//            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-//        }
-//        
-//        Rule currentRule = ruleRepository.findOne(id);
-//        if(currentRule == null){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        currentRule.setRuleName(rule.getRuleName());
-//        currentRule.setRuleDescription(rule.getDescription());
-//        currentRule.setPoints(rule.getPoints());        
-//        ruleRepository.save(currentRule);
-//        return new ResponseEntity<>(HttpStatus.OK); 
 
           // Test if the request isn't valid (http error 422 unprocessable entity)
         boolean httpErrorUnprocessableEntity = false;

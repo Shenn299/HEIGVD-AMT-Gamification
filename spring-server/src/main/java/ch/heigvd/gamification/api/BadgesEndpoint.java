@@ -1,7 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ -----------------------------------------------------------------------------------
+ Project 	 : Gamification API
+ File     	 : BadgesEndPoint.java
+ Author(s)       : Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien  
+ Date            : Start: 14.11.16 - End:  
+ Purpose         : The goal of this class is to define a REST API on a badge
+ remark(s)       : n/a
+ Compiler        : jdk 1.8.0_101
+ -----------------------------------------------------------------------------------
  */
 
 package ch.heigvd.gamification.api;
@@ -30,7 +36,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  * 
- * @author Sekley Pascal <pascal.sekley@heig-vd.ch>
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @version 1.0
+ * @since 2016-11-14
  */
 @RestController
 @RequestMapping("/badges")
@@ -54,9 +62,7 @@ public class BadgesEndpoint implements BadgesApi{
     public ResponseEntity<List<BadgeOutputDTO>> badgesGet() {
         
         List<Badge> badges = this.badgeRepository.findAll();
-//        if(badges.isEmpty()){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
+
         List<BadgeOutputDTO> badgesDTO = new ArrayList<>();
         for (int i=0; i<badges.size(); i++){
             badgesDTO.add(i, toDTO(badges.get(i)));
@@ -92,21 +98,7 @@ public class BadgesEndpoint implements BadgesApi{
     @Override
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> badgesIdPut(@PathVariable("id")String id, @RequestBody BadgeInputDTO badge) {
-//        
-//        if (badge.getName() == null || badge.getDescription() == null || badge.getImageURL() == null) {
-//            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-//        }
-//        
-//        Badge currentBadge = badgeRepository.findOne(Long.valueOf(id));
-//        if(currentBadge == null){
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        currentBadge.setName(badge.getName());
-//        currentBadge.setDescription(badge.getDescription());
-//        currentBadge.setImage(badge.getImageURL());
-//        
-//        badgeRepository.save(currentBadge);
-//        return new ResponseEntity<>(HttpStatus.OK);
+
 
         // Test if the request isn't valid (http error 422 unprocessable entity)
         boolean httpErrorUnprocessableEntity = false;
