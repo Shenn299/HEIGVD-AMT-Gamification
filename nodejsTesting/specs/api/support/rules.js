@@ -4,10 +4,10 @@ var api = require("supertest-as-promised")(apiURL);
 var Chance = require("chance");
 var chance = new Chance();
 
-// GET all created pointScales
-function getPointScales() {
+// GET all created rules
+function getRules() {
     return api
-        .get("/pointScales")
+        .get("/rules")
         .set("Accept", "application/json")
         .send()
         .then(function (response) {
@@ -15,51 +15,50 @@ function getPointScales() {
         });
 }
 
-// POST a new pointScale
-function createPointScale(pointScale) {
+// POST a new rule
+function createRule(rule) {
     return api
-        .post("/pointScales")
+        .post("/rules")
         .set("Content-type", "application/json")
-        .send(pointScale)
+        .send(rule)
         .then(function (response) {
             return response
         });
 }
 
-// PUT an existing pointScale
-function updateCompletelyPointScale(id, pointScale) {
+// PUT an existing rule
+function updateCompletelyRule(id, rule) {
     return api
-        .put("/pointScales/" + id)
+        .put("/rules/" + id)
         .set("Content-type", "application/json")
-        .send(pointScale)
+        .send(rule)
         .then(function (response) {
             return response
         });
 }
 
-// DELETE an existing pointScale
-function deletePointScale(id) {
+// DELETE an existing rule
+function deleteRule(id) {
     return api
-        .delete("/pointScales/" + id)
+        .delete("/rules/" + id)
         .send()
         .then(function (response) {
             return response
         });
 }
 
-// Generation of a new pointScale with random values
-function generatePointScale() {
+// Generation of a new rule with random values
+function generateRule() {
     return {
         name: chance.word(),
-        description: chance.sentence(),
-        coefficient: chance.integer({min: 1, max: 1000})
+        description: chance.sentence()
     }
 }
 
 module.exports = {
-    getPointScales: getPointScales,
-    createPointScale: createPointScale,
-    updateCompletelyPointScale: updateCompletelyPointScale,
-    deletePointScale: deletePointScale,
-    generatePointScale: generatePointScale
+    getRules: getRules,
+    createRule: createRule,
+    updateCompletelyRule: updateCompletelyRule,
+    deleteRule: deleteRule,
+    generateRule: generateRule
 };

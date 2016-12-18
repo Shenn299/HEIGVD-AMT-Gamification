@@ -234,13 +234,12 @@ function itShouldRefuseAnUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan8
             // Change the length of the badge name to 80 characters
             badge.name = chance.word({ length: 80 });
 
-            return badges.createBadge(badge)
-                .then(function (response) {
+            return badges.createBadge(badge);
+        })
+        .then(function (response) {
 
-                    // HTTP response status should equal 201 CREATED
-                    response.status.should.equal(201);
-
-                });
+            // HTTP response status should equal 201 CREATED
+            response.status.should.equal(201);
 
         });
 

@@ -4,10 +4,10 @@ var api = require("supertest-as-promised")(apiURL);
 var Chance = require("chance");
 var chance = new Chance();
 
-// GET all created pointScales
-function getPointScales() {
+// GET all created registrations
+function getRegistrations() {
     return api
-        .get("/pointScales")
+        .get("/registrations")
         .set("Accept", "application/json")
         .send()
         .then(function (response) {
@@ -15,51 +15,51 @@ function getPointScales() {
         });
 }
 
-// POST a new pointScale
-function createPointScale(pointScale) {
+// POST a new registration
+function createRegistration(registration) {
     return api
-        .post("/pointScales")
+        .post("/registrations")
         .set("Content-type", "application/json")
-        .send(pointScale)
+        .send(registration)
         .then(function (response) {
             return response
         });
 }
 
-// PUT an existing pointScale
-function updateCompletelyPointScale(id, pointScale) {
+// PUT an existing registration
+function updateCompletelyRegistration(id, registration) {
     return api
-        .put("/pointScales/" + id)
+        .put("/registrations/" + id)
         .set("Content-type", "application/json")
-        .send(pointScale)
+        .send(registration)
         .then(function (response) {
             return response
         });
 }
 
-// DELETE an existing pointScale
-function deletePointScale(id) {
+// DELETE an existing registration
+function deleteRegistration(id) {
     return api
-        .delete("/pointScales/" + id)
+        .delete("/registrations/" + id)
         .send()
         .then(function (response) {
             return response
         });
 }
 
-// Generation of a new pointScale with random values
-function generatePointScale() {
+// Generation of a new registration with random values
+function generateRegistration() {
     return {
         name: chance.word(),
         description: chance.sentence(),
-        coefficient: chance.integer({min: 1, max: 1000})
+        password: chance.word({ length: 7 })
     }
 }
 
 module.exports = {
-    getPointScales: getPointScales,
-    createPointScale: createPointScale,
-    updateCompletelyPointScale: updateCompletelyPointScale,
-    deletePointScale: deletePointScale,
-    generatePointScale: generatePointScale
+    getRegistrations: getRegistrations,
+    createRegistration: createRegistration,
+    updateCompletelyRegistration: updateCompletelyRegistration,
+    deleteRegistration: deleteRegistration,
+    generateRegistration: generateRegistration
 };
