@@ -137,14 +137,15 @@ public class BadgesEndpoint implements BadgesApi{
     public ResponseEntity<LocationBadge> badgesPost(@RequestBody BadgeInputDTO badge, @RequestHeader Long applicationId) {
         
       Application application = applicationRepository.findOne(applicationId);
-      
-       // TO DO: We've got to check if the badge is not in the database before saving
-
+            
         
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
 
-      // TODO: Check if the badge is already in this application
+      // Check if the badge is already in a given application
+      if(badgeRepository.findByNameAndApplicationId(badge.getName(), applicationId) != null){
+          httpErrorUnprocessableEntity = true;
+      }
       
       // Check if name, description or imageURL is null
       if (badge.getName() == null || badge.getDescription() == null || badge.getImageURL() == null) {

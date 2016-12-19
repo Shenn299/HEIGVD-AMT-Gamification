@@ -146,6 +146,11 @@ public class PointScalesEndpoint implements PointScalesApi{
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
+      
+      // Check if the pointScale is already in a given application
+      if(pointScaleRepository.findByNameAndApplicationId(pointScale.getName(), applicationId) != null){
+          httpErrorUnprocessableEntity = true;
+      }
 
       // TODO: Check if the pointScale name is already in this application    
       // Check if name, description or coefficient is null

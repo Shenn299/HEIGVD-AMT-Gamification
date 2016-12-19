@@ -164,11 +164,14 @@ public class RulesEndpoint implements RulesApi{
         Badge targetBadge = badgeRepository.findOne(rule.getBadgeId());
         PointScale targetPointScale = pointScaleRepository.findOne(rule.getPointScaleId());
         
-        // TO DO: Check If that rule exist
-        //if (ruleRepository.findByName(rule.getRuleName()) != null)
         
         // Test if the request isn't valid (http error 422 unprocessable entity)
          boolean httpErrorUnprocessableEntity = false;
+         
+        // Check if the rule is already in a given application
+        if (ruleRepository.findByRuleNameAndApplicationId(rule.getRuleName(), applicationId) != null) {
+            httpErrorUnprocessableEntity = true;
+        }
          
         if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null) {
             httpErrorUnprocessableEntity = true;

@@ -23,6 +23,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 2016-11-14
  */
 public interface RuleRepository extends JpaRepository<Rule, Long>{
-    //Rule findByName (String name);
+    Rule findByRuleNameAndApplicationId (String name, Long applicationId);
     List<Rule> findByEventTypeAndApplicationId(String eventType, Long applicationId);
 }

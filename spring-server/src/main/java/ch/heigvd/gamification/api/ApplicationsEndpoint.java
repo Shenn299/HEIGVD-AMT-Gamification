@@ -153,7 +153,11 @@ public class ApplicationsEndpoint implements ApplicationsApi{
 
        // Test if the request isn't valid (http error 422 unprocessable entity)
           boolean httpErrorUnprocessableEntity = false;
-        
+          
+      // Check if the pointScale is already in a given application
+      if(applicationRepository.findByName(application.getName()) != null){
+          httpErrorUnprocessableEntity = true;
+      }
         
         
       // Check if name, description or imageURL is null

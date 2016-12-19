@@ -27,7 +27,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @since 2016-11-14
  */
 public interface PointScaleRepository extends JpaRepository<PointScale, Long> {
-    //List<Badge> findByName (String name);
+    PointScale findByNameAndApplicationId (String name, Long applicationId);
     PointScale findOne(long badgeId);
     List<PointScale> findAll();
     
