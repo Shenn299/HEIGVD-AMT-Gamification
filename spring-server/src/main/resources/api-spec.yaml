@@ -344,8 +344,8 @@ paths:
       responses:
         204:
           description: No content, if success.
-        404:
-          description: Not found, if id provided don't exist.
+        403:
+          description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -354,8 +354,7 @@ paths:
                        if description field contain more than 255 characters,
                        if password contains less than 7 characters,
                        if application name provided already exists.
-        403:
-          description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
+
         500:
           description: If database isn't reachable.
 
@@ -378,8 +377,6 @@ paths:
           description: No content, if success.
         403:
           description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
-        404:
-          description: Not found, if id provided don't exist.
         500:
           description: If database isn't reachable.
           

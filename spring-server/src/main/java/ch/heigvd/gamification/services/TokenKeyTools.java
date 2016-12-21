@@ -83,7 +83,7 @@ public class TokenKeyTools {
       SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
       // We will sign our JWT with the signature key
-      byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary(ENCODED_KEY);
+      byte[] apiKeySecretBytes = ENCODED_KEY.getBytes();
       Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
       long nowMillis = System.currentTimeMillis();
@@ -115,7 +115,7 @@ public class TokenKeyTools {
 
       // This line will throw an exception if it is not a signed JWS (as expected)
       Claims claims = Jwts.parser()
-              .setSigningKey(DatatypeConverter.parseBase64Binary(ENCODED_KEY))
+              .setSigningKey(ENCODED_KEY.getBytes())
               .parseClaimsJws(jwt).getBody();
 
       // Return the application id
