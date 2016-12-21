@@ -15,12 +15,17 @@ paths:
   /badges:
     get:
       description: 
-        The Badges endpoint returns information about badges
-        which are available. The response includes the id, the name, the description, and the image of each badge. This response is a list of badge sorted by the id.
+        The Badges endpoint returns information about badges belonging to the application whose id is present in the authentication token. The response includes the id, the name, the description, and the image URL of each badge. This response is a list of badge sorted by the id.
       produces:
         - application/json
       tags:
         - Badges
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
           description: OK, an array of badges.
@@ -28,11 +33,15 @@ paths:
             type: array
             items:
               $ref: '#/definitions/BadgeOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
               
     post:
-      description: Create a new badge.
+      description: Create a new badge belonging to the application whose id is present in the authentication token.
       consumes:
         - application/json
       parameters:
@@ -42,17 +51,20 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/BadgeInputDTO'
-        - name: applicationId
+        - name: Authorization
           in: header
-          type: integer
-          format: int64
-          description: The application for which the badge belong
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
+          type: string
       responses:
         201:
           description: Created, returns the URL to access the new badge.
           schema:
             $ref: '#/definitions/LocationBadge'
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -61,11 +73,11 @@ paths:
                        if description or imageUrl provided contain more than 255 characters,
                        if badge name provided already exists.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /badges/{id}:
     get:
-      description: Returns the badge which has the specified id.
+      description: Returns the badge which has the specified id belonging to the application whose id is present in the authentication token.
       produces:
         - application/json
       parameters:
@@ -74,18 +86,27 @@ paths:
           description: The id of the desired badge.
           required: true
           type: string
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
           description: OK
           schema:
             $ref: '#/definitions/BadgeOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
+          description: Not found, if id provided doesn't exist for this application.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
     put:
-      description: Modify completely the existing badge which has the specified id.
+      description: Modify completely the existing badge which has the specified id belonging to the application whose id is present in the authentication token.
       consumes:
         - application/json
       parameters:
@@ -100,14 +121,21 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/BadgeInputDTO'
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
           
       responses:
         204:
           description: No content, if success.
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
+          description: Not found, if id provided doesn't exist for this application.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -115,21 +143,31 @@ paths:
                        if name provided contains more than 80 characters,
                        if description or imageUrl provided contain more than 255 characters,
                        if badge name provided already exists.
-          
+        500:
+          description: Internal server error, if database isn't reachable.
 
     delete:
-      description: Delete the badge which has the specified id.
+      description: Delete the badge which has the specified id belonging to the application whose id is present in the authentication token.
       parameters:
         - name: id
           in: path
           description: The id of the desired badge.
           required: true
           type: string
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         204:
           description: No content, if success.
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
+          description: Not found, if id provided doesn't exist for this application.
         500:
           description: If database isn't reachable.
           
@@ -168,6 +206,11 @@ paths:
           format: int64
           description: The application for which the badge belong
           required: true
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         201:
           description: Created, returns the URL to access the new point scale.
@@ -219,6 +262,11 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/PointScaleInputDTO'
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
               
       responses:
         204:
@@ -241,6 +289,11 @@ paths:
         - name: id
           in: path
           description: The id of the desired point scale.
+          required: true
+          type: string
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
           type: string
       responses:
@@ -329,17 +382,17 @@ paths:
           required: true
           type: integer
           format: int64
-        - name: Authorization
-          in: header
-          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
-          required: true
-          type: string
         - name: registration
           in: body
           description: Registration to be updated
           required: true
           schema:
               $ref: '#/definitions/RegistrationInputDTO'
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
               
       responses:
         204:

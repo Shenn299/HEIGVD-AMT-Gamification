@@ -46,9 +46,7 @@ public class BadgesEndpoint implements BadgesApi{
     
     private final HttpServletRequest request;
     private final BadgeRepository badgeRepository;
-    private final ApplicationRepository applicationRepository;
-    
-    
+    private final ApplicationRepository applicationRepository;    
     
     @Autowired
     BadgesEndpoint(HttpServletRequest request, BadgeRepository badgeRepository, ApplicationRepository applicationRepository){
