@@ -126,7 +126,6 @@ paths:
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
           type: string
-          
       responses:
         204:
           description: No content, if success.
@@ -169,16 +168,22 @@ paths:
         404:
           description: Not found, if id provided doesn't exist for this application.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /pointScales:
     get:
       description: 
-        The PointScales endpoint returns information about point scales which are available. The response includes the id, the name, the description, and the coefficient of each point scale. This response is a list of point scale sorted by the id.
+        The PointScales endpoint returns information about point scales belonging to the application whose id is present in the authentication token. The response includes the id, the name, the description, and the coefficient of each point scale. This response is a list of point scale sorted by the id.
       produces:
         - application/json
       tags:
         - PointScales
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
           description: OK, an array of point scales.
@@ -186,11 +191,15 @@ paths:
             type: array
             items:
               $ref: '#/definitions/PointScaleOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
     post:
-      description: Create a new point scale.
+      description: Create a new point scale for this application.
       consumes:
         - application/json
       parameters:
@@ -200,12 +209,6 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/PointScaleInputDTO'
-        - name: applicationId
-          in: header
-          type: integer
-          format: int64
-          description: The application for which the badge belong
-          required: true
         - name: Authorization
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
@@ -216,6 +219,10 @@ paths:
           description: Created, returns the URL to access the new point scale.
           schema:
             $ref: '#/definitions/LocationPointScale'
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -223,7 +230,7 @@ paths:
                        if mandatory fields contain more than 80 characters,
                        if point scale name provided already exists.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /pointScales/{id}:
     get:
@@ -236,15 +243,24 @@ paths:
           description: The id of the desired point scale.
           required: true
           type: string
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
           description: OK
           schema:
             $ref: '#/definitions/PointScaleOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
+          description: Not found, if id provided doesn't exist for this application.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
     put:
       description: Modify completely the existing point scale which has the specified id.
@@ -267,22 +283,24 @@ paths:
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
           type: string
-              
       responses:
         204:
           description: No content, if success.
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
+          description: Not found, if id provided doesn't exist for this application.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
                        if mandatory fields provided are empty or contain only spaces,
                        if name provided contains more than 80 characters,
                        if pointScale name provided already exists.
+        500:
+          description: Internal server error, if database isn't reachable.
           
-
     delete:
       description: Delete the point scale which has the specified id.
       parameters:
@@ -299,184 +317,40 @@ paths:
       responses:
         204:
           description: No content, if success.
-        404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
-          
-  /registrations:
-    get:
-      description: 
-        The Registrations endpoint returns information about registrations which are saved. The response includes the application id, the application name, the application description. This response is a list of registration sorted by the id.
-      produces:
-        - application/json
-      tags:
-        - Registrations
-      responses:
-        200:
-          description: OK, an array of registrations.
-          schema:
-            type: array
-            items:
-              $ref: '#/definitions/RegistrationOutputDTO'
-        500:
-          description: If database isn't reachable.
-          
-    post:
-      description: Create a new registration.
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: registration
-          description: Registration object that needs to be added to the database.
-          required: true
-          schema:
-              $ref: '#/definitions/RegistrationInputDTO'
-      responses:
-        201:
-          description: Created, returns the URL to access the new registration.
-          schema:
-            $ref: '#/definitions/LocationRegistration'
-        422:
-          description: Unprocessable entity,
-                       if mandatory fields aren't provided,
-                       if mandatory fields provided are empty or contain only spaces,
-                       if name or password fields contain more than 80 characters,
-                       if description field contain more than 255 characters,
-                       if password contains less than 7 characters,
-                       if application name provided already exists.
-        500:
-          description: If database isn't reachable.
-          
-  /registrations/{id}:
-    get:
-      description: Returns the registration which has the specified id.
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: The id of the desired registration.
-          required: true
-          type: integer
-          format: int64
-      responses:
-        200:
-          description: OK, the desired registration.
-          schema:
-            $ref: '#/definitions/RegistrationOutputDTO'
-        404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
-          
-    put:
-      description: Modify completely the existing registration which has the specified id.
-      consumes:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: The id of the registration to modify.
-          required: true
-          type: integer
-          format: int64
-        - name: registration
-          in: body
-          description: Registration to be updated
-          required: true
-          schema:
-              $ref: '#/definitions/RegistrationInputDTO'
-        - name: Authorization
-          in: header
-          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
-          required: true
-          type: string
-              
-      responses:
-        204:
-          description: No content, if success.
-        403:
-          description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
-        422:
-          description: Unprocessable entity,
-                       if mandatory fields aren't provided,
-                       if mandatory fields provided are empty or contain only spaces,
-                       if name or password fields contain more than 80 characters,
-                       if description field contain more than 255 characters,
-                       if password contains less than 7 characters,
-                       if application name provided already exists.
-
-        500:
-          description: If database isn't reachable.
-
-    delete:
-      description: Delete the registration which has the specified id.
-      parameters:
-        - name: id
-          in: path
-          description: The id of the desired registration.
-          required: true
-          type: integer
-          format: int64
-        - name: Authorization
-          in: header
-          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
-          required: true
-          type: string
-      responses:
-        204:
-          description: No content, if success.
-        403:
-          description: Forbidden, if id provided doesn't equal to the id in the Json Web Token.
-        500:
-          description: If database isn't reachable.
-          
-  /authentications:
-    post:
-      description: Send an authentication.
-      consumes:
-        - application/json
-      parameters:
-        - in: body
-          name: authentication
-          description: Authentication object that used to authenticate application.
-          required: true
-          schema:
-              $ref: '#/definitions/AuthenticationInputDTO'
-      responses:
-        200:
-          description: Ok, returns a Json web token.
-          schema:
-            type: string
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
         401:
-          description: Unauthorized, if name or/and password are incorrect.
-        422:
-          description: Unprocessable entity,
-                       if mandatory fields aren't provided.
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        404:
+          description: Not found, if id provided doesn't exist for this application.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
-  
-  
   /applications:
     get:
       description: 
-        The Applications endpoint returns information about an application which are available. The response includes the id, the name, the description. This response is a list of applications sorted by the id.
+        The Applications endpoint returns information about the application whose id is present in the authentication token. The response includes the application id, the application name and the application description.
       produces:
         - application/json
       tags:
         - Applications
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
-          description: OK, an array of application.
+          description: OK, returns the application.
           schema:
-            type: array
-            items:
               $ref: '#/definitions/ApplicationOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
     post:
       description: Create a new application.
@@ -498,111 +372,101 @@ paths:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
                        if mandatory fields provided are empty or contain only spaces,
-                       if mandatory fields contain more than 80 characters,
+                       if name or password fields contain more than 80 characters,
+                       if description field contain more than 255 characters,
+                       if password contains less than 7 characters,
                        if application name provided already exists.
         500:
-          description: If database isn't reachable.
-          
-  /applications/{id}:
-    get:
-      description: Returns the application which has the specified id.
-      produces:
-        - application/json
-      parameters:
-        - name: id
-          in: path
-          description: The id of the desired application.
-          required: true
-          type: string
-      responses:
-        200:
-          description: OK
-          schema:
-            $ref: '#/definitions/ApplicationOutputDTO'
-        404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
     put:
-      description: Modify completely the existing application which has the specified id.
+      description: Modify completely this application whose id is present in the authentication token.
       consumes:
         - application/json
       parameters:
-        - name: id
-          in: path
-          description: The id of the application to modify.
-          required: true
-          type: string
         - name: application
           in: body
           description: Application to be updated
           required: true
           schema:
               $ref: '#/definitions/ApplicationInputDTO'
-              
-      responses:
-        204:
-          description: No content, if success.
-        404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
-        422:
-          description: Unprocessable entity,
-                       if mandatory fields aren't provided,
-                       if mandatory fields provided are empty or contain only spaces,
-                       if name provided contains more than 80 characters,
-                       if application name provided already exists.
-          
-
-    delete:
-      description: Delete the application which has the specified id.
-      parameters:
-        - name: id
-          in: path
-          description: The id of the desired application.
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
           type: string
       responses:
         204:
           description: No content, if success.
-        404:
-          description: Not found, if id provided don't exist.
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided,
+                       if mandatory fields provided are empty or contain only spaces,
+                       if name or password fields contain more than 80 characters,
+                       if description field contain more than 255 characters,
+                       if password contains less than 7 characters,
+                       if application name provided already exists.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
+
+    delete:
+      description: Delete the application which has the specified id.
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+      responses:
+        204:
+          description: No content, if success.
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        500:
+          description: Internal server error, if database isn't reachable.
           
-  /applications/{id}/badges:
-    get:
-      description: Returns all the badges of the application having the specified id.
-      produces:
+  /authentications:
+    post:
+      description: Send an authentication.
+      consumes:
         - application/json
       tags:
-        - Applications
+        - Authentications
       parameters:
-        - name: id
-          in: path
-          description: The id of the desired application.
+        - in: body
+          name: authentication
+          description: Authentication object that used to authenticate application.
           required: true
-          type: integer
-          format: int64
+          schema:
+              $ref: '#/definitions/AuthenticationInputDTO'
       responses:
         200:
-          description: OK Array of badges
+          description: Ok, returns a Json web token.
           schema:
-            type: array
-            items:
-              $ref: '#/definitions/BadgeOutputDTO'
-        404:
-          description: Not found, if id provided don't exist.
+            type: string
+        400:
+          description: Bad request, if json payload is malformed.
+        401:
+          description: Unauthorized, if name or/and password are incorrect.
+        422:
+          description: Unprocessable entity,
+                       if mandatory fields aren't provided.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /events:
     post:
       description: Create a new even in an application.
       consumes:
         - application/json
+      tags:
+        - Events
       parameters:
         - in: body
           name: event
@@ -610,7 +474,6 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/EventInputDTO'
-              
       responses:
         201:
           description: Created, returns the URL to access the new event.
@@ -623,7 +486,7 @@ paths:
                        if mandatory fields contain more than 80 characters,
                        if application name provided already exists.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /users:
     get:
@@ -632,7 +495,7 @@ paths:
       produces:
         - application/json
       tags:
-        - Applications
+        - Users
       responses:
         200:
           description: OK, an array of users.
@@ -641,14 +504,20 @@ paths:
             items:
               $ref: '#/definitions/UserOutputDTO'
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /rules:
     get:
       description: 
-        The rules of the gamification platform
+        The rules of the application whose id is present in the authentication token.
       produces:
         - application/json
+      parameters:
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       tags:
         - Rules
       responses:
@@ -658,11 +527,15 @@ paths:
             type: array
             items:
               $ref: '#/definitions/RuleOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
               
     post:
-      description: Create a new rule.
+      description: Create a new rule for the application whose id is present in the authentication token.
       consumes:
         - application/json
       parameters:
@@ -672,17 +545,20 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/RuleInputDTO'
-        - name: applicationId
+        - name: Authorization
           in: header
-          type: integer
-          format: int64
-          description: The application for which the rule belongs
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
+          type: string
       responses:
         201:
           description: Created, returns the URL to access the new rule.
           schema:
             $ref: '#/definitions/LocationRule'
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -691,7 +567,7 @@ paths:
                        if description or imageUrl provided contain more than 255 characters,
                        if rule name provided already exists.
         500:
-          description: If database isn't reachable.
+          description: Internal server error, if database isn't reachable.
           
   /rules/{id}:
     get:
@@ -705,13 +581,22 @@ paths:
           format: int64
           description: The id of the desired rule.
           required: true
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
           description: OK
           schema:
             $ref: '#/definitions/RuleOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
+          description: Not found, if id provided doesn't exist.
         500:
           description: If database isn't reachable.
           
@@ -732,14 +617,20 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/RuleInputDTO'
-          
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         204:
           description: No content, if success.
         404:
-          description: Not found, if id provided don't exist.
-        500:
-          description: If database isn't reachable.
+          description: Not found, if id provided doesn't exist.
+        400:
+          description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -747,7 +638,8 @@ paths:
                        if name provided contains more than 80 characters,
                        if description or imageUrl provided contain more than 255 characters,
                        if rule name provided already exists.
-          
+        500:
+          description: Internal server error, if database isn't reachable.
 
     delete:
       description: Delete the rule which has the specified id.
@@ -758,15 +650,22 @@ paths:
           required: true
           type: integer
           format: int64
+        - name: Authorization
+          in: header
+          description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         204:
           description: No content, if success.
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
-          description: Not found, if id provided don't exist.
+          description: Not found, if id provided doesn't exist.
         500:
-          description: If database isn't reachable.
-          
-          
+          description: Internal server error, if database isn't reachable.
           
 definitions:
   BadgeOutputDTO:
@@ -808,7 +707,6 @@ definitions:
           type: string
           description: Unique URL to access the new object created.
           
-        
   PointScaleOutputDTO:
     type: object
     required: [name,description, coefficient]
@@ -847,40 +745,6 @@ definitions:
       locationPointScale:
         type: string
         description: Unique URL to access the new object created.
-        
-  ApplicationOutputDTO:
-    type: object
-    required: [application_id, name, description]
-    properties:
-      application_id:
-        type: integer
-        format: int64
-        description: Unique identifier representing a specific application.
-      name:
-        type: string
-        description: Display name of the application.
-      description:
-        type: string
-        description: Description of the application.
-        
-  ApplicationInputDTO:
-    type: object
-    required: [name,description]
-    properties:
-      name:
-        type: string
-        description: Display name of the application.
-      description:
-        type: string
-        description: Description of the application.
-
-  LocationApplication:
-      type: string
-      required: [locationApplication]
-      properties:
-        locationApplication:
-          type: string
-          description: Unique URL to access the new object created.
           
   EventInputDTO:
     type: object
@@ -940,8 +804,6 @@ definitions:
         type: integer
         description: Number of points to get or lose.
       
-
-        
   RuleInputDTO:
     type: object
     required: [ruleName, description, badge_id, pointScale_id, points, eventType]
@@ -973,11 +835,11 @@ definitions:
           type: string
           description: Unique URL to access the new object created.
           
-  RegistrationOutputDTO:
+  ApplicationOutputDTO:
     type: object
-    required: [registration_id, name, description]
+    required: [application_id, name, description]
     properties:
-      registration_id:
+      application_id:
         type: integer
         format: int64
         description: Unique identifier representing a specific registration.
@@ -988,7 +850,7 @@ definitions:
         type: string
         description: Description of the application.
         
-  RegistrationInputDTO:
+  ApplicationInputDTO:
     type: object
     required: [name, description, password]
     properties:
@@ -1002,11 +864,11 @@ definitions:
         type: string
         description: Password of the application.
         
-  LocationRegistration:
+  LocationApplication:
       type: string
-      required: [locationRegistration]
+      required: [locationApplication]
       properties:
-        locationRegistration:
+        locationApplication:
           type: string
           description: Unique URL to access the new object created.
           
@@ -1020,5 +882,4 @@ definitions:
       password:
         type: string
         description: Password of the application.
-          
         
