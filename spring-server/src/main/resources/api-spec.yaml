@@ -21,7 +21,7 @@ paths:
       tags:
         - Badges
       parameters:
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
           required: true
@@ -51,7 +51,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/BadgeInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -83,10 +83,11 @@ paths:
       parameters:
         - name: id
           in: path
+          type: integer
+          format: int64
           description: The id of the desired badge.
           required: true
-          type: string
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -112,16 +113,17 @@ paths:
       parameters:
         - name: id
           in: path
-          description: The id of the badge to modify.
+          type: integer
+          format: int64
+          description: The id of the desired badge.
           required: true
-          type: string
         - name: badge
           in: body
           description: Badge to be updated
           required: true
           schema:
               $ref: '#/definitions/BadgeInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -150,10 +152,11 @@ paths:
       parameters:
         - name: id
           in: path
+          type: integer
+          format: int64
           description: The id of the desired badge.
           required: true
-          type: string
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -179,7 +182,7 @@ paths:
       tags:
         - PointScales
       parameters:
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
           required: true
@@ -209,7 +212,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/PointScaleInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -243,7 +246,7 @@ paths:
           description: The id of the desired point scale.
           required: true
           type: string
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -278,7 +281,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/PointScaleInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -309,7 +312,7 @@ paths:
           description: The id of the desired point scale.
           required: true
           type: string
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -335,7 +338,7 @@ paths:
       tags:
         - Applications
       parameters:
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -390,7 +393,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/ApplicationInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -416,7 +419,7 @@ paths:
     delete:
       description: Delete the application which has the specified id.
       parameters:
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -513,7 +516,7 @@ paths:
       produces:
         - application/json
       parameters:
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -545,7 +548,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/RuleInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -581,7 +584,7 @@ paths:
           format: int64
           description: The id of the desired rule.
           required: true
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -617,7 +620,7 @@ paths:
           required: true
           schema:
               $ref: '#/definitions/RuleInputDTO'
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
@@ -650,7 +653,7 @@ paths:
           required: true
           type: integer
           format: int64
-        - name: Authorization
+        - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
