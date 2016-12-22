@@ -28,7 +28,6 @@ import java.security.Key;
 import java.util.Date;
 import java.util.Properties;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 
 /**
  *

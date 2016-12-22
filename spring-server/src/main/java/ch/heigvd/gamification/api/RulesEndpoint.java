@@ -39,204 +39,188 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * 
- * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ *
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini
+ * Fabien
  * @version 1.0
  * @since 2016-11-14
  */
 @RestController
 @RequestMapping("/rules")
-public class RulesEndpoint implements RulesApi{
-    
-    BadgeRepository badgeRepository;
-    PointScaleRepository pointScaleRepository;
-    RuleRepository ruleRepository;
-    ApplicationRepository applicationRepository;
-    private final HttpServletRequest request;
-    
-    
-    @Autowired
-    RulesEndpoint(RuleRepository ruleRepository, ApplicationRepository applicationRepository, 
-            BadgeRepository badgesRepository, PointScaleRepository pointScaleRepository,
-            HttpServletRequest request) {
-            this.ruleRepository = ruleRepository;
-            this.applicationRepository = applicationRepository;
-            this.badgeRepository = badgesRepository;
-            this.pointScaleRepository = pointScaleRepository;
-            this.request = request;
-}
-    
+public class RulesEndpoint implements RulesApi {
 
-    @Override
-    public ResponseEntity<List<RuleOutputDTO>> rulesGet() {
-        
-        List<Rule> rules = this.ruleRepository.findAll();
+   BadgeRepository badgeRepository;
+   PointScaleRepository pointScaleRepository;
+   RuleRepository ruleRepository;
+   ApplicationRepository applicationRepository;
+   private final HttpServletRequest request;
 
-        List<RuleOutputDTO> rulesDTO = new ArrayList<>();
-        for (int i=0; i<rules.size(); i++){
-            rulesDTO.add(i, toDTO(rules.get(i)));
-        }
-        return new ResponseEntity<>(rulesDTO, HttpStatus.OK);
-    }
-    
-    
-    
-    
+   @Autowired
+   RulesEndpoint(RuleRepository ruleRepository, ApplicationRepository applicationRepository,
+           BadgeRepository badgesRepository, PointScaleRepository pointScaleRepository,
+           HttpServletRequest request) {
+      this.ruleRepository = ruleRepository;
+      this.applicationRepository = applicationRepository;
+      this.badgeRepository = badgesRepository;
+      this.pointScaleRepository = pointScaleRepository;
+      this.request = request;
+   }
 
-    @Override
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> rulesIdDelete(@PathParam("id") Long id) {
-        Rule currentRule = ruleRepository.findOne(id);
-         if(currentRule == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        
-        ruleRepository.delete(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
-    
-    
-    
+   @Override
+   public ResponseEntity<List<RuleOutputDTO>> rulesGet(@RequestHeader("Authorization") String authenticationToken) {
 
-    @Override
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RuleOutputDTO> rulesIdGet(Long id) {
-        Rule rule = ruleRepository.findOne(id);
-        if(rule == null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        RuleOutputDTO ruleDTO = toDTO(rule);
-        
-        return new ResponseEntity<>(ruleDTO, HttpStatus.OK);
-    }
-    
-    
-    
+      List<Rule> rules = this.ruleRepository.findAll();
 
-    @Override
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> rulesIdPut(@PathParam("id") Long id, @RequestBody RuleInputDTO rule) {
-        
+      List<RuleOutputDTO> rulesDTO = new ArrayList<>();
+      for (int i = 0; i < rules.size(); i++) {
+         rulesDTO.add(i, toDTO(rules.get(i)));
+      }
+      return new ResponseEntity<>(rulesDTO, HttpStatus.OK);
+   }
 
-          // Test if the request isn't valid (http error 422 unprocessable entity)
-        boolean httpErrorUnprocessableEntity = false;
+   @Override
+   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+   public ResponseEntity<Void> rulesIdDelete(@PathParam("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
+      Rule currentRule = ruleRepository.findOne(id);
+      if (currentRule == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
 
-        //Badge badgePosted = badgeRepository.findByName(badge.getName());
-        // Check if name, description or imageURL is null
-        if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null ||
-            rule.getPointScaleId() == null || rule.getBadgeId() == null) {
-            httpErrorUnprocessableEntity = true;
-        } // Check if name, description or eventType is empty
-        else if (rule.getRuleName().trim().isEmpty() || rule.getDescription().trim().isEmpty() || rule.getEventType().trim().isEmpty()) {
-            httpErrorUnprocessableEntity = true;
-        } // Check if name length > 80 OR if description or imageURL length > 255
-        else if (rule.getRuleName().length() > 80 || rule.getDescription().length() > 255 || rule.getEventType().length() > 255) {
-            httpErrorUnprocessableEntity = true;
-        }
+      ruleRepository.delete(id);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+   }
 
-        if (httpErrorUnprocessableEntity) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
+   @Override
+   @RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<RuleOutputDTO> rulesIdGet(@PathParam("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
+      Rule rule = ruleRepository.findOne(id);
+      if (rule == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      RuleOutputDTO ruleDTO = toDTO(rule);
 
-        Rule currentRule = ruleRepository.findOne(id);
-        if (currentRule == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        currentRule.setRuleName(rule.getRuleName());
-        currentRule.setRuleDescription(rule.getDescription());
-        currentRule.setPoints(rule.getPoints());        
-        ruleRepository.save(currentRule);
+      return new ResponseEntity<>(ruleDTO, HttpStatus.OK);
+   }
 
-        ruleRepository.save(currentRule);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+   @Override
+   @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
+   public ResponseEntity<Void> rulesIdPut(@PathParam("id") Long id, @RequestBody RuleInputDTO rule, @RequestHeader("Authorization") String authenticationToken) {
 
-    
-    
-    
-    
-    @Override
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LocationRule> rulesPost(@RequestBody RuleInputDTO rule, @RequestHeader Long applicationId) {
-        
-        // Let's find the target application the badge and the pointscale
-        Application targetApplication = applicationRepository.findOne(applicationId);
-        Badge targetBadge = badgeRepository.findOne(rule.getBadgeId());
-        PointScale targetPointScale = pointScaleRepository.findOne(rule.getPointScaleId());
-        
-        
-        // Test if the request isn't valid (http error 422 unprocessable entity)
-         boolean httpErrorUnprocessableEntity = false;
-         
-        // Check if the rule is already in a given application
-        if (ruleRepository.findByRuleNameAndApplicationId(rule.getRuleName(), applicationId) != null) {
-            httpErrorUnprocessableEntity = true;
-        }
-         
-        if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null) {
-            httpErrorUnprocessableEntity = true;
-        }
-        
-        // Check if name, description or eventType is empty
-        else if (rule.getEventType().trim().isEmpty() || rule.getRuleName().trim().isEmpty() || rule.getDescription().trim().isEmpty()) {
-            httpErrorUnprocessableEntity = true;
-        }
+      // Test if the request isn't valid (http error 422 unprocessable entity)
+      boolean httpErrorUnprocessableEntity = false;
 
-        // Check if name length > 80 OR if description or imageURL length > 255
-        else if (rule.getRuleName().length() > 80 || rule.getDescription().length() > 255 || rule.getEventType().length() > 255) {
-            httpErrorUnprocessableEntity = true;
-        }
+      //Badge badgePosted = badgeRepository.findByName(badge.getName());
+      // Check if name, description or imageURL is null
+      if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null
+              || rule.getPointScaleId() == null || rule.getBadgeId() == null) {
+         httpErrorUnprocessableEntity = true;
+      } // Check if name, description or eventType is empty
+      else if (rule.getRuleName().trim().isEmpty() || rule.getDescription().trim().isEmpty() || rule.getEventType().trim().isEmpty()) {
+         httpErrorUnprocessableEntity = true;
+      } // Check if name length > 80 OR if description or imageURL length > 255
+      else if (rule.getRuleName().length() > 80 || rule.getDescription().length() > 255 || rule.getEventType().length() > 255) {
+         httpErrorUnprocessableEntity = true;
+      }
 
-        if (httpErrorUnprocessableEntity) {
-            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-        }
-        
-         if (targetApplication != null) {
-            if (targetBadge != null || targetPointScale != null) {
-
-                Rule newRule = new Rule(rule.getRuleName(), targetApplication, targetBadge, targetPointScale);
-                newRule.setRuleDescription(rule.getDescription());
-                newRule.setPoints(rule.getPoints());
-                newRule.setEventType(rule.getEventType());
-                ruleRepository.save(newRule);
-                
-                Long newId = newRule.getId();
-
-                StringBuffer location = request.getRequestURL();
-                if (!location.toString().endsWith("/")) {
-                    location.append("/");
-                }
-                location.append(newId.toString());
-                HttpHeaders headers = new HttpHeaders();
-                headers.add("Location", location.toString());
-                return new ResponseEntity<>(headers, HttpStatus.CREATED);
-            }
-
-        }
+      if (httpErrorUnprocessableEntity) {
          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+      }
 
-    }
-    
-    
-    public RuleOutputDTO toDTO(Rule rule){
-        RuleOutputDTO dto = new RuleOutputDTO();
-        dto.setRuleId(String.valueOf(rule.getId()));
-        dto.setName(rule.getRuleName());
-        dto.setDescription(rule.getRuleDescription());
-        dto.setPoints(rule.getPoints());
-        return dto;
-    }
-    
-    public Rule fromDTO(RuleInputDTO ruleInputDTO){
-        Rule newRule = new Rule();
-        newRule.setRuleName(ruleInputDTO.getRuleName());
-        newRule.setRuleDescription(ruleInputDTO.getDescription());
-        newRule.setPoints(ruleInputDTO.getPoints());
-        
-        // /!\ NOT SURE IF IT'S NEEDED !!!
-        newRule.setBadge(badgeRepository.findOne(ruleInputDTO.getBadgeId()));
-        newRule.setPointScale(pointScaleRepository.findOne(ruleInputDTO.getPointScaleId()));
-        return newRule;
-    }
+      Rule currentRule = ruleRepository.findOne(id);
+      if (currentRule == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      currentRule.setRuleName(rule.getRuleName());
+      currentRule.setRuleDescription(rule.getDescription());
+      currentRule.setPoints(rule.getPoints());
+      ruleRepository.save(currentRule);
+
+      ruleRepository.save(currentRule);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+   }
+
+   @Override
+   @RequestMapping(method = RequestMethod.POST)
+   public ResponseEntity<LocationRule> rulesPost(@RequestBody RuleInputDTO rule, @RequestHeader("Authorization") String authenticationToken) {
+
+      // Let's find the target application the badge and the pointscale
+      //Application targetApplication = applicationRepository.findOne(applicationId);
+      Badge targetBadge = badgeRepository.findOne(rule.getBadgeId());
+      PointScale targetPointScale = pointScaleRepository.findOne(rule.getPointScaleId());
+
+      // Test if the request isn't valid (http error 422 unprocessable entity)
+      boolean httpErrorUnprocessableEntity = false;
+
+      // Check if the rule is already in a given application
+      //if (ruleRepository.findByRuleNameAndApplicationId(rule.getRuleName(), applicationId) != null) {
+      //   httpErrorUnprocessableEntity = true;
+      //}
+
+      if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      // Check if name, description or eventType is empty
+      else if (rule.getEventType().trim().isEmpty() || rule.getRuleName().trim().isEmpty() || rule.getDescription().trim().isEmpty()) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      // Check if name length > 80 OR if description or imageURL length > 255
+      else if (rule.getRuleName().length() > 80 || rule.getDescription().length() > 255 || rule.getEventType().length() > 255) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      if (httpErrorUnprocessableEntity) {
+         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+      }
+
+      /*
+      if (targetApplication != null) {
+         if (targetBadge != null || targetPointScale != null) {
+
+            Rule newRule = new Rule(rule.getRuleName(), targetApplication, targetBadge, targetPointScale);
+            newRule.setRuleDescription(rule.getDescription());
+            newRule.setPoints(rule.getPoints());
+            newRule.setEventType(rule.getEventType());
+            ruleRepository.save(newRule);
+
+            Long newId = newRule.getId();
+
+            StringBuffer location = request.getRequestURL();
+            if (!location.toString().endsWith("/")) {
+               location.append("/");
+            }
+            location.append(newId.toString());
+            HttpHeaders headers = new HttpHeaders();
+            headers.add("Location", location.toString());
+            return new ResponseEntity<>(headers, HttpStatus.CREATED);
+         }
+
+      }
+      */
+      return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+
+   }
+
+   public RuleOutputDTO toDTO(Rule rule) {
+      RuleOutputDTO dto = new RuleOutputDTO();
+      dto.setRuleId(String.valueOf(rule.getId()));
+      dto.setName(rule.getRuleName());
+      dto.setDescription(rule.getRuleDescription());
+      dto.setPoints(rule.getPoints());
+      return dto;
+   }
+
+   public Rule fromDTO(RuleInputDTO ruleInputDTO) {
+      Rule newRule = new Rule();
+      newRule.setRuleName(ruleInputDTO.getRuleName());
+      newRule.setRuleDescription(ruleInputDTO.getDescription());
+      newRule.setPoints(ruleInputDTO.getPoints());
+
+      // /!\ NOT SURE IF IT'S NEEDED !!!
+      newRule.setBadge(badgeRepository.findOne(ruleInputDTO.getBadgeId()));
+      newRule.setPointScale(pointScaleRepository.findOne(ruleInputDTO.getPointScaleId()));
+      return newRule;
+   }
 
 }

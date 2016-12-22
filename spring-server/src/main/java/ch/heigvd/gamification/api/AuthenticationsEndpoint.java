@@ -10,13 +10,11 @@
  -----------------------------------------------------------------------------------
  */
 
-
-
 package ch.heigvd.gamification.api;
 
 import ch.heigvd.gamification.api.dto.AuthenticationInputDTO;
-import ch.heigvd.gamification.model.Registration;
-import ch.heigvd.gamification.services.RegistrationRepository;
+import ch.heigvd.gamification.model.Application;
+import ch.heigvd.gamification.services.ApplicationRepository;
 import ch.heigvd.gamification.services.TokenKeyTools;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -36,11 +34,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/authentications")
 public class AuthenticationsEndpoint implements AuthenticationsApi {
 
-   private final RegistrationRepository registrationRepository;
+   private final ApplicationRepository applicationRepository;
 
    @Autowired
-   AuthenticationsEndpoint(RegistrationRepository registrationRepository) {
-      this.registrationRepository = registrationRepository;
+   AuthenticationsEndpoint(ApplicationRepository applicationRepository) {
+      this.applicationRepository = applicationRepository;
    }
 
    @Override
@@ -53,19 +51,18 @@ public class AuthenticationsEndpoint implements AuthenticationsApi {
       }
 
       // Get saved credentials
-      Registration registration = registrationRepository.findByName(authentication.getName());
+      Application application = applicationRepository.findByName(authentication.getName());
 
       // Check if application name provided doesn't exist or if credentials provided aren't correct
-      if (registration == null || !authentication.getPassword().equals(registration.getPassword())) {
+      if (application == null || !authentication.getPassword().equals(application.getPassword())) {
          return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
 
       // Application id to add in the JWT
-      Long applicationId = registration.getId();
+      Long applicationId = application.getId();
 
       // Create the Json Web token with a ttl equals to 1 hour
       String tokenGenerated = TokenKeyTools.createJWT(applicationId, 3600000);
-      System.out.println(tokenGenerated);
 
       // Return the Json Web Token into the HTTP body
       return new ResponseEntity<>(tokenGenerated, HttpStatus.OK);

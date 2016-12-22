@@ -57,7 +57,7 @@ public class PointScalesEndpoint implements PointScalesApi{
     
 
     @Override
-    public ResponseEntity<List<PointScaleOutputDTO>> pointScalesGet() {
+    public ResponseEntity<List<PointScaleOutputDTO>> pointScalesGet(@RequestHeader("Authorization") String authenticationToken) {
        List<PointScale> pointScales = this.pointScaleRepository.findAll();
 
         List<PointScaleOutputDTO> pointScalesDTO = new ArrayList<>();
@@ -70,7 +70,7 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> pointScalesIdDelete(@PathVariable("id") String id) {
+    public ResponseEntity<Void> pointScalesIdDelete(@PathVariable("id") String id, @RequestHeader("Authorization") String authenticationToken) {
         
         PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
         
@@ -85,7 +85,7 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public ResponseEntity<PointScaleOutputDTO> pointScalesIdGet(@PathVariable("id") String id) {
+    public ResponseEntity<PointScaleOutputDTO> pointScalesIdGet(@PathVariable("id") String id, @RequestHeader("Authorization") String authenticationToken) {
         
         PointScale pointScale = pointScaleRepository.findOne(Long.valueOf(id));
         if(pointScale== null){
@@ -98,7 +98,7 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-    public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") String id , @RequestBody PointScaleInputDTO pointScale) {
+    public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") String id , @RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
         
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
@@ -139,18 +139,18 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader Long applicationId) {
+    public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
         
 
-      Application application = applicationRepository.findOne(applicationId);
+      //Application application = applicationRepository.findOne(applicationId);
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
       
       // Check if the pointScale is already in a given application
-      if(pointScaleRepository.findByNameAndApplicationId(pointScale.getName(), applicationId) != null){
-          httpErrorUnprocessableEntity = true;
-      }
+      //if(pointScaleRepository.findByNameAndApplicationId(pointScale.getName(), applicationId) != null){
+          //httpErrorUnprocessableEntity = true;
+      //}
 
       // TODO: Check if the pointScale name is already in this application    
       // Check if name, description or coefficient is null
@@ -173,7 +173,7 @@ public class PointScalesEndpoint implements PointScalesApi{
       }
 
       PointScale newPointScale = fromDTO(pointScale);
-      newPointScale.setApplication(application);
+      //newPointScale.setApplication(application);
       newPointScale = pointScaleRepository.save(newPointScale);
       Long newId = newPointScale.getId();
       

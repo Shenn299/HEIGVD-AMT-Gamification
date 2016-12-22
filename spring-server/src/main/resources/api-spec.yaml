@@ -368,9 +368,7 @@ paths:
               $ref: '#/definitions/ApplicationInputDTO'
       responses:
         201:
-          description: Created, returns the URL to access the new application.
-          schema:
-            $ref: '#/definitions/LocationApplication'
+          description: Created, if it saved successfully.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
