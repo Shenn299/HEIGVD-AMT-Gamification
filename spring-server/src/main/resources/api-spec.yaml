@@ -245,7 +245,8 @@ paths:
           in: path
           description: The id of the desired point scale.
           required: true
-          type: string
+          type: integer
+          format: int64
         - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
@@ -274,7 +275,8 @@ paths:
           in: path
           description: The id of the point scale to modify.
           required: true
-          type: string
+          type: integer
+          format: int64
         - name: pointScale
           in: body
           description: PointScale to be updated
@@ -311,7 +313,8 @@ paths:
           in: path
           description: The id of the desired point scale.
           required: true
-          type: string
+          type: integer
+          format: int64
         - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
@@ -710,7 +713,7 @@ definitions:
           
   PointScaleOutputDTO:
     type: object
-    required: [name,description, coefficient]
+    required: [pointScale_id, name, description, coefficient]
     properties:
       pointScale_id:
         type: string

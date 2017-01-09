@@ -72,6 +72,14 @@ public class Application implements Serializable {
    public List<Badge> getBadges() {
       return listBadges;
    }
+   
+   public List<PointScale>getPointScales(){
+       return listPointScales;
+   }
+   
+   public List<Rule> getRules(){
+       return listRules;
+   }
 
    public Badge getBadge(Long id) {
       for (Badge b : listBadges) {
@@ -80,6 +88,24 @@ public class Application implements Serializable {
          }
       }
       return null;
+   }
+   
+   public PointScale getPointScale(Long id){
+       for (PointScale p : listPointScales){
+           if(Objects.equals(p.getId(), id)){
+               return p;
+           }
+       }
+       return null;
+   }
+   
+   public Rule getRule (Long id){
+       for (Rule r : listRules){
+           if(Objects.equals(r.getId(), id)){
+               return r;
+           }
+       }
+       return null;
    }
 
    public Badge getBadge(String name) {
@@ -90,6 +116,25 @@ public class Application implements Serializable {
       }
       return null;
    }
+   
+   public PointScale getPointScale(String name){
+       for (PointScale p : listPointScales){
+           if(Objects.equals(p.getName(), name)){
+               return p;
+           }
+       }
+       return null;
+   }
+   
+   public Rule getRule (String name){
+       for (Rule r : listRules){
+           if(Objects.equals(r.getRuleName(), name)){
+               return r;
+           }
+       }
+       return null;
+   }
+   
 
    public void putBadge(Badge badge) {
       for (int i = 0; i < listBadges.size(); ++i) {
@@ -98,6 +143,34 @@ public class Application implements Serializable {
             b.setName(badge.getName());
             b.setDescription(badge.getDescription());
             b.setImage(badge.getImage());
+            return;
+         }
+      }
+   }
+   
+   
+   public void putPointScale(PointScale pointScale) {
+      for (int i = 0; i < listBadges.size(); ++i) {
+         if (Objects.equals(listPointScales.get(i).getId(), pointScale.getId())) {
+            PointScale p = listPointScales.get(i);
+            p.setName(pointScale.getName());
+            p.setDescription(pointScale.getDescription());
+            p.setCoefficient(pointScale.getCoefficient());
+            return;
+         }
+      }
+   }
+   
+   public void putRule(Rule rule) {
+      for (int i = 0; i < listRules.size(); ++i) {
+         if (Objects.equals(listRules.get(i).getId(), rule.getId())) {
+            Rule r = listRules.get(i);
+            r.setRuleName(rule.getRuleName());
+            r.setRuleDescription(rule.getRuleDescription());
+            r.setBadge(rule.getBadge());
+            r.setEventType(rule.getEvenType());
+            r.setPointScale(rule.getPointScale());
+            r.setPoints(rule.getPoints());
             return;
          }
       }
@@ -142,6 +215,10 @@ public class Application implements Serializable {
    public void addBadges(Badge badge) {
       this.listBadges.add(badge);
    }
+   
+   public void addPointScales(PointScale pointScale){
+       this.listPointScales.add(pointScale);
+   }
 
    public void addUsers(User user) {
       this.listUsers.add(user);
@@ -159,6 +236,24 @@ public class Application implements Serializable {
       for (int i = 0; i < listBadges.size(); ++i) {
          if (Objects.equals(listBadges.get(i).getId(), id)) {
             listBadges.remove(i);
+            return;
+         }
+      }
+   }
+   
+   public void deletePointScale(Long id) {
+      for (int i = 0; i < listPointScales.size(); ++i) {
+         if (Objects.equals(listPointScales.get(i).getId(), id)) {
+            listPointScales.remove(i);
+            return;
+         }
+      }
+   }
+   
+   public void deleteRule(Long id) {
+      for (int i = 0; i < listRules.size(); ++i) {
+         if (Objects.equals(listRules.get(i).getId(), id)) {
+            listRules.remove(i);
             return;
          }
       }

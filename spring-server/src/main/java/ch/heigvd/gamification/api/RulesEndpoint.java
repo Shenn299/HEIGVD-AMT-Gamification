@@ -23,6 +23,7 @@ import ch.heigvd.gamification.services.ApplicationRepository;
 import ch.heigvd.gamification.services.BadgeRepository;
 import ch.heigvd.gamification.services.PointScaleRepository;
 import ch.heigvd.gamification.services.RuleRepository;
+import ch.heigvd.gamification.services.TokenKeyTools;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -69,8 +70,26 @@ public class RulesEndpoint implements RulesApi {
    @Override
    public ResponseEntity<List<RuleOutputDTO>> rulesGet(@RequestHeader("Authorization") String authenticationToken) {
 
-      List<Rule> rules = this.ruleRepository.findAll();
+       // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
 
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      
+      // Get the application badges
+      List<Rule> rules = application.getRules();
+
+      // Return the BadgeOutputDTO
       List<RuleOutputDTO> rulesDTO = new ArrayList<>();
       for (int i = 0; i < rules.size(); i++) {
          rulesDTO.add(i, toDTO(rules.get(i)));
@@ -80,60 +99,128 @@ public class RulesEndpoint implements RulesApi {
 
    @Override
    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-   public ResponseEntity<Void> rulesIdDelete(@PathParam("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
-      Rule currentRule = ruleRepository.findOne(id);
-      if (currentRule == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
+    public ResponseEntity<Void> rulesIdDelete(@PathParam("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
 
-      ruleRepository.delete(id);
-      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-   }
+        // Check if the JWT isn't valid
+        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Get the application id from the JWT
+        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+        // Get the existing application
+        Application application = applicationRepository.findOne(applicationId);
+
+        // If application was deleted but the authentication token wasn't removed
+        if (application == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
+        // Remove the rule whose id is provided
+        Rule currentRule = application.getRule(id);
+        if (currentRule == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+        application.deleteRule(id);
+        ruleRepository.delete(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 
    @Override
    @RequestMapping(method = RequestMethod.GET, value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<RuleOutputDTO> rulesIdGet(@PathParam("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
-      Rule rule = ruleRepository.findOne(id);
+      
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      
+      // Check if the desired badge exists
+      Rule rule = application.getRule(id);
       if (rule == null) {
          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
-      RuleOutputDTO ruleDTO = toDTO(rule);
 
+      // Return the badge DTO
+      RuleOutputDTO ruleDTO = toDTO(rule);
       return new ResponseEntity<>(ruleDTO, HttpStatus.OK);
+
    }
 
    @Override
    @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes = MediaType.APPLICATION_JSON_VALUE)
    public ResponseEntity<Void> rulesIdPut(@PathParam("id") Long id, @RequestBody RuleInputDTO rule, @RequestHeader("Authorization") String authenticationToken) {
 
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+      
+      final String name = rule.getRuleName();
+      final String description = rule.getDescription();
+      final String eventType = rule.getEventType();
+
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
-
-      //Badge badgePosted = badgeRepository.findByName(badge.getName());
-      // Check if name, description or imageURL is null
-      if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null
+      
+      // Check if name, description or event type is null
+      if (name == null || description == null || eventType == null
               || rule.getPointScaleId() == null || rule.getBadgeId() == null) {
          httpErrorUnprocessableEntity = true;
       } // Check if name, description or eventType is empty
-      else if (rule.getRuleName().trim().isEmpty() || rule.getDescription().trim().isEmpty() || rule.getEventType().trim().isEmpty()) {
+      else if (name.trim().isEmpty() || description.trim().isEmpty() || eventType.trim().isEmpty()) {
          httpErrorUnprocessableEntity = true;
       } // Check if name length > 80 OR if description or imageURL length > 255
-      else if (rule.getRuleName().length() > 80 || rule.getDescription().length() > 255 || rule.getEventType().length() > 255) {
+      else if (name.length() > 80 || description.length() > 255 || eventType.length() > 255) {
          httpErrorUnprocessableEntity = true;
       }
+      
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
 
-      if (httpErrorUnprocessableEntity) {
-         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
-
-      Rule currentRule = ruleRepository.findOne(id);
+      
+      // Get the desired rule
+      Rule currentRule = application.getRule(id);
       if (currentRule == null) {
          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
+
+      // Check if the application name has changed
+      if (!currentRule.getRuleName().equals(name)) {
+         // Check if the new application name provided already exist
+         Rule ruleSaved = application.getRule(name);
+         if (ruleSaved != null) {
+            httpErrorUnprocessableEntity = true;
+         }
+      }
+      
+      if (httpErrorUnprocessableEntity) {
+         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+      }
+      
       currentRule.setRuleName(rule.getRuleName());
       currentRule.setRuleDescription(rule.getDescription());
       currentRule.setPoints(rule.getPoints());
-      ruleRepository.save(currentRule);
+      application.putRule(currentRule);
 
       ruleRepository.save(currentRule);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -141,44 +228,59 @@ public class RulesEndpoint implements RulesApi {
 
    @Override
    @RequestMapping(method = RequestMethod.POST)
-   public ResponseEntity<LocationRule> rulesPost(@RequestBody RuleInputDTO rule, @RequestHeader("Authorization") String authenticationToken) {
+    public ResponseEntity<LocationRule> rulesPost(@RequestBody RuleInputDTO rule, @RequestHeader("Authorization") String authenticationToken) {
 
-      // Let's find the target application the badge and the pointscale
-      //Application targetApplication = applicationRepository.findOne(applicationId);
-      Badge targetBadge = badgeRepository.findOne(rule.getBadgeId());
-      PointScale targetPointScale = pointScaleRepository.findOne(rule.getPointScaleId());
+        // Let's find the target application the badge and the pointscale
+        Badge targetBadge = badgeRepository.findOne(rule.getBadgeId());
+        PointScale targetPointScale = pointScaleRepository.findOne(rule.getPointScaleId());
 
-      // Test if the request isn't valid (http error 422 unprocessable entity)
-      boolean httpErrorUnprocessableEntity = false;
+        // Check if the JWT isn't valid
+        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
 
-      // Check if the rule is already in a given application
-      //if (ruleRepository.findByRuleNameAndApplicationId(rule.getRuleName(), applicationId) != null) {
-      //   httpErrorUnprocessableEntity = true;
-      //}
+        final String name = rule.getRuleName();
+        final String description = rule.getDescription();
+        final String eventType = rule.getEventType();
 
-      if (rule.getRuleName() == null || rule.getDescription() == null || rule.getEventType() == null) {
-         httpErrorUnprocessableEntity = true;
-      }
+        // Test if the request isn't valid (http error 422 unprocessable entity)
+        boolean httpErrorUnprocessableEntity = false;
 
-      // Check if name, description or eventType is empty
-      else if (rule.getEventType().trim().isEmpty() || rule.getRuleName().trim().isEmpty() || rule.getDescription().trim().isEmpty()) {
-         httpErrorUnprocessableEntity = true;
-      }
+        // Check if name, description or event type is null
+        if (name == null || description == null || eventType == null
+                || rule.getPointScaleId() == null || rule.getBadgeId() == null) {
+            httpErrorUnprocessableEntity = true;
+        } // Check if name, description or eventType is empty
+        else if (name.trim().isEmpty() || description.trim().isEmpty() || eventType.trim().isEmpty()) {
+            httpErrorUnprocessableEntity = true;
+        } // Check if name length > 80 OR if description or imageURL length > 255
+        else if (name.length() > 80 || description.length() > 255 || eventType.length() > 255) {
+            httpErrorUnprocessableEntity = true;
+        }
 
-      // Check if name length > 80 OR if description or imageURL length > 255
-      else if (rule.getRuleName().length() > 80 || rule.getDescription().length() > 255 || rule.getEventType().length() > 255) {
-         httpErrorUnprocessableEntity = true;
-      }
+        // Get the application id from the JWT
+        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
 
-      if (httpErrorUnprocessableEntity) {
-         return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
-      }
+        // Get the existing application
+        Application application = applicationRepository.findOne(applicationId);
 
-      /*
-      if (targetApplication != null) {
-         if (targetBadge != null || targetPointScale != null) {
+        // If application was deleted but the authentication token wasn't removed
+        if (application == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
 
-            Rule newRule = new Rule(rule.getRuleName(), targetApplication, targetBadge, targetPointScale);
+        // Check if application name already exists
+        Rule currentRule = application.getRule(name);
+        if (currentRule != null) {
+            httpErrorUnprocessableEntity = true;
+        }
+        if (httpErrorUnprocessableEntity) {
+            return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        }
+
+        if (targetBadge != null || targetPointScale != null) {
+
+            Rule newRule = new Rule(rule.getRuleName(), application, targetBadge, targetPointScale);
             newRule.setRuleDescription(rule.getDescription());
             newRule.setPoints(rule.getPoints());
             newRule.setEventType(rule.getEventType());
@@ -188,19 +290,17 @@ public class RulesEndpoint implements RulesApi {
 
             StringBuffer location = request.getRequestURL();
             if (!location.toString().endsWith("/")) {
-               location.append("/");
+                location.append("/");
             }
             location.append(newId.toString());
             HttpHeaders headers = new HttpHeaders();
             headers.add("Location", location.toString());
             return new ResponseEntity<>(headers, HttpStatus.CREATED);
-         }
+        }
 
-      }
-      */
-      return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
+        return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
 
-   }
+    }
 
    public RuleOutputDTO toDTO(Rule rule) {
       RuleOutputDTO dto = new RuleOutputDTO();

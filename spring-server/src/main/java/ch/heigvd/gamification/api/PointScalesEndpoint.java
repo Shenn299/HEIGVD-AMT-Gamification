@@ -19,6 +19,7 @@ import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.PointScale;
 import ch.heigvd.gamification.services.ApplicationRepository;
 import ch.heigvd.gamification.services.PointScaleRepository;
+import ch.heigvd.gamification.services.TokenKeyTools;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
@@ -58,7 +59,26 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     public ResponseEntity<List<PointScaleOutputDTO>> pointScalesGet(@RequestHeader("Authorization") String authenticationToken) {
-       List<PointScale> pointScales = this.pointScaleRepository.findAll();
+       
+       // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+
+      // Get the application badges
+      List<PointScale> pointScales = application.getPointScales();
+       
 
         List<PointScaleOutputDTO> pointScalesDTO = new ArrayList<>();
         for (int i=0; i<pointScales.size(); i++){
@@ -70,69 +90,134 @@ public class PointScalesEndpoint implements PointScalesApi{
 
     @Override
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> pointScalesIdDelete(@PathVariable("id") String id, @RequestHeader("Authorization") String authenticationToken) {
-        
-        PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
-        
-        if(currentPointScale == null){
+    public ResponseEntity<Void> pointScalesIdDelete(@PathVariable("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
+
+        //PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
+        // Check if the JWT isn't valid
+        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }
+
+        // Get the application id from the JWT
+        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+        // Get the existing application
+        Application application = applicationRepository.findOne(applicationId);
+
+        // If application was deleted but the authentication token wasn't removed
+        if (application == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
-        
-        pointScaleRepository.delete(Long.valueOf(id));
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        
+
+        // Remove the badge whose id is provided
+        PointScale currentPointScale = application.getPointScale(id);
+
+        if (currentPointScale == null) {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+
+        pointScaleRepository.delete(id);
+        application.deletePointScale(applicationId);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+    }
 
     @Override
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public ResponseEntity<PointScaleOutputDTO> pointScalesIdGet(@PathVariable("id") String id, @RequestHeader("Authorization") String authenticationToken) {
+    public ResponseEntity<PointScaleOutputDTO> pointScalesIdGet(@PathVariable("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
         
-        PointScale pointScale = pointScaleRepository.findOne(Long.valueOf(id));
+        // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      
+      // Check if the desired badge exists
+      PointScale pointScale = application.getPointScale(id);
+        
         if(pointScale== null){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
+        // Return the pointScale DTO
         PointScaleOutputDTO pointScaleDTO = toDTO(pointScale);
-        
         return new ResponseEntity<>(pointScaleDTO, HttpStatus.OK);
         }
 
     @Override
     @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-    public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") String id , @RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
+    public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") Long id , @RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
         
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+      
+      final String name = pointScale.getName();
+      final String description = pointScale.getDescription();
+      final int coefficient = pointScale.getCoefficient();
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
 
       // TODO: Check if the pointScale name is already in this application   
       // Check if name, description or coefficient is null
-      if (pointScale.getName() == null || pointScale.getDescription() == null || pointScale.getCoefficient() == null) {
+      if (name == null || description == null || pointScale.getCoefficient() == null) {
          httpErrorUnprocessableEntity = true;
       }
 
       // Check if name or description is empty
-      else if (pointScale.getName().trim().isEmpty() || pointScale.getDescription().trim().isEmpty()) {
+      else if (name.trim().isEmpty() || description.trim().isEmpty()) {
          httpErrorUnprocessableEntity = true;
       }
 
       // Check if name length > 80 OR if description length > 255 OR if coefficient > 1000 OR if coefficient < 1
-      else if (pointScale.getName().length() > 80 || pointScale.getDescription().length() > 255 || pointScale.getCoefficient() > 1000 || pointScale.getCoefficient() < 1) {
+      else if (name.length() > 80 || description.length() > 255 || coefficient > 1000 || coefficient < 1) {
          httpErrorUnprocessableEntity = true;
+      }
+      
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      
+      // Get the desired badge
+      PointScale currentPointScale = application.getPointScale(id);
+      
+       // Check if the application name has changed
+      if (!currentPointScale.getName().equals(name)) {
+         // Check if the new application name provided already exist
+         PointScale pointScaleSaved = application.getPointScale(name);
+         if (pointScaleSaved != null) {
+            httpErrorUnprocessableEntity = true;
+         }
       }
 
       if (httpErrorUnprocessableEntity) {
          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
       }
-
-      PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
-      if (currentPointScale == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
+      
       currentPointScale.setName(pointScale.getName());
       currentPointScale.setDescription(pointScale.getDescription());
       currentPointScale.setCoefficient(pointScale.getCoefficient());
 
-      pointScaleRepository.save(currentPointScale);
+      application.putPointScale(currentPointScale);
+      //pointScaleRepository.save(currentPointScale);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         
     }
@@ -141,30 +226,47 @@ public class PointScalesEndpoint implements PointScalesApi{
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
         
+        // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
 
-      //Application application = applicationRepository.findOne(applicationId);
+      final String name = pointScale.getName();
+      final String description = pointScale.getDescription();
+      final int coefficient = pointScale.getCoefficient();
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
-      
-      // Check if the pointScale is already in a given application
-      //if(pointScaleRepository.findByNameAndApplicationId(pointScale.getName(), applicationId) != null){
-          //httpErrorUnprocessableEntity = true;
-      //}
 
-      // TODO: Check if the pointScale name is already in this application    
       // Check if name, description or coefficient is null
-      if (pointScale.getName() == null || pointScale.getDescription() == null || pointScale.getCoefficient() == null) {
+      if (name == null || description == null || pointScale.getCoefficient() == null) {
          httpErrorUnprocessableEntity = true;
       }
 
-      // Check if name OR description is empty
-      else if (pointScale.getName().trim().isEmpty() || pointScale.getDescription().trim().isEmpty()) {
+      // Check if name, description or imageURL is empty
+      else if (name.trim().isEmpty() || description.trim().isEmpty() || Integer.toString(coefficient).trim().isEmpty()) {
          httpErrorUnprocessableEntity = true;
       }
 
-      // Check if name length > 80 OR if description length > 255 OR if coefficient > 1000 OR if coefficient < 1
-      else if (pointScale.getName().length() > 80 || pointScale.getDescription().length() > 255 || pointScale.getCoefficient() > 1000 || pointScale.getCoefficient() < 1) {
+      // Check if name length > 80 OR if description or coefficient length > 255
+      else if (name.length() > 80 || description.length() > 255 || Integer.toString(coefficient).length() > 255) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+
+      // Check if application name already exists
+      PointScale currentPointScale = application.getPointScale(name);
+      if (currentPointScale != null) {
          httpErrorUnprocessableEntity = true;
       }
 
@@ -173,10 +275,11 @@ public class PointScalesEndpoint implements PointScalesApi{
       }
 
       PointScale newPointScale = fromDTO(pointScale);
-      //newPointScale.setApplication(application);
+      newPointScale.setApplication(application);
       newPointScale = pointScaleRepository.save(newPointScale);
+      application.addPointScales(newPointScale);
       Long newId = newPointScale.getId();
-      
+
       StringBuffer location = request.getRequestURL();
       if (!location.toString().endsWith("/")) {
          location.append("/");
