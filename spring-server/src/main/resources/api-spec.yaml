@@ -677,7 +677,8 @@ definitions:
     required: [badge_id, name, description, imageURL]
     properties:
       badge_id:
-        type: string
+        type: integer
+        format: int64
         description: Unique identifier representing a specific badge.
       name:
         type: string

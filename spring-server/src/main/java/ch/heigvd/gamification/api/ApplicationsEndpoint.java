@@ -186,7 +186,7 @@ public class ApplicationsEndpoint implements ApplicationsApi {
 // Check if the payload json is processable
    public Boolean requestIsProcessable(String name, String description, String password) {
 
-      // Test if the request isn't valid (http error 422 unprocessable entity)
+      // Test if the request is processable
       boolean requestIsProcessable = true;
 
       // Check if name, description or password is null

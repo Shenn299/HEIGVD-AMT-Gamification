@@ -288,7 +288,7 @@ public class BadgesEndpoint implements BadgesApi {
 
    public BadgeOutputDTO toDTO(Badge badge) {
       BadgeOutputDTO dto = new BadgeOutputDTO();
-      dto.setBadgeId(String.valueOf(badge.getId()));
+      dto.setBadgeId(badge.getId());
       dto.setName(badge.getName());
       dto.setDescription(badge.getDescription());
       dto.setImageURL(badge.getImage());
