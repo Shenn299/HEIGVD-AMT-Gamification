@@ -73,7 +73,7 @@ public class BadgesEndpoint implements BadgesApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Get the application badges
@@ -104,7 +104,7 @@ public class BadgesEndpoint implements BadgesApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Remove the badge whose id is provided
@@ -134,7 +134,7 @@ public class BadgesEndpoint implements BadgesApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Check if the desired badge exists
@@ -187,7 +187,7 @@ public class BadgesEndpoint implements BadgesApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Get the desired badge
@@ -212,7 +212,8 @@ public class BadgesEndpoint implements BadgesApi {
       currentBadge.setName(name);
       currentBadge.setDescription(description);
       currentBadge.setImage(imageURL);
-
+      
+      badgeRepository.save(currentBadge);
       application.putBadge(currentBadge);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
    }
@@ -256,7 +257,7 @@ public class BadgesEndpoint implements BadgesApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Check if application name already exists
