@@ -365,6 +365,8 @@ paths:
           description: Bad request, if Authorization header isn't provided or if it's not properly named.
         401:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         500:
           description: Internal server error, if database isn't reachable.
           
@@ -416,6 +418,8 @@ paths:
           description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
         401:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -442,6 +446,8 @@ paths:
           description: Bad request, if Authorization header isn't provided or if it's not properly named.
         401:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         500:
           description: Internal server error, if database isn't reachable.
           

@@ -62,7 +62,7 @@ public class ApplicationsEndpoint implements ApplicationsApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Return the application
@@ -87,7 +87,7 @@ public class ApplicationsEndpoint implements ApplicationsApi {
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       // Remove the application
@@ -110,7 +110,7 @@ public class ApplicationsEndpoint implements ApplicationsApi {
       // If application was deleted but the authentication token wasn't removed
       Application currentApplication = applicationRepository.findOne(applicationId);
       if (currentApplication == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
       final String name = application.getName();
