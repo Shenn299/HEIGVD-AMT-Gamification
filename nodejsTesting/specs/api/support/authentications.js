@@ -4,17 +4,26 @@ var api = require("supertest-as-promised")(apiURL);
 var Chance = require("chance");
 var chance = new Chance();
 
-// POST a new badge
+// POST a new authentication
 function createAuthentication(authentication) {
     return api
         .post("/authentications")
         .set("Content-type", "application/json")
-        .send(badge)
+        .send(authentication)
         .then(function (response) {
             return response
         });
 }
 
+// Generation of a new authentication with random values
+function generateAuthentication() {
+    return {
+        name: chance.word({ length: 15 }),
+        password: chance.word({ length: 7 })
+    }
+}
+
 module.exports = {
-    createAuthentication: createAuthentication
+    createAuthentication: createAuthentication,
+    generateAuthentication: generateAuthentication
 };
