@@ -1,6 +1,6 @@
 var applications = require("../api/support/applications.js");
 var authentications = require("../api/support/authentications.js");
-var env = require('../../env.json');
+var env = require('../../env.local.json');
 var chai = require("chai");
 var jwt = require('jsonwebtoken');
 

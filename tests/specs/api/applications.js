@@ -1,4 +1,4 @@
-var env = require('../../env.json');
+var env = require('../../env.local.json');
 var applications = require("./support/applications.js");
 var authentications = require("./support/authentications.js");
 var emptyTables = require("../database/emptyTables.js");

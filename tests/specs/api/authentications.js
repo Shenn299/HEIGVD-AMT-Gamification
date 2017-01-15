@@ -1,4 +1,4 @@
-var apiURL = process.env.API_URL || require('../../env.json').default.API_URL;
+var apiURL = process.env.API_URL || require('../../env.local.json').default.API_URL;
 var chai = require("chai");
 var authentications = require("./support/authentications.js");
 

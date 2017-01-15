@@ -1,4 +1,4 @@
-var env = require('../../env.json');
+var env = require('../../env.local.json');
 var apiURL = process.env.API_URL || env.default.API_URL;
 var badges = require("./support/badges.js");
 var applications = require("./support/applications.js");
