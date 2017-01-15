@@ -208,6 +208,8 @@ paths:
           description: Bad request, if Authorization header isn't provided or if it's not properly named.
         401:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         500:
           description: Internal server error, if database isn't reachable.
           
@@ -217,7 +219,7 @@ paths:
         - application/json
       parameters:
         - in: body
-          name: badge
+          name: pointScale
           description: PointScale object that needs to be added to the database.
           required: true
           schema:
@@ -236,6 +238,8 @@ paths:
           description: Bad request, if Authorization header isn't provided, if it's not properly named or if json payload is malformed.
         401:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -273,6 +277,8 @@ paths:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
           description: Not found, if id provided doesn't exist for this application.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         500:
           description: Internal server error, if database isn't reachable.
           
@@ -307,6 +313,8 @@ paths:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
           description: Not found, if id provided doesn't exist for this application.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -339,6 +347,8 @@ paths:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
         404:
           description: Not found, if id provided doesn't exist for this application.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         500:
           description: Internal server error, if database isn't reachable.
           
@@ -733,7 +743,8 @@ definitions:
     required: [pointScale_id, name, description, coefficient]
     properties:
       pointScale_id:
-        type: string
+        type: integer
+        format: int64
         description: Unique identifier representing a specific point scale.
       name:
         type: string
@@ -747,7 +758,7 @@ definitions:
         
   PointScaleInputDTO:
     type: object
-    required: [name,description, coefficient]
+    required: [name, description, coefficient]
     properties:
       name:
         type: string
@@ -884,14 +895,6 @@ definitions:
       password:
         type: string
         description: Password of the application.
-        
-  LocationApplication:
-      type: string
-      required: [locationApplication]
-      properties:
-        locationApplication:
-          type: string
-          description: Unique URL to access the new object created.
           
   AuthenticationInputDTO:
     type: object
@@ -903,4 +906,3 @@ definitions:
       password:
         type: string
         description: Password of the application.
-        

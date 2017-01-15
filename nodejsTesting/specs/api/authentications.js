@@ -16,8 +16,11 @@ describe("The /authentications endpoint :", function () {
 
     // Failures
     // POST
-    it("should refuse an unauthenticated user to authenticate itself if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToAuthenticateItselfIfMandatoryFieldsAreNotProvided);
-    it("should refuse an unauthenticated user to authenticate itself if credentials are not correct", itShouldRefuseUnauthenticatedUserToAuthenticateItselfIfCredentialsAreNotCorrect);
+    describe("Test failures for HTTP POST method :", function () {
+        it("should refuse an unauthenticated user to authenticate itself if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToAuthenticateItselfIfMandatoryFieldsAreNotProvided);
+        it("should refuse an unauthenticated user to authenticate itself if credentials are not correct\n", itShouldRefuseUnauthenticatedUserToAuthenticateItselfIfCredentialsAreNotCorrect);
+    });
+
 });
 
 // Failure

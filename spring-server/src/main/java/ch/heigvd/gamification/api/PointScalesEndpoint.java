@@ -36,142 +36,150 @@ import org.springframework.web.bind.annotation.RestController;
 
 /**
  *
- * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini
+ * Fabien
  * @version 1.0
  * @since 2016-11-14
  */
-
 @RestController
 @RequestMapping("/pointScales")
-public class PointScalesEndpoint implements PointScalesApi{
-    private final HttpServletRequest request;
-    private final PointScaleRepository pointScaleRepository;
-    private final ApplicationRepository applicationRepository;
-    
-    @Autowired
-    PointScalesEndpoint(HttpServletRequest request, PointScaleRepository pointScaleRepository, 
-                        ApplicationRepository applicationRepository){
-        this.pointScaleRepository = pointScaleRepository;
-        this.request = request;
-        this.applicationRepository = applicationRepository;
-    }
-    
+public class PointScalesEndpoint implements PointScalesApi {
 
-    @Override
-    public ResponseEntity<List<PointScaleOutputDTO>> pointScalesGet(@RequestHeader("Authorization") String authenticationToken) {
-       
-       // Check if the JWT isn't valid
-      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
-         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-      }
+   private final HttpServletRequest request;
+   private final PointScaleRepository pointScaleRepository;
+   private final ApplicationRepository applicationRepository;
 
-      // Get the application id from the JWT
-      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+   @Autowired
+   PointScalesEndpoint(HttpServletRequest request, PointScaleRepository pointScaleRepository,
+           ApplicationRepository applicationRepository) {
+      this.pointScaleRepository = pointScaleRepository;
+      this.request = request;
+      this.applicationRepository = applicationRepository;
+   }
 
-      // Get the existing application
-      Application application = applicationRepository.findOne(applicationId);
+   @Override
+   @RequestMapping(method = RequestMethod.GET)
+   public ResponseEntity<List<PointScaleOutputDTO>> pointScalesGet(@RequestHeader("Authorization") String authenticationToken) {
 
-      // If application was deleted but the authentication token wasn't removed
-      if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
-
-      // Get the application badges
-      List<PointScale> pointScales = application.getPointScales();
-       
-
-        List<PointScaleOutputDTO> pointScalesDTO = new ArrayList<>();
-        for (int i=0; i<pointScales.size(); i++){
-            pointScalesDTO.add(i, toDTO(pointScales.get(i)));
-        }
-        return new ResponseEntity<>(pointScalesDTO, HttpStatus.OK); 
-       
-    }
-
-    @Override
-    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Void> pointScalesIdDelete(@PathVariable("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
-
-        //PointScale currentPointScale = pointScaleRepository.findOne(Long.valueOf(id));
-        // Check if the JWT isn't valid
-        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
-
-        // Get the application id from the JWT
-        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
-
-        // Get the existing application
-        Application application = applicationRepository.findOne(applicationId);
-
-        // If application was deleted but the authentication token wasn't removed
-        if (application == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        // Remove the badge whose id is provided
-        PointScale currentPointScale = application.getPointScale(id);
-
-        if (currentPointScale == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-
-        pointScaleRepository.delete(id);
-        application.deletePointScale(applicationId);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-
-    }
-
-    @Override
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
-    public ResponseEntity<PointScaleOutputDTO> pointScalesIdGet(@PathVariable("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
-        
-        // Check if the JWT isn't valid
-      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
-         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-      }
-
-      // Get the application id from the JWT
-      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
-
-      // Get the existing application
-      Application application = applicationRepository.findOne(applicationId);
-
-      // If application was deleted but the authentication token wasn't removed
-      if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-      }
-      
-      // Check if the desired badge exists
-      PointScale pointScale = application.getPointScale(id);
-        
-        if(pointScale== null){
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        // Return the pointScale DTO
-        PointScaleOutputDTO pointScaleDTO = toDTO(pointScale);
-        return new ResponseEntity<>(pointScaleDTO, HttpStatus.OK);
-        }
-
-    @Override
-    @RequestMapping(value = "/{id}",method = RequestMethod.PUT)
-    public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") Long id , @RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
-        
       // Check if the JWT isn't valid
       if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
          return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
-      
-      final String name = pointScale.getName();
-      final String description = pointScale.getDescription();
-      final int coefficient = pointScale.getCoefficient();
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.GONE);
+      }
+
+      // Get the application pointScales
+      List<PointScale> pointScales = application.getPointScales();
+
+      // Returns the application pointScales
+      List<PointScaleOutputDTO> pointScalesDTO = new ArrayList<>();
+      for (int i = 0; i < pointScales.size(); i++) {
+         pointScalesDTO.add(i, toDTO(pointScales.get(i)));
+      }
+      return new ResponseEntity<>(pointScalesDTO, HttpStatus.OK);
+
+   }
+
+   @Override
+   @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+   public ResponseEntity<Void> pointScalesIdDelete(@PathVariable("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
+
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.GONE);
+      }
+
+      // Remove the pointScale whose id is provided
+      PointScale currentPointScale = application.getPointScale(id);
+
+      if (currentPointScale == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+
+      // Delete the desired point scale
+      application.deletePointScale(id);
+      pointScaleRepository.delete(id);
+      return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+
+   }
+
+   @Override
+   @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+   public ResponseEntity<PointScaleOutputDTO> pointScalesIdGet(@PathVariable("id") Long id, @RequestHeader("Authorization") String authenticationToken) {
+
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
+
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
+
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.GONE);
+      }
+
+      // Check if the desired badge exists
+      PointScale pointScale = application.getPointScale(id);
+
+      if (pointScale == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
+      // Return the pointScale DTO
+      PointScaleOutputDTO pointScaleDTO = toDTO(pointScale);
+      return new ResponseEntity<>(pointScaleDTO, HttpStatus.OK);
+   }
+
+   @Override
+   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+   public ResponseEntity<Void> pointScalesIdPut(@PathVariable("id") Long id, @RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
+
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
 
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
 
-      // TODO: Check if the pointScale name is already in this application   
-      // Check if name, description or coefficient is null
-      if (name == null || description == null || pointScale.getCoefficient() == null) {
+      final String name = pointScale.getName();
+      final String description = pointScale.getDescription();
+
+      final int coefficient;
+      if (pointScale.getCoefficient() == null) {
+         httpErrorUnprocessableEntity = true;
+         coefficient = 0;
+      }
+      else {
+         coefficient = pointScale.getCoefficient();
+      }
+
+      // Check if name or description is null
+      if (name == null || description == null) {
          httpErrorUnprocessableEntity = true;
       }
 
@@ -184,7 +192,7 @@ public class PointScalesEndpoint implements PointScalesApi{
       else if (name.length() > 80 || description.length() > 255 || coefficient > 1000 || coefficient < 1) {
          httpErrorUnprocessableEntity = true;
       }
-      
+
       // Get the application id from the JWT
       long applicationId = TokenKeyTools.parseJWT(authenticationToken);
 
@@ -193,15 +201,18 @@ public class PointScalesEndpoint implements PointScalesApi{
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
+         return new ResponseEntity<>(HttpStatus.GONE);
+      }
+
+      // Get the desired point scale
+      PointScale currentPointScale = application.getPointScale(id);
+      if (currentPointScale == null) {
          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
-      
-      // Get the desired badge
-      PointScale currentPointScale = application.getPointScale(id);
-      
-       // Check if the application name has changed
+
+      // Check if the point scale name has changed
       if (!currentPointScale.getName().equals(name)) {
-         // Check if the new application name provided already exist
+         // Check if the new point scale name provided already exist
          PointScale pointScaleSaved = application.getPointScale(name);
          if (pointScaleSaved != null) {
             httpErrorUnprocessableEntity = true;
@@ -211,45 +222,58 @@ public class PointScalesEndpoint implements PointScalesApi{
       if (httpErrorUnprocessableEntity) {
          return new ResponseEntity<>(HttpStatus.UNPROCESSABLE_ENTITY);
       }
-      
+
+      // Update the point scale
       currentPointScale.setName(pointScale.getName());
       currentPointScale.setDescription(pointScale.getDescription());
       currentPointScale.setCoefficient(pointScale.getCoefficient());
-
+      pointScaleRepository.save(currentPointScale);
       application.putPointScale(currentPointScale);
-      //pointScaleRepository.save(currentPointScale);
       return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        
-    }
 
-    @Override
-    @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
-        
-        // Check if the JWT isn't valid
+   }
+
+   @Override
+   @RequestMapping(method = RequestMethod.POST)
+   public ResponseEntity<LocationPointScale> pointScalesPost(@RequestBody PointScaleInputDTO pointScale, @RequestHeader("Authorization") String authenticationToken) {
+
+      // Check if the JWT isn't valid
       if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
          return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
       }
 
-      final String name = pointScale.getName();
-      final String description = pointScale.getDescription();
-      final int coefficient = pointScale.getCoefficient();
-
       // Test if the request isn't valid (http error 422 unprocessable entity)
       boolean httpErrorUnprocessableEntity = false;
+
+      final String name = pointScale.getName();
+      final String description = pointScale.getDescription();
+
+      final int coefficient;
+      if (pointScale.getCoefficient() == null) {
+         httpErrorUnprocessableEntity = true;
+         coefficient = 0;
+      }
+      else {
+         coefficient = pointScale.getCoefficient();
+      }
 
       // Check if name, description or coefficient is null
       if (name == null || description == null || pointScale.getCoefficient() == null) {
          httpErrorUnprocessableEntity = true;
       }
 
-      // Check if name, description or imageURL is empty
+      // Check if name, description or coefficient is empty
       else if (name.trim().isEmpty() || description.trim().isEmpty() || Integer.toString(coefficient).trim().isEmpty()) {
          httpErrorUnprocessableEntity = true;
       }
 
-      // Check if name length > 80 OR if description or coefficient length > 255
-      else if (name.length() > 80 || description.length() > 255 || Integer.toString(coefficient).length() > 255) {
+      // Check if name length > 80 OR if description length > 255
+      else if (name.length() > 80 || description.length() > 255) {
+         httpErrorUnprocessableEntity = true;
+      }
+
+      // Check if coefficient is > 1000 or < 1
+      else if (coefficient > 1000 || coefficient < 1) {
          httpErrorUnprocessableEntity = true;
       }
 
@@ -261,10 +285,10 @@ public class PointScalesEndpoint implements PointScalesApi{
 
       // If application was deleted but the authentication token wasn't removed
       if (application == null) {
-         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+         return new ResponseEntity<>(HttpStatus.GONE);
       }
 
-      // Check if application name already exists
+      // Check if point scale name already exists
       PointScale currentPointScale = application.getPointScale(name);
       if (currentPointScale != null) {
          httpErrorUnprocessableEntity = true;
@@ -276,10 +300,13 @@ public class PointScalesEndpoint implements PointScalesApi{
 
       PointScale newPointScale = fromDTO(pointScale);
       newPointScale.setApplication(application);
+      
+      // Save and get the new id
       newPointScale = pointScaleRepository.save(newPointScale);
       application.addPointScales(newPointScale);
       Long newId = newPointScale.getId();
 
+      // Create the Location header
       StringBuffer location = request.getRequestURL();
       if (!location.toString().endsWith("/")) {
          location.append("/");
@@ -288,20 +315,20 @@ public class PointScalesEndpoint implements PointScalesApi{
       HttpHeaders headers = new HttpHeaders();
       headers.add("Location", location.toString());
       return new ResponseEntity<>(headers, HttpStatus.CREATED);
-        
-    }
 
-   public PointScaleOutputDTO toDTO(PointScale pointScale){
-        PointScaleOutputDTO pointScaleDTO = new PointScaleOutputDTO();
-        pointScaleDTO.setPointScaleId(String.valueOf(pointScale.getId()));
-        pointScaleDTO.setName(pointScale.getName());
-        pointScaleDTO.setCoefficient(pointScale.getCoefficient());
-        pointScaleDTO.setDescription(pointScale.getDescription());        
-        return pointScaleDTO;
-    }
-   
-   public PointScale fromDTO(PointScaleInputDTO badgeInputDTO){
-        return new PointScale(badgeInputDTO.getName(), badgeInputDTO.getCoefficient(), badgeInputDTO.getDescription());
-    } 
-    
+   }
+
+   public PointScaleOutputDTO toDTO(PointScale pointScale) {
+      PointScaleOutputDTO pointScaleDTO = new PointScaleOutputDTO();
+      pointScaleDTO.setPointScaleId(pointScale.getId());
+      pointScaleDTO.setName(pointScale.getName());
+      pointScaleDTO.setCoefficient(pointScale.getCoefficient());
+      pointScaleDTO.setDescription(pointScale.getDescription());
+      return pointScaleDTO;
+   }
+
+   public PointScale fromDTO(PointScaleInputDTO pointScaleInputDTO) {
+      return new PointScale(pointScaleInputDTO.getName(), pointScaleInputDTO.getCoefficient(), pointScaleInputDTO.getDescription());
+   }
+
 }

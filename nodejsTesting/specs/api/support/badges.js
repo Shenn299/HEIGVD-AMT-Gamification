@@ -1,5 +1,6 @@
 // If no API URL address is specified at run time, then system takes the API URL specified in env.json file under "default"
-var apiURL = process.env.API_URL || require('../../../env.json').default.API_URL;
+var env = require('../../../env.json');
+var apiURL = process.env.API_URL || env.default.API_URL;
 var api = require("supertest-as-promised")(apiURL);
 var Chance = require("chance");
 var chance = new Chance();
@@ -120,7 +121,7 @@ function deleteBadgeWithoutAuthorizationHeader(id) {
 // Generation of a new badge with random values
 function generateBadge() {
     return {
-        name: chance.word(),
+        name: chance.word({ length: 10 }),
         description: chance.sentence(),
         imageURL: chance.sentence()
     }

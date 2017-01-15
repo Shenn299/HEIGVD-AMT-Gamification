@@ -17,54 +17,85 @@ const BEARER = "Bearer ";
 emptyTables.emptyTables();
 
 // API tests
-// An unauthenticated user is a user that doesn't send an authentication token in the Authorization header
-// An authenticated user is a user that send an authentication token in the Authorization header
+// An unauthenticated user is a user that doesn't send a correct authentication token in the Authorization header
+// An authenticated user is a user that send a correct authentication token in the Authorization header (signed and not expired)
 
 // applications endpoint
 describe("The /applications endpoint :", function () {
 
     // Success
     // GET
-    it("should allow an authenticated user to get the current application", itShouldAllowAuthenticatedUserToGetTheCurrentApplication);
+    describe("Test success for HTTP GET method :", function () {
+        it("should allow an authenticated user to get the current application\n", itShouldAllowAuthenticatedUserToGetTheCurrentApplication);
+    });
 
+    // Success
     // POST
-    it("should allow an unauthenticated user to create a new application", itShouldAllowUnauthenticatedUserToCreateApplication);
+    describe("Test success for HTTP POST method :", function () {
+        it("should allow an unauthenticated user to create a new application\n", itShouldAllowUnauthenticatedUserToCreateApplication);
+    });
 
+    // Success
     // PUT
-    it("should allow an authenticated user to completely update his application", itShouldAllowAuthenticatedUserToCompletelyUpdateHisApplication);
+    describe("Test success for HTTP PUT method :", function () {
+        it("should allow an authenticated user to completely update his application\n", itShouldAllowAuthenticatedUserToCompletelyUpdateHisApplication);
+    });
 
-    // Delete 
-    it("should allow an authenticated user to delete his application", itShouldAllowAuthenticatedUserToDeleteHisApplication);
+    // Success
+    // Delete
+    describe("Test success for HTTP DELETE method :", function () {
+        it("should allow an authenticated user to delete his application\n", itShouldAllowAuthenticatedUserToDeleteHisApplication);
+    });
+
+    // Failure
+    // GET
+    describe("Test failures for HTTP GET method :", function () {
+        it("should refuse an unauthenticated user to get his application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to get his application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to get his application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to get his application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to get his application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to get his application if the application does not exist\n", itShouldRefuseAuthenticatedUserToGetHisApplicationIfTheApplicationDoesNotExist);
+    });
 
     // Failures
     // POST
-    it("should refuse an unauthenticated user to create a new application if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateApplicationIfMandatoryFieldsAreNotProvided);
-    it("should refuse an unauthenticated user to create a new application if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateApplicationIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    it("should refuse an unauthenticated user to create a new application if name or password contain more than 80 characters", itShouldRefuseUnauthenticatedUserToCreateApplicationIfNameOrPasswordContainMoreThan80Characters);
-    it("should refuse an unauthenticated user to create a new application if description contains more than 255 characters", itShouldRefuseUnauthenticatedUserToCreateApplicationIfDescriptionContainsMoreThan255Characters);
-    it("should refuse an unauthenticated user to create a new application if password contains less than 7 characters", itShouldRefuseUnauthenticatedUserToCreateApplicationIfPasswordContainsLessThan7Characters);
-    it("should refuse an unauthenticated user to create a new application if name provided already exists", itShouldRefuseUnauthenticatedUserToCreateApplicationIfNameProvidedAlreadyExists);
+    describe("Test failures for HTTP POST method :", function () {
+        it("should refuse an unauthenticated user to create a new application if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateApplicationIfMandatoryFieldsAreNotProvided);
+        it("should refuse an unauthenticated user to create a new application if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateApplicationIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+        it("should refuse an unauthenticated user to create a new application if name or password contain more than 80 characters", itShouldRefuseUnauthenticatedUserToCreateApplicationIfNameOrPasswordContainMoreThan80Characters);
+        it("should refuse an unauthenticated user to create a new application if description contains more than 255 characters", itShouldRefuseUnauthenticatedUserToCreateApplicationIfDescriptionContainsMoreThan255Characters);
+        it("should refuse an unauthenticated user to create a new application if password contains less than 7 characters", itShouldRefuseUnauthenticatedUserToCreateApplicationIfPasswordContainsLessThan7Characters);
+        it("should refuse an unauthenticated user to create a new application if name provided already exists\n", itShouldRefuseUnauthenticatedUserToCreateApplicationIfNameProvidedAlreadyExists);
+    });
 
+    // Failure
     // PUT
-    it("should refuse an unauthenticated user to completely update his application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthorizationHeaderIsNotProvided);
-    it("should refuse an unauthenticated user to completely update his application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsEmpty);
-    it("should refuse an unauthenticated user to completely update his application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
-    it("should refuse an unauthenticated user to completely update his application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
-    it("should refuse an unauthenticated user to completely update his application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsExpired);
-    it("should refuse an authenticated user to completely update his application if mandatory fields are not provided", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfMandatoryFieldsAreNotProvided);
-    it("should refuse an authenticated user to completely update his application if mandatory fields are empty or contain only spaces", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    it("should refuse an authenticated user to completely update his application if name or password contain more than 80 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfNameOrPasswordContainMoreThan80Characters);
-    it("should refuse an authenticated user to completely update his application if description contains more than 255 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfDescriptionContainsMoreThan255Characters);
-    it("should refuse an authenticated user to completely update his application if password contains less than 7 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfPasswordContainsLessThan7Characters);
-    it("should refuse an authenticated user to completely update his application if the name provided already exists", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfTheNameProvidedAlreadyExists);
+    describe("Test failures for HTTP PUT method :", function () {
+        it("should refuse an unauthenticated user to completely update his application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to completely update his application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to completely update his application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to completely update his application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to completely update his application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to completely update his application if mandatory fields are not provided", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfMandatoryFieldsAreNotProvided);
+        it("should refuse an authenticated user to completely update his application if mandatory fields are empty or contain only spaces", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+        it("should refuse an authenticated user to completely update his application if name or password contain more than 80 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfNameOrPasswordContainMoreThan80Characters);
+        it("should refuse an authenticated user to completely update his application if description contains more than 255 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfDescriptionContainsMoreThan255Characters);
+        it("should refuse an authenticated user to completely update his application if password contains less than 7 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfPasswordContainsLessThan7Characters);
+        it("should refuse an authenticated user to completely update his application if the name provided already exists", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfTheNameProvidedAlreadyExists);
+        it("should refuse an authenticated user to completely update his application if the application does not exist\n", itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfTheApplicationDoesNotExist);
+    });
 
+    // Failure
     // Delete
-    it("should refuse an unauthenticated user to delete his application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthorizationHeaderIsNotProvided);
-    it("should refuse an unauthenticated user to delete his application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsEmpty);
-    it("should refuse an unauthenticated user to delete his application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
-    it("should refuse an unauthenticated user to delete his application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
-    it("should refuse an unauthenticated user to delete his application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsExpired);
-    it("should refuse an authenticated user to delete an application that doesn't exist", itShouldRefuseAuthenticatedUserToDeleteApplicationThatDoesNotExist);
+    describe("Test failures for HTTP DELETE method :", function () {
+        it("should refuse an unauthenticated user to delete his application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to delete his application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to delete his application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to delete his application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to delete his application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToDeleteHisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to delete an application that doesn't exist\n", itShouldRefuseAuthenticatedUserToDeleteApplicationThatDoesNotExist);
+    });
 
 });
 
@@ -239,6 +270,208 @@ function itShouldAllowAuthenticatedUserToDeleteHisApplication() {
 
         });
 
+}
+
+// Failure
+// GET
+function itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthorizationHeaderIsNotProvided() {
+    return applications.getApplicationWithoutAuthorizationHeader()
+        .then(function (response) {
+
+            // HTTP response status should be 400 BAD REQUEST
+            response.status.should.equal(400);
+
+        });
+}
+
+// Failure
+// GET
+function itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsEmpty() {
+    var authenticationToken = "";
+    return applications.getApplication(authenticationToken)
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+        });
+}
+
+// Failure
+// GET
+function itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Authentication token for the new application above without the Bearer pattern
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Valid authentication token received
+            authenticationToken = response;
+
+            // Delete the application
+            return applications.getApplication(authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+        });
+}
+
+// Failure
+// GET
+function itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of a valid authentication token for this application but not signed with the server signature key
+            const WRONG_KEY = KEY + 1;
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                WRONG_KEY,
+                {
+                    expiresIn: '1h'
+                }
+            );
+
+            // Try to get application
+            return applications.getApplication(authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+            // Creation of a valid authentication token for this application signed with the server signature key
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                KEY,
+                {
+                    expiresIn: '1h'
+                }
+            );
+
+            // Get application
+            return applications.getApplication(authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 200 OK
+            response.status.should.equal(200);
+
+        })
+}
+
+// Failure
+// GET
+function itShouldRefuseUnauthenticatedUserToGetHisApplicationIfTheAuthenticationTokenIsExpired() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of a valid authentication token for this application but expired
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                KEY,
+                {
+                    expiresIn: 0
+                }
+            );
+
+            // Try to get application
+            return applications.getApplication(authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+            // Creation of a valid authentication token not expired
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                KEY,
+                {
+                    expiresIn: '1h'
+                }
+            );
+
+            // Get application
+            return applications.getApplication(authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 200 OK
+            response.status.should.equal(200);
+
+        })
+}
+
+// Failure
+// GET
+function itShouldRefuseAuthenticatedUserToGetHisApplicationIfTheApplicationDoesNotExist() {
+    // Application id to get that doesn't exist
+    var applicationId = 0;
+    // Authentication token for the application above
+    var authenticationToken = BEARER + jwt.sign(
+        {
+            iss: applicationId
+        },
+        KEY,
+        {
+            expiresIn: '1h'
+        }
+    );
+
+    // Try to get application
+    return applications.getApplication(authenticationToken)
+
+        .then(function (response) {
+
+            // HTTP response status should be 410 GONE
+            response.status.should.equal(410);
+
+        });
 }
 
 // Failure
@@ -547,13 +780,13 @@ function itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheA
             authenticationToken = response;
 
             // Save the application id from the JWT
-            id = jwt.verify(authenticationToken, KEY).iss;
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
 
             // Creation of a valid authentication token for this application but not signed with the server signature key
             const WRONG_KEY = KEY + 1;
             authenticationToken = BEARER + jwt.sign(
                 {
-                    iss: id
+                    iss: applicationId
                 },
                 WRONG_KEY,
                 {
@@ -574,7 +807,7 @@ function itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheA
             // Creation of a valid authentication token for this application signed with the server signature key
             authenticationToken = BEARER + jwt.sign(
                 {
-                    iss: id
+                    iss: applicationId
                 },
                 KEY,
                 {
@@ -611,12 +844,12 @@ function itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheA
             authenticationToken = response;
 
             // Save the application id from the JWT
-            id = jwt.verify(authenticationToken, KEY).iss;
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
 
             // Creation of a valid authentication token for this application but expired
             authenticationToken = BEARER + jwt.sign(
                 {
-                    iss: id
+                    iss: applicationId
                 },
                 KEY,
                 {
@@ -637,7 +870,7 @@ function itShouldRefuseUnauthenticatedUserToCompletelyUpdateHisApplicationIfTheA
             // Creation of a valid authentication token not expired
             authenticationToken = BEARER + jwt.sign(
                 {
-                    iss: id
+                    iss: applicationId
                 },
                 KEY,
                 {
@@ -930,6 +1163,34 @@ function itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfTheNam
             // HTTP response status should equal 422 UNPROCESSABLE
             response.status.should.equal(422);
 
+        });
+}
+
+// Failure
+// PUT
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateHisApplicationIfTheApplicationDoesNotExist() {
+    // Application updated
+    const APPLICATION = applications.generateApplication();
+    // Application to update that doesn't exist
+    var applicationId = 0;
+    // Creation of a valid authentication token but for an application that doesn't exist
+    authenticationToken = BEARER + jwt.sign(
+        {
+            iss: applicationId
+        },
+        KEY,
+        {
+            expiresIn: '1h'
+        }
+    );
+
+    // Try to update application
+    return applications.updateCompletelyApplication(authenticationToken, APPLICATION)
+
+        .then(function (response) {
+
+            // HTTP response status should be 410 GONE
+            response.status.should.equal(410);
         });
 }
 

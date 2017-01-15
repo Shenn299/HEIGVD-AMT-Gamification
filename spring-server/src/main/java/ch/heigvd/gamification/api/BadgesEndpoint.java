@@ -196,9 +196,9 @@ public class BadgesEndpoint implements BadgesApi {
          return new ResponseEntity<>(HttpStatus.NOT_FOUND);
       }
 
-      // Check if the application name has changed
+      // Check if the badge name has changed
       if (!currentBadge.getName().equals(name)) {
-         // Check if the new application name provided already exist
+         // Check if the new badge name provided already exist
          Badge badgeSaved = application.getBadge(name);
          if (badgeSaved != null) {
             httpErrorUnprocessableEntity = true;
@@ -260,7 +260,7 @@ public class BadgesEndpoint implements BadgesApi {
          return new ResponseEntity<>(HttpStatus.GONE);
       }
 
-      // Check if application name already exists
+      // Check if badge name already exists
       Badge currentBadge = application.getBadge(name);
       if (currentBadge != null) {
          httpErrorUnprocessableEntity = true;

@@ -15,76 +15,106 @@ const KEY = process.env.SIGNATURE_KEY_FOR_JWT || env.default.SIGNATURE_KEY_FOR_J
 const BEARER = "Bearer ";
 
 // API tests
+// An unauthenticated user is a user that doesn't send a correct authentication token in the Authorization header
+// An authenticated user is a user that send a correct authentication token in the Authorization header (signed and not expired)
 
 // badges endpoint
 describe("The /badges endpoint :", function () {
 
     // Success
     // GET
-    it("should allow an authenticated user to get the list of badges of the application", itShouldAllowAuthenticatedUserToGetTheListOfBadgesOfTheApplication);
+    describe("Test success for HTTP GET method :", function () {
+        it("should allow an authenticated user to get the list of badges of the application\n", itShouldAllowAuthenticatedUserToGetTheListOfBadgesOfTheApplication);
 
+    });
+
+    // Success
     // GET /id
-    it("should allow an authenticated user to get the desired badge of the application", itShouldAllowAuthenticatedUserToGetTheDesiredBadgeOfTheApplication);
+    describe("Test success for HTTP GET /id method :", function () {
+        it("should allow an authenticated user to get the desired badge of the application\n", itShouldAllowAuthenticatedUserToGetTheDesiredBadgeOfTheApplication);
+    });
 
+    // Success
     // POST
-    it("should allow an authenticated user to create a new badge on this application", itShouldAllowAuthenticatedUserToCreateBadgeOnThisApplication);
+    describe("Test success for HTTP POST method :", function () {
+        it("should allow an authenticated user to create a new badge on this application\n", itShouldAllowAuthenticatedUserToCreateBadgeOnThisApplication);
+    });
 
-    // PUT
-    it("should allow an authenticated user to completely update an existing badge on this application", itShouldAllowAuthenticatedUserToCompletelyUpdateExistingBadgeOnThisApplication);
+    // Success
+    // PUT /id
+    describe("Test success for HTTP PUT /id method :", function () {
+        it("should allow an authenticated user to completely update an existing badge on this application\n", itShouldAllowAuthenticatedUserToCompletelyUpdateExistingBadgeOnThisApplication);
+    });
 
-    // Delete
-    it("should allow an authenticated user to delete an existing badge on this application", itShouldAllowAuthenticatedUserToDeleteExistingBadgeOnThisApplication);
+    // Success
+    // Delete /id
+    describe("Test success for HTTP DELETE /id method :", function () {
+        it("should allow an authenticated user to delete an existing badge on this application\n", itShouldAllowAuthenticatedUserToDeleteExistingBadgeOnThisApplication);
+    });
 
     // Failures
     // GET
-    it("should refuse an unauthenticated user to get all badges of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
-    it("should refuse an unauthenticated user to get all badges of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsEmpty);
-    it("should refuse an unauthenticated user to get all badges of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
-    it("should refuse an unauthenticated user to get all badges of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
-    it("should refuse an unauthenticated user to get all badges of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsExpired);
-    it("should refuse an unauthenticated user to get all badges of an application that does not exist", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfAnApplicationThatDoesNotExist);
+    describe("Test failures for HTTP GET method :", function () {
+        it("should refuse an unauthenticated user to get all badges of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to get all badges of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to get all badges of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to get all badges of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to get all badges of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to get all badges of an application that does not exist\n", itShouldRefuseAuthenticatedUserToGetAllBadgesOfAnApplicationThatDoesNotExist);
+    });
 
     // GET /id
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty);
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired);
-    it("should refuse an unauthenticated user to get the desired badge of an application that does not exist", itSouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfAnApplicationThatDoesNotExist);
-    it("should refuse an authenticated user to get the desired badge of this application if badge id provided does not exist", itShouldRefuseAuthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfBadgeIdProvidedDoesNotExist);
+    describe("Test failures for HTTP GET /id method :", function () {
+        it("should refuse an unauthenticated user to get the desired badge of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to get the desired badge of this application if badge id provided does not exist", itShouldRefuseAuthenticatedUserToGetTheDesiredBadgeOfThisApplicationIfBadgeIdProvidedDoesNotExist);
+        it("should refuse an authenticated user to get the desired badge of an application that does not exist\n", itSouldRefuseAuthenticatedUserToGetTheDesiredBadgeOfAnApplicationThatDoesNotExist);
+    });
 
     // POST
-    it("should refuse an unauthenticated user to create new badge on this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthorizationHeaderIsNotProvided);
-    it("should refuse an unauthenticated user to create new badge on this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToCreateNewBadgeOnThisApplicationIfTheAuthenticationTokenIsEmpty);
-    it("should refuse an unauthenticated user to create new badge on this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
-    it("should refuse an unauthenticated user to create new badge on this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
-    it("should refuse an unauthenticated user to create new badge on this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthenticationTokenIsExpired);
-    it("should refuse an unauthenticated user to create new badge if mandatory fields are not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided);
-    it("should refuse an unauthenticated user to create new badge if mandatory fields are empty or contain only spaces", itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
-    it("should refuse an unauthenticated user to create new badge if name contains more than 80 characters", itShouldRefuseUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters);
-    it("should refuse an unauthenticated user to create new badge if description or image URL contain more than 255 characters", itShouldRefuseUnauthenticatedUserToCreateBadgeIfDescriptionOrImageURLContainMoreThan255Characters);
-    it("should refuse an unauthenticated user to create new badge if the badge name provided already exists in this application", itShouldRefuseUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlreadyExistsInThisApplication);
+    describe("Test failures for HTTP POST method :", function () {
+        it("should refuse an unauthenticated user to create new badge on this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to create new badge on this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToCreateNewBadgeOnThisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to create new badge on this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to create new badge on this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to create new badge on this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to create new badge on this application if mandatory fields are not provided", itShouldRefuseAuthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided);
+        it("should refuse an authenticated user to create new badge on this application if mandatory fields are empty or contain only spaces", itShouldRefuseAuthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+        it("should refuse an authenticated user to create new badge on this application if name contains more than 80 characters", itShouldRefuseAuthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters);
+        it("should refuse an authenticated user to create new badge on this application if description or image URL contain more than 255 characters", itShouldRefuseAuthenticatedUserToCreateBadgeIfDescriptionOrImageURLContainMoreThan255Characters);
+        it("should refuse an authenticated user to create new badge on this application if the badge name provided already exists in this application", itShouldRefuseAuthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlreadyExistsInThisApplication);
+        it("should refuse an authenticated user to create new badge on an application that does not exist\n", itShouldRefuseAuthenticatedUserToCreateNewBadgeOnAnApplicationThatDoesNotExist);
+    });
 
-    // PUT
-    it("should refuse an unauthenticated user to update completely the desired badge of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
-    it("should refuse an unauthenticated user to update completely the desired badge of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty);
-    it("should refuse an unauthenticated user to update completely the desired badge of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
-    it("should refuse an unauthenticated user to update completely the desired badge of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
-    it("should refuse an unauthenticated user to update completely the desired badge of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired);
-    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are not provided");
-    it("should refuse an unauthenticated user to completely update an existing badge if mandatory fields are empty or contain only spaces");
-    it("should refuse an unauthenticated user to completely update an existing badge if name contains more than 80 characters");
-    it("should refuse an unauthenticated user to completely update an existing badge if description or image URL contain more than 255 characters");
-    it("should refuse an unauthenticated user to completely update an existing badge if the badge name provided already exists");
-    it("should refuse an unauthenticated user to completely update an existing badge if badge id provided does not exist");
+    // PUT /id
+    describe("Test failures for HTTP PUT /id method :", function () {
+        it("should refuse an unauthenticated user to completely update the desired badge of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to completely update the desired badge of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to completely update the desired badge of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to completely update the desired badge of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to completely update the desired badge of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to completely update an existing badge of this application if mandatory fields are not provided", itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfMandatoryFieldsAreNotProvided);
+        it("should refuse an authenticated user to completely update an existing badge of this application if mandatory fields are empty or contain only spaces", itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces);
+        it("should refuse an authenticated user to completely update an existing badge of this application if name contains more than 80 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfNameContainsMoreThan80Characters);
+        it("should refuse an authenticated user to completely update an existing badge of this application if description or image URL contain more than 255 characters", itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfDescriptionOrImageURLContainMoreThan255Characters);
+        it("should refuse an authenticated user to completely update an existing badge of this application if the badge name provided already exists", itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfTheBadgeNameProvidedAlreadyExists);
+        it("should refuse an authenticated user to completely update an existing badge of this application if badge id provided does not exist", itShouldRefuseAuthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist);
+        it("should refuse an authenticated user to completely update an existing badge of an application that does not exist\n", itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeOfAnApplicationThatDoesNotExist);
+    });
 
-    // Delete
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authorization header is not provided");
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is empty");
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is not preceded by the Bearer pattern");
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is not signed by the gamification API server");
-    it("should refuse an unauthenticated user to get the desired badge of this application if the authentication token is expired");
-    it("should refuse an unauthenticated user to delete an existing badge if badge id provided does not exist");
+    // Delete /id
+    describe("Test failures for HTTP DELETE /id method :", function () {
+        it("should refuse an unauthenticated user to delete the desired badge of this application if the authorization header is not provided", itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided);
+        it("should refuse an unauthenticated user to delete the desired badge of this application if the authentication token is empty", itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty);
+        it("should refuse an unauthenticated user to delete the desired badge of this application if the authentication token is not preceded by the Bearer pattern", itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern);
+        it("should refuse an unauthenticated user to delete the desired badge of this application if the authentication token is not signed by the gamification API server", itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer);
+        it("should refuse an unauthenticated user to delete the desired badge of this application if the authentication token is expired", itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired);
+        it("should refuse an authenticated user to delete the desired badge if badge id provided does not exist", itShouldRefuseAuthenticatedUserToDeleteTheDesiredBadgeIfBadgeIdProvidedDoesNotExist);
+        it("should refuse an authenticated user to delete the desired badge of an application that does not exist\n", itShouldRefuseAuthenticatedUserToDeleteTheDesiredBadgeOfAnApplicationThatDoesNotExist);
+    });
 
 });
 
@@ -142,7 +172,7 @@ function itShouldAllowAuthenticatedUserToGetTheDesiredBadgeOfTheApplication() {
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -225,7 +255,7 @@ function itShouldAllowAuthenticatedUserToCreateBadgeOnThisApplication() {
 }
 
 // Success
-// PUT
+// PUT /id
 function itShouldAllowAuthenticatedUserToCompletelyUpdateExistingBadgeOnThisApplication() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
@@ -249,7 +279,7 @@ function itShouldAllowAuthenticatedUserToCompletelyUpdateExistingBadgeOnThisAppl
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -285,7 +315,7 @@ function itShouldAllowAuthenticatedUserToCompletelyUpdateExistingBadgeOnThisAppl
 }
 
 // Success
-// DELETE
+// DELETE /id
 function itShouldAllowAuthenticatedUserToDeleteExistingBadgeOnThisApplication() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
@@ -307,7 +337,7 @@ function itShouldAllowAuthenticatedUserToDeleteExistingBadgeOnThisApplication() 
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -518,7 +548,7 @@ function itShouldRefuseUnauthenticatedUserToGetAllBadgesOfThisApplicationIfTheAu
 
 // Failure
 // GET
-function itShouldRefuseUnauthenticatedUserToGetAllBadgesOfAnApplicationThatDoesNotExist() {
+function itShouldRefuseAuthenticatedUserToGetAllBadgesOfAnApplicationThatDoesNotExist() {
     // Application id that doesn't exist
     var applicationId = 0
 
@@ -632,7 +662,7 @@ function itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationI
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -710,7 +740,7 @@ function itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationI
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -764,7 +794,7 @@ function itShouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfThisApplicationI
 
 // Failure
 // GET /id
-function itSouldRefuseUnauthenticatedUserToGetTheDesiredBadgeOfAnApplicationThatDoesNotExist() {
+function itSouldRefuseAuthenticatedUserToGetTheDesiredBadgeOfAnApplicationThatDoesNotExist() {
     // Application id
     var applicationId = 0;
     // Creation of a valid authentication token but for an application that doesn't exist
@@ -1004,7 +1034,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeOnThisApplicationIfTheAut
 }
 
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided() {
+function itShouldRefuseAuthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotProvided() {
     // Generation of a new application
     const APPLICATION = applications.generateApplication();
     // Authentication token for the application above
@@ -1049,7 +1079,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreNotPr
 
 // Failure
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
+function itShouldRefuseAuthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
     // Generation of a new application
     const APPLICATION = applications.generateApplication();
     // Authentication token for the application above
@@ -1093,7 +1123,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfMandatoryFieldsAreEmpty
 
 // Failure
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters() {
+function itShouldRefuseAuthenticatedUserToCreateBadgeIfNameContainsMoreThan80Characters() {
     // Generation of a new application
     const APPLICATION = applications.generateApplication();
     // Generation of a new badge
@@ -1135,7 +1165,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfNameContainsMoreThan80C
 
 // Failure
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfDescriptionOrImageURLContainMoreThan255Characters() {
+function itShouldRefuseAuthenticatedUserToCreateBadgeIfDescriptionOrImageURLContainMoreThan255Characters() {
     // Generation of a new application
     const APPLICATION = applications.generateApplication();
     // Wrong payloads
@@ -1151,10 +1181,8 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfDescriptionOrImageURLCo
             // Valid authentication token received
             authenticationToken += response;
 
-            // Generation of a new badge as payload
-            var payload = badge;
             // Creation of a string with the payload
-            original = JSON.stringify(payload);
+            original = JSON.stringify(badge);
 
             // Creation of wrong payloads
             // Each wrong payload have description or imageURL that contain 256 characters
@@ -1180,19 +1208,22 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfDescriptionOrImageURLCo
 
             // Creation of correct payloads
             // Each correct payload have description or imageURL that contain 255 characters
-            wrongPayloads = [];
+            var wrongPayloads2 = [];
             for (var i = 0; i < 2; ++i) {
-                wrongPayloads.push(JSON.parse(original));
+                wrongPayloads2.push(JSON.parse(original));
             }
-            wrongPayloads[0].description = chance.word({ length: 255 });
-            wrongPayloads[1].imageURL = chance.word({ length: 255 });
+            wrongPayloads2[0].description = chance.word({ length: 255 });
+            wrongPayloads2[1].imageURL = chance.word({ length: 255 });
+            
+            // Change the name too for the second badge otherwise returns HTTP error 422
+            wrongPayloads2[1].name = chance.word({ legth: 10 });
 
             // Creation of an array of promise
             // Create new badge with each correct payload
-            var promises = wrongPayloads.map(p => (badges.createBadge(p, authenticationToken)));
+            var promises2 = wrongPayloads2.map(p => (badges.createBadge(p, authenticationToken)));
 
             // When all requests have provided a response
-            return Promise.all(promises);
+            return Promise.all(promises2);
 
         })
 
@@ -1207,7 +1238,7 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfDescriptionOrImageURLCo
 
 // Failure
 // POST
-function itShouldRefuseUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlreadyExistsInThisApplication() {
+function itShouldRefuseAuthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlreadyExistsInThisApplication() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
     // Generation of a new application
@@ -1242,9 +1273,36 @@ function itShouldRefuseUnauthenticatedUserToCreateBadgeIfTheBadgeNameProvidedAlr
 
 }
 
+// Failure 
+// POST
+function itShouldRefuseAuthenticatedUserToCreateNewBadgeOnAnApplicationThatDoesNotExist() {
+    const BADGE = badges.generateBadge();
+    // Application id
+    var applicationId = 0;
+    // Creation of a valid authentication token but for an application that doesn't exist
+    var authenticationToken = BEARER + jwt.sign(
+        {
+            iss: applicationId
+        },
+        KEY,
+        {
+            expiresIn: '1h'
+        }
+    );
+
+    // Try to create badge
+    return badges.createBadge(BADGE, authenticationToken)
+        .then(function (response) {
+
+            // HTTP response status should be 410 GONE
+            response.status.should.equal(410);
+
+        })
+}
+
 // Failure
-// PUT
-function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided() {
+// PUT /id
+function itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided() {
     // Badge id to update
     var badgeId = 0;
     // Try to update badge
@@ -1258,8 +1316,8 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 }
 
 // Failure
-// PUT
-function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty() {
+// PUT /id
+function itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
     // Badge id to update
@@ -1277,8 +1335,8 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 }
 
 // Failure
-// PUT
-function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern() {
+// PUT /id
+function itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
     // Badge id to update
@@ -1306,8 +1364,8 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 }
 
 // Failure 
-// PUT
-function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer() {
+// PUT /id
+function itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
     // Generation of a new application
@@ -1333,7 +1391,7 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -1384,8 +1442,8 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 }
 
 // Failure
-// PUT
-function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired() {
+// PUT /id
+function itShouldRefuseUnauthenticatedUserToCompletelyUpdateTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired() {
     // Generation of a new badge
     const BADGE = badges.generateBadge();
     // Generation of a new application
@@ -1411,7 +1469,7 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 
         .then(function (response) {
 
-            // Get the badge id from Location hader
+            // Get the badge id from Location header
             var location = response.header["location"];
             badgeId = location.substring(location.lastIndexOf("/") + 1);
 
@@ -1461,49 +1519,63 @@ function itShouldRefuseUnauthenticatedUserToUpdateCompletelyTheDesiredBadgeOfThi
 }
 
 // Failure 
-// PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreNotProvided() {
+// PUT /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfMandatoryFieldsAreNotProvided() {
     // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+    const BADGE = badges.generateBadge();
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Badge id to update
+    var badgeId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of the new badge
+            return badges.createBadge(BADGE, BEARER + authenticationToken);
+
+        })
+
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
-                .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+            // Get the badge id from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
 
-                    // Update completely an existing badge with wrong payloads
-                    // Generation of a new badge as payload
-                    var payload = badges.generateBadge();
-                    // Creation of a string with the payload
-                    var original = JSON.stringify(payload);
+            // Update completely an existing badge with wrong payloads
+            // Generation of a new badge as payload
+            var payload = badges.generateBadge();
+            // Creation of a string with the payload
+            var original = JSON.stringify(payload);
 
-                    // Creation of wrong payloads
-                    // Each wrong payload have one mandatory field deleted
-                    var wrongPayloads = [];
-                    for (var i = 0; i < 3; ++i) {
-                        wrongPayloads.push(JSON.parse(original));
-                    }
-                    delete wrongPayloads[0].name;
-                    delete wrongPayloads[1].description;
-                    delete wrongPayloads[2].imageURL;
+            // Creation of wrong payloads
+            // Each wrong payload have one mandatory field deleted
+            var wrongPayloads = [];
+            for (var i = 0; i < 3; ++i) {
+                wrongPayloads.push(JSON.parse(original));
+            }
+            delete wrongPayloads[0].name;
+            delete wrongPayloads[1].description;
+            delete wrongPayloads[2].imageURL;
 
-                    // Creation of an array of promise
-                    // Try to completely update badge with each wrong payload
-                    var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+            // Creation of an array of promise
+            // Try to completely update badge with each wrong payload
+            var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(badgeId, p, BEARER + authenticationToken)));
 
-                    // When all requests have provided a response
-                    return Promise.all(promises)
-                        .then(function (responses) {
+            // When all requests have provided a response
+            return Promise.all(promises)
+                .then(function (responses) {
 
-                            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
-                            responses.forEach(r => (r.status.should.equal(422)));
-
-                        });
+                    // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
+                    responses.forEach(r => (r.status.should.equal(422)));
 
                 });
 
@@ -1512,176 +1584,300 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfM
 }
 
 // Failure
-// PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
+// PUT /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfMandatoryFieldsAreEmptyOrContainOnlySpaces() {
     // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+    const BADGE = badges.generateBadge();
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Badge id to update
+    var badgeId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of the new badge
+            return badges.createBadge(BADGE, BEARER + authenticationToken);
+
+        })
+
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
-                .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+            // Get the badge id from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
 
-                    // Update completely an existing badge with wrong payloads
-                    // Generation of a new badge as payload
-                    var payload = badges.generateBadge();
-                    // Creation of a string with the payload
-                    var original = JSON.stringify(payload);
+            // Update completely an existing badge with wrong payloads
+            // Generation of a new badge as payload
+            var payload = badges.generateBadge();
+            // Creation of a string with the payload
+            var original = JSON.stringify(payload);
 
-                    // Creation of wrong payloads
-                    // Each wrong payload have one mandatory field that contains only two spaces
-                    var wrongPayloads = [];
-                    for (var i = 0; i < 3; ++i) {
-                        wrongPayloads.push(JSON.parse(original));
-                    }
-                    wrongPayloads[0].name = "  ";
-                    wrongPayloads[1].description = "  ";
-                    wrongPayloads[2].imageURL = "  ";
+            // Creation of wrong payloads
+            // Each wrong payload have one mandatory field that contains only two spaces
+            var wrongPayloads = [];
+            for (var i = 0; i < 3; ++i) {
+                wrongPayloads.push(JSON.parse(original));
+            }
+            wrongPayloads[0].name = "  ";
+            wrongPayloads[1].description = "  ";
+            wrongPayloads[2].imageURL = "  ";
 
-                    // Creation of an array of promise
-                    // Try to completely update badge with each wrong payload
-                    var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+            // Creation of an array of promise
+            // Try to completely update badge with each wrong payload
+            var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(badgeId, p, BEARER + authenticationToken)));
 
-                    // When all requests have provided a response
-                    return Promise.all(promises)
-                        .then(function (responses) {
+            // When all requests have provided a response
+            return Promise.all(promises);
 
-                            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
-                            responses.forEach(r => (r.status.should.equal(422)));
+        })
 
-                        });
+        .then(function (responses) {
 
-                });
-
-        });
-}
-
-// Failure
-// PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfNameContainsMoreThan80Characters() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
-        .then(function (response) {
-
-            // Get all created badges
-            return badges.getBadges()
-                .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
-
-                    // Change the length of the badge name to 81 characters
-                    badge.name = chance.word({ length: 81 });
-
-                    return badges.updateCompletelyBadge(id, badge)
-                        .then(function (response) {
-
-                            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
-                            response.status.should.equal(422);
-
-                            // Change the length of the badge name to 80 characters
-                            badge.name = chance.word({ length: 80 });
-                            return badges.updateCompletelyBadge(id, badge)
-                                .then(function (response) {
-
-                                    // HTTP response status should equal 204 NO CONTENT
-                                    response.status.should.equal(204);
-
-                                });
-
-                        });
-
-                });
+            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
+            responses.forEach(r => (r.status.should.equal(422)));
 
         });
 
 }
 
 // Failure
-// PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfDescriptionOrImageUrlContainMoreThan255Characters() {
+// PUT /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfNameContainsMoreThan80Characters() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
     // Generation of a new badge
     var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
+    // Application id
+    var applicationId;
+    // Badge id to update
+    var badgeId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of the new badge
+            return badges.createBadge(badge, BEARER + authenticationToken);
+
+        })
+
         .then(function (response) {
 
-            // Get all created badges
-            return badges.getBadges()
-                .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-                    var id = badge.badgeId;
+            // Get the badge id from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
 
-                    // Update completely an existing badge with wrong payloads
-                    // Generation of a new badge as payload
-                    var payload = badges.generateBadge();
-                    // Creation of a string with the payload
-                    var original = JSON.stringify(payload);
+            // Change the length of the badge name to 81 characters
+            badge.name = chance.word({ length: 81 });
 
-                    // Creation of wrong payloads
-                    // Each wrong payload have description or imageURL that contains 256 characters
-                    var wrongPayloads = [];
-                    for (var i = 0; i < 2; ++i) {
-                        wrongPayloads.push(JSON.parse(original));
-                    }
-                    wrongPayloads[0].description = chance.word({ length: 256 });
-                    wrongPayloads[1].imageURL = chance.word({ length: 256 });
+            // Try to completely update
+            return badges.updateCompletelyBadge(badgeId, badge, BEARER + authenticationToken);
 
-                    // Creation of an array of promise
-                    // Try to completely update badge with each wrong payload
-                    var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+        })
 
-                    // When all requests have provided a response
-                    return Promise.all(promises)
-                        .then(function (responses) {
+        .then(function (response) {
 
-                            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
-                            responses.forEach(r => (r.status.should.equal(422)));
+            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+            response.status.should.equal(422);
 
-                            // Creation of correct payloads
-                            // Each correct payload have description or imageURL that contains 255 characters
-                            for (var i = 0; i < 2; ++i) {
-                                wrongPayloads.push(JSON.parse(original));
-                            }
-                            wrongPayloads[0].description = chance.word({ length: 255 });
-                            wrongPayloads[1].imageURL = chance.word({ legth: 255 });
+            // Change the length of the badge name to 80 characters
+            badge.name = chance.word({ length: 80 });
 
-                            // Creation of an array of promise
-                            // Try to completely update badge with each correct payload
-                            var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(id, p)));
+            // Update completely badge
+            return badges.updateCompletelyBadge(badgeId, badge, BEARER + authenticationToken);
 
-                            // When all requests have provided a response
-                            return Promise.all(promises)
-                                .then(function (responses) {
+        })
 
-                                    // Each HTTP responses status should equal 204 NO CONTENT
-                                    responses.forEach(r => (r.status.should.equal(204)));
+        .then(function (response) {
 
-                                });
+            // HTTP response status should equal 204 NO CONTENT
+            response.status.should.equal(204);
+
+        });
+
+}
+
+// Failure
+// PUT /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfDescriptionOrImageURLContainMoreThan255Characters() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Generation of a new badge
+    const BADGE = badges.generateBadge();
+    // Application id
+    var applicationId;
+    // Badge id to update
+    var badgeId;
+    // Wrong payloads
+    var wrongPayloads = [];
+    // Stringify the payload
+    var original;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of the new badge
+            return badges.createBadge(BADGE, BEARER + authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // Get the badge id from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
+
+            // Creation of a string with the payload
+            original = JSON.stringify(badges.generateBadge());
+
+            // Creation of wrong payloads
+            // Each wrong payload have description or imageURL that contains 256 characters
+            wrongPayloads = [];
+            for (var i = 0; i < 2; ++i) {
+                wrongPayloads.push(JSON.parse(original));
+            }
+            wrongPayloads[0].description = chance.word({ length: 256 });
+            wrongPayloads[1].imageURL = chance.word({ length: 256 });
+
+            // Creation of an array of promise
+            // Try to completely update badge with each wrong payload
+            var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(badgeId, p, BEARER + authenticationToken)));
+
+            // When all requests have provided a response
+            return Promise.all(promises);
+
+        })
+
+        .then(function (responses) {
+
+            // Each HTTP responses status should equal 422 UNPROCESSABLE ENTITY
+            responses.forEach(r => (r.status.should.equal(422)));
+
+            // Creation of correct payloads
+            // Each correct payload have description or imageURL that contains 255 characters
+            for (var i = 0; i < 2; ++i) {
+                wrongPayloads.push(JSON.parse(original));
+            }
+            wrongPayloads[0].description = chance.word({ length: 255 });
+            wrongPayloads[1].imageURL = chance.word({ legth: 255 });
+
+            // Creation of an array of promise
+            // Update badge with each correct payload
+            var promises = wrongPayloads.map(p => (badges.updateCompletelyBadge(badgeId, p, BEARER + authenticationToken)));
+
+            // When all requests have provided a response
+            return Promise.all(promises);
+
+        })
 
 
-                        });
+        .then(function (responses) {
 
-                });
+            // Each HTTP responses status should equal 204 NO CONTENT
+            responses.forEach(r => (r.status.should.equal(204)));
+
+        });
+
+}
+
+// Failure
+// PUT /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeIfTheBadgeNameProvidedAlreadyExists() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Generation of a first badge
+    const BADGE_1 = badges.generateBadge();
+    // Generation of a second badge
+    const BADGE_2 = badges.generateBadge();
+    // Application id
+    var applicationId;
+    // Badge id to update
+    var badgeId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of the first badge
+            return badges.createBadge(BADGE_1, BEARER + authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // Creation of the second badge
+            return badges.createBadge(BADGE_2, BEARER + authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // Get the badge id of the second badge created from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
+
+            // Try to update badge with the same value of BADGE_1
+            return badges.updateCompletelyBadge(badgeId, BADGE_1, BEARER + authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should equal 422 UNPROCESSABLE ENTITY
+            response.status.should.equal(422);
 
         });
 }
 
 // Failure
-// PUT
-function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Update a badge that doesn't exist
-    return badges.updateCompletelyBadge(0, badge)
+// PUT /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateAnExistingBadgeIfBadgeIdProvidedDoesNotExist() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Generation of a new badge
+            var badge = badges.generateBadge();
+            // Update a badge that doesn't exist
+            return badges.updateCompletelyBadge(0, badge, BEARER + authenticationToken);
+
+        })
+
         .then(function (response) {
 
             // HTTP response status should equal 404 NOT FOUND
@@ -1691,15 +1887,299 @@ function itShouldRefuseAnUnauthenticatedUserToCompletelyUpdateAnExistingBadgeIfB
 
 }
 
+// Failure 
+// Put /id
+function itShouldRefuseAuthenticatedUserToCompletelyUpdateExistingBadgeOfAnApplicationThatDoesNotExist() {
+    const BADGE = badges.generateBadge();
+    // Application id
+    var applicationId = 0;
+    // Creation of a valid authentication token but for an application that doesn't exist
+    var authenticationToken = BEARER + jwt.sign(
+        {
+            iss: applicationId
+        },
+        KEY,
+        {
+            expiresIn: '1h'
+        }
+    );
+
+    // Try to update badge
+    return badges.updateCompletelyBadge(0, BADGE, authenticationToken)
+        .then(function (response) {
+
+            // HTTP response status should be 410 GONE
+            response.status.should.equal(410);
+
+        })
+
+}
+
+// Failure 
+// Delete /id
+function itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthorizationHeaderIsNotProvided() {
+    // Badge id to delete
+    var badgeId = 0;
+    // Try to delete badge
+    return badges.deleteBadgeWithoutAuthorizationHeader(badgeId)
+        .then(function (response) {
+
+            // HTTP response status should be 400 BAD REQUEST
+            response.status.should.equal(400);
+
+        });
+}
+
 // Failure
-// Delete
-function itShouldRefuseAnUnauthenticatedUserToDeleteAnExistingBadgeIfBadgeIdProvidedDoesNotExist() {
-    // Delete a badge that doesn't exist
-    return badges.deleteBadge(0)
+// Delete /id
+function itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsEmpty() {
+    // Authentication token for the application above
+    var authenticationToken = "";
+    // Badge id to delete
+    var badgeId = 0;
+    // Try to delete badge
+    return badges.deleteBadge(badgeId, authenticationToken)
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+        });
+}
+
+// Failure
+// Delete /id
+function itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotPrecededByTheBearerPattern() {
+    // Badge id to update
+    var badgeId = 0;
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Authentication token for the application above without Bearer pattern
+    var authenticationToken = "";
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Valid authentication token received
+            authenticationToken = response;
+
+            // Try to delete badge
+            return badges.deleteBadge(badgeId, authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should equal 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+        });
+}
+
+// Failure
+// Delete /id
+function itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsNotSignedByTheGamificationAPIServer() {
+    // Generation of a new badge
+    const BADGE = badges.generateBadge();
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Badge id to update
+    var badgeId;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Create a badge
+            return badges.createBadge(BADGE, BEARER + authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // Get the badge id from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
+
+            // Creation of a valid authentication token for this application but not signed with the server signature key
+            const WRONG_KEY = KEY + 1;
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                WRONG_KEY,
+                {
+                    expiresIn: '1h'
+                }
+            );
+
+            // Try to delete badge
+            return badges.deleteBadge(badgeId, authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+            // Creation of a valid authentication token for this application signed with the server signature key
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                KEY,
+                {
+                    expiresIn: '1h'
+                }
+            );
+
+            // Delete the badge
+            return badges.deleteBadge(badgeId, authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 204 NO CONTENT
+            response.status.should.equal(204);
+
+        })
+}
+
+// Failure
+// Delete /id
+function itShouldRefuseUnauthenticatedUserToDeleteTheDesiredBadgeOfThisApplicationIfTheAuthenticationTokenIsExpired() {
+    // Generation of a new badge
+    const BADGE = badges.generateBadge();
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Application id
+    var applicationId;
+    // Badge id to delete
+    var badgeId = 0;
+    // Authentication token for the application above
+    var authenticationToken;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received without the Bearer pattern
+            authenticationToken = response;
+
+            // Save the application id from the JWT
+            applicationId = jwt.verify(authenticationToken, KEY).iss;
+
+            // Creation of the second badge
+            return badges.createBadge(BADGE, BEARER + authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // Get the badge id of the second badge created from Location header
+            var location = response.header["location"];
+            badgeId = location.substring(location.lastIndexOf("/") + 1);
+
+            // Creation of a valid authentication token for this application but expired
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                KEY,
+                {
+                    expiresIn: 0
+                }
+            );
+
+            // Try to delete badge
+            return badges.deleteBadge(badgeId, authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 401 UNAUTHORIZED
+            response.status.should.equal(401);
+
+            // Creation of a valid authentication token for this application but not expired
+            authenticationToken = BEARER + jwt.sign(
+                {
+                    iss: applicationId
+                },
+                KEY,
+                {
+                    expiresIn: '1h'
+                }
+            );
+
+            // Delete badge
+            return badges.deleteBadge(badgeId, authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // HTTP response status should be 204 NO CONTENT
+            response.status.should.equal(204);
+
+        })
+}
+
+// Failure
+// Delete /id
+function itShouldRefuseAuthenticatedUserToDeleteTheDesiredBadgeIfBadgeIdProvidedDoesNotExist() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Badge id to delete
+    var badgeId = 0;
+    // Authentication token for the application above
+    var authenticationToken = BEARER;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Authentication token received
+            authenticationToken += response;
+
+            // Delete a badge that doesn't exist
+            return badges.deleteBadge(badgeId, authenticationToken);
+
+        })
+
         .then(function (response) {
 
             // HTTP response status should equal 404 NOT FOUND
             response.status.should.equal(404);
 
         });
+}
+
+// Failure
+// Delete /id
+function itShouldRefuseAuthenticatedUserToDeleteTheDesiredBadgeOfAnApplicationThatDoesNotExist() {
+    // Application id
+    var applicationId = 0;
+    // Creation of a valid authentication token but for an application that doesn't exist
+    var authenticationToken = BEARER + jwt.sign(
+        {
+            iss: applicationId
+        },
+        KEY,
+        {
+            expiresIn: '1h'
+        }
+    );
+
+    // Try to delete badge
+    var badgeId = 0;
+    return badges.deleteBadge(badgeId, authenticationToken)
+        .then(function (response) {
+
+            // HTTP response status should be 410 GONE
+            response.status.should.equal(410);
+
+        })
+
 }
