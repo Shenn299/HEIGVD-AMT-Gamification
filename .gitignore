@@ -3,6 +3,4 @@
 =======
 #untracked directories
 target
-tests/node_modules
-tests/env.json
 >>>>>>> refs/remotes/origin/master
