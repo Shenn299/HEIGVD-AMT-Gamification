@@ -14,11 +14,11 @@
 
 ## Top-down style
 As we're a team of 4 people, we've chosen to follow the top-down style. We began to document our REST API with Swagger in yaml. Then :
-* software quality engineers implement API tests.
-* software developers implement the API on Spring Boot.
+* software quality engineers implement API tests in Javascript.
+* software developers implement the API in Java with Spring Boot.
 
 ## Instruction for running automatised Mocha Tests
-run `npm install` and `npm test` in nodejsTesting `directory`
+run `npm install` then `npm test` in `tests`directory
 
 ## Credits
 Software quality engineers:
