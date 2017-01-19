@@ -498,6 +498,11 @@ paths:
       tags:
         - Events
       parameters:
+        - name: authenticationToken
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
         - in: body
           name: event
           description: Event object that needs to be added to an application in a database.
@@ -509,6 +514,8 @@ paths:
           description: Created, returns the URL to access the new event.
           schema:
             $ref: '#/definitions/LocationEvent'
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         422:
           description: Unprocessable entity,
                        if mandatory fields aren't provided,
@@ -561,6 +568,8 @@ paths:
           description: Bad request, if Authorization header isn't provided or if it's not properly named.
         401:
           description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.
         500:
           description: Internal server error, if database isn't reachable.
               
@@ -780,7 +789,7 @@ definitions:
           
   EventInputDTO:
     type: object
-    required: [name,description,applicationId,userAppId]
+    required: [name,description,userAppId]
     properties:
       name:
         type: string
@@ -788,10 +797,6 @@ definitions:
       description:
         type: string
         description: Description of the application.
-      applicationId:
-        type: integer
-        format: int64
-        description: Id of the type of the application using the gamification platform
       userAppId:
         type: integer
         format: int64
@@ -848,9 +853,11 @@ definitions:
         description: Description of the rule.
       badge_id:
         type: integer
+        format: int64
         description: The id of the badge to be given to a user
       pointScale_id:
         type: integer
+        format: int64
         description: The id of the pointScale to be given to a user
       points:
         type: integer

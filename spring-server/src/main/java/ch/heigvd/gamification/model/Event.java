@@ -21,76 +21,71 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 /**
- * 
- * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini Fabien
+ *
+ * @author Henneberger Sébastien, Pascal Sekley, Rodrigue Tchuensu, Franchini
+ * Fabien
  * @version 1.0
  * @since 2016-11-14
  */
 @Entity
-public class Event implements Serializable{
-    
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    
-    private String name;
-    private String description;
-    //private Long appId;
-    private Long userAppId;
-    
-    @ManyToOne
-    private Application application;
-    
-    @ManyToOne
-    private User user;
-    
-    
-    
-    public Event(){}
-    
-    public Event(User user, Application application, String name, Long userAppId){
-        this.user = user;
-        this.application = application;
-        this.name = name;
-        this.userAppId = userAppId;
-    }
-    
-    public String getName()
-    {
-        return name;
-    }
-    
-    public void setName(String name)
-    {
-        this.name = name;
-    }
+public class Event implements Serializable {
 
-    public String getDescription()
-    {
-        return description;
-    }
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-    public void setDescription(String description)
-    {
-        this.description = description;
-    }
-    
-    public Long getId() {
-        return id;
-    }
+   private String name;
+   private String description;
+   private Long userAppId;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public User getUser() {
-        return user;
-    }
+   @ManyToOne
+   private Application application;
 
-    public void setUser(User user) {
-        this.user = user;
-}
-    
+   @ManyToOne
+   private User user;
+
+   public Event() {
+   }
+
+   public Event(User user, Application application, String name, Long userAppId) {
+      this.user = user;
+      this.application = application;
+      this.name = name;
+      this.userAppId = userAppId;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public User getUser() {
+      return user;
+   }
+
+   public void setUser(User user) {
+      this.user = user;
+   }
+
 //    public Long getApplicationId(){
 //        return appId;
 //    }
@@ -103,19 +98,19 @@ public class Event implements Serializable{
 //        return userId;
 //    }
 //    
-    public void setUserAppId(Long userAppId){
-        this.userAppId = userAppId;
-    }
-    
-    public Long getUserAppid(){
-        return userAppId;
-    }
-    
-    public void setApplication(Application application){
-        this.application = application;
-    }
-    
-    public Application getApplication(){
-        return application;
-    }
+   public void setUserAppId(Long userAppId) {
+      this.userAppId = userAppId;
+   }
+
+   public Long getUserAppid() {
+      return userAppId;
+   }
+
+   public void setApplication(Application application) {
+      this.application = application;
+   }
+
+   public Application getApplication() {
+      return application;
+   }
 }
