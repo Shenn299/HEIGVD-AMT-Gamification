@@ -1,0 +1,35 @@
+<div class="md-padding" flex layout-sm="column">
+    <md-card>
+        <md-card-content>
+            <h2 class="md-title">Please, authenticate your application</h2>
+
+
+            <form class="form" name="form">
+
+                <div class="form-group">
+                    <input type="text" name="applicationName" class="form-control" placeholder="Enter the application name" ng-model="vm.application.name"
+                        required size="35">
+                </div>
+
+                <div class="form-group">
+                    <input type="password" name="applicationPassword" class="form-control" placeholder="Enter the application password" ng-model="vm.application.password"
+                        required size="35">
+                </div>
+
+            </form>
+
+            <div>
+                <p></p>
+                <button class="btn btn-inverse" type="submit" ng-click="vm.authenticate()">
+                    Authentication
+                </button>
+
+                <p>{{ vm.noValidErrorMsg }}</p>
+                <p>{{ vm.authenticationFailed }}</p>
+                <p>{{ vm.response }}</p>
+
+            </div>
+
+        </md-card-content>
+    </md-card>
+</div>

@@ -1,0 +1,42 @@
+{
+  "generator-angm": {
+    "appName": "gamificationapiwebsitedemo",
+    "angularCookies": true,
+    "angularAnimate": true,
+    "angularSanitize": true,
+    "angularBootstrap": true,
+    "angularMaterial": true,
+    "modules": [
+      {
+        "name": "authentication"
+      },
+      {
+        "name": "events"
+      },
+      {
+        "name": "users"
+      },
+      {
+        "name": "managelocalstorage"
+      }
+    ],
+    "menu": [
+      {
+        "link": "authentication",
+        "title": "Authentication"
+      },
+      {
+        "link": "events",
+        "title": "Events"
+      },
+      {
+        "link": "users",
+        "title": "Users"
+      },
+      {
+        "link": "managelocalstorage",
+        "title": "Managelocalstorage"
+      }
+    ]
+  }
+}

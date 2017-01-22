@@ -1,3 +1,4 @@
+
 package ch.heigvd.gamification.api;
 
 import ch.heigvd.gamification.api.dto.LeaderBoardsAwardsOutputDTO;
@@ -34,226 +35,229 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/leaderboards")
 public class LeaderboardsEndpoint implements LeaderboardsApi { // Comparable<UserLeaderboardsOutputDTO>{
 
-    private final HttpServletRequest request;
-    private final ApplicationRepository applicationRepository;
-    private final AwardRepository awardRepository;
-    private int awardNumber;
-    private int badgesNumber;
-    private int pointscaleNumber;
+   private final HttpServletRequest request;
+   private final ApplicationRepository applicationRepository;
+   private final AwardRepository awardRepository;
+   private int awardNumber;
+   private int badgesNumber;
+   private int pointscaleNumber;
 
-    @Autowired
-    LeaderboardsEndpoint(HttpServletRequest request, ApplicationRepository applicationRepository, AwardRepository awardRepository) {
-        this.request = request;
-        this.applicationRepository = applicationRepository;
-        this.awardRepository = awardRepository;
-    }
+   @Autowired
+   LeaderboardsEndpoint(HttpServletRequest request, ApplicationRepository applicationRepository, AwardRepository awardRepository) {
+      this.request = request;
+      this.applicationRepository = applicationRepository;
+      this.awardRepository = awardRepository;
+   }
 
-    @Override
-    @RequestMapping(path = "/awards", method = RequestMethod.GET)
-    public ResponseEntity<List<LeaderBoardsAwardsOutputDTO>> leaderboardsAwardsGet(@RequestHeader("Authorization") String authenticationToken) {
-        // Check if the JWT isn't valid
-        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+   @Override
+   @RequestMapping(path = "/awards", method = RequestMethod.GET)
+   public ResponseEntity<List<LeaderBoardsAwardsOutputDTO>> leaderboardsAwardsGet(@RequestHeader("Authorization") String authenticationToken) {
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
 
-        // Get the application id from the JWT
-        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
 
-        // Get the existing application
-        Application application = applicationRepository.findOne(applicationId);
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
 
-        // If application was deleted but the authentication token wasn't removed
-        if (application == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
 
-        //Get the application users 
-        List<User> appUsersList = application.getListUsers();
+      //Get the application users 
+      List<User> appUsersList = application.getListUsers();
 
-        //returns the list of users sorted in order of decreasing awards earned.
-        List<LeaderBoardsAwardsOutputDTO> awardLeaderboardDTO = new ArrayList<>();
-        List<PointsAward> pointAwards;
-        List<BadgeAward> badgeAwards;
-        List<String> awardTypesAndNames;
-        for (int i = 0; i < appUsersList.size(); i++) {
-            awardTypesAndNames = new ArrayList<>();
+      //returns the list of users sorted in order of decreasing awards earned.
+      List<LeaderBoardsAwardsOutputDTO> awardLeaderboardDTO = new ArrayList<>();
+      List<PointsAward> pointAwards;
+      List<BadgeAward> badgeAwards;
+      List<String> awardTypesAndNames;
+      for (int i = 0; i < appUsersList.size(); i++) {
+         awardTypesAndNames = new ArrayList<>();
 
-            badgeAwards = awardRepository.findUserBadgeAwards(appUsersList.get(i), applicationId, "badgeaward");
+         badgeAwards = awardRepository.findUserBadgeAwards(appUsersList.get(i), applicationId, "badgeaward");
 
-            for (BadgeAward ba : badgeAwards) {
-                awardTypesAndNames.add("BadgeAward -> name: " + ba.getBadge().getName());
-            }
+         for (BadgeAward ba : badgeAwards) {
+            awardTypesAndNames.add("BadgeAward -> name: " + ba.getBadge().getName());
+         }
 
-            pointAwards = awardRepository.findUserPointAwards(appUsersList.get(i), applicationId, "pointaward");
+         pointAwards = awardRepository.findUserPointAwards(appUsersList.get(i), applicationId, "pointaward");
 
-            for (PointsAward pa : pointAwards) {
-                awardTypesAndNames.add("PointAwards -> name: " + pa.getPointScale().getName());
-            }
-            
-            awardLeaderboardDTO.add(toDTO(appUsersList.get(i), applicationId, awardTypesAndNames));   
-        }
+         for (PointsAward pa : pointAwards) {
+            awardTypesAndNames.add("PointAwards -> name: " + pa.getPointScale().getName());
+         }
+
+         awardLeaderboardDTO.add(toDTO(appUsersList.get(i), applicationId, awardTypesAndNames));
+      }
 
       Collections.sort(awardLeaderboardDTO, (LeaderBoardsAwardsOutputDTO u1, LeaderBoardsAwardsOutputDTO u2) -> {
-          if(u1.getAwards().size() < u2.getAwards().size())
-              return 1;
-          else if (u1.getAwards().size() > u2.getAwards().size())
-              return -1;
-          else
-              return 0;
+         if (u1.getAwards().size() < u2.getAwards().size()) {
+            return 1;
+         }
+         else if (u1.getAwards().size() > u2.getAwards().size()) {
+            return -1;
+         }
+         else {
+            return 0;
+         }
       });
-        return new ResponseEntity<>(awardLeaderboardDTO, HttpStatus.OK);
+      return new ResponseEntity<>(awardLeaderboardDTO, HttpStatus.OK);
 
-    }
+   }
 
-    @Override
-    @RequestMapping(path = "/badges", method = RequestMethod.GET)
-    public ResponseEntity<List<LeaderBoardsBadgesOutputDTO>> leaderboardsBadgesGet(String authenticationToken) {
-        // Check if the JWT isn't valid
-        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+   @Override
+   @RequestMapping(path = "/badges", method = RequestMethod.GET)
+   public ResponseEntity<List<LeaderBoardsBadgesOutputDTO>> leaderboardsBadgesGet(@RequestHeader("Authorization") String authenticationToken) {
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
 
-        // Get the application id from the JWT
-        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
 
-        // Get the existing application
-        Application application = applicationRepository.findOne(applicationId);
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
 
-        // If application was deleted but the authentication token wasn't removed
-        if (application == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
 
-        //Get the application users 
-        List<User> appUsersList = application.getListUsers();
+      //Get the application users 
+      List<User> appUsersList = application.getListUsers();
 
-        List<String> awardTypesAndNames = new ArrayList<>();
+      List<String> awardTypesAndNames = new ArrayList<>();
 
-        //returns the list of users sorted in order of decreasing awards earned.
-        List<LeaderBoardsBadgesOutputDTO> badgesAwardLeaderboardDTO = new ArrayList<>();
-        List<BadgeAward> badgeAwards;
-        List<String> badgeNames;
-        
-        
-        
-        for (int i = 0; i < appUsersList.size(); i++) {
-            badgeNames = new ArrayList<>();
-            badgeAwards = awardRepository.findUserBadgeAwards(appUsersList.get(i), applicationId, "badgeaward");
+      //returns the list of users sorted in order of decreasing awards earned.
+      List<LeaderBoardsBadgesOutputDTO> badgesAwardLeaderboardDTO = new ArrayList<>();
+      List<BadgeAward> badgeAwards;
+      List<String> badgeNames;
 
-            for (BadgeAward ba : badgeAwards) {
-                badgeNames.add("name: " + ba.getBadge().getName());
-            }
+      for (int i = 0; i < appUsersList.size(); i++) {
+         badgeNames = new ArrayList<>();
+         badgeAwards = awardRepository.findUserBadgeAwards(appUsersList.get(i), applicationId, "badgeaward");
 
-            badgesAwardLeaderboardDTO.add(toBadgesAwardDTO(appUsersList.get(i), applicationId, badgeNames));
-        }
+         for (BadgeAward ba : badgeAwards) {
+            badgeNames.add("name: " + ba.getBadge().getName());
+         }
 
-        Collections.sort(badgesAwardLeaderboardDTO, (LeaderBoardsBadgesOutputDTO u1, LeaderBoardsBadgesOutputDTO u2) -> {
-            if ( u1.getBadges().size() < u2.getBadges().size()){
-                return 1;
-            } else if (u1.getBadges().size() > u2.getBadges().size()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
+         badgesAwardLeaderboardDTO.add(toBadgesAwardDTO(appUsersList.get(i), applicationId, badgeNames));
+      }
 
-        return new ResponseEntity<>(badgesAwardLeaderboardDTO, HttpStatus.OK);
-    }
+      Collections.sort(badgesAwardLeaderboardDTO, (LeaderBoardsBadgesOutputDTO u1, LeaderBoardsBadgesOutputDTO u2) -> {
+         if (u1.getBadges().size() < u2.getBadges().size()) {
+            return 1;
+         }
+         else if (u1.getBadges().size() > u2.getBadges().size()) {
+            return -1;
+         }
+         else {
+            return 0;
+         }
+      });
 
-    @Override
-    @RequestMapping(path = "/pointscale", method = RequestMethod.GET)
-    public ResponseEntity<List<LeaderBoardsPointscaleOutputDTO>> leaderboardsPointscaleGet(String authenticationToken) {
-        // Check if the JWT isn't valid
-        if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
-        }
+      return new ResponseEntity<>(badgesAwardLeaderboardDTO, HttpStatus.OK);
+   }
 
-        // Get the application id from the JWT
-        long applicationId = TokenKeyTools.parseJWT(authenticationToken);
+   @Override
+   @RequestMapping(path = "/pointScales", method = RequestMethod.GET)
+   public ResponseEntity<List<LeaderBoardsPointscaleOutputDTO>> leaderboardsPointscaleGet(@RequestHeader("Authorization") String authenticationToken) {
+      // Check if the JWT isn't valid
+      if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
+         return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+      }
 
-        // Get the existing application
-        Application application = applicationRepository.findOne(applicationId);
+      // Get the application id from the JWT
+      long applicationId = TokenKeyTools.parseJWT(authenticationToken);
 
-        // If application was deleted but the authentication token wasn't removed
-        if (application == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
+      // Get the existing application
+      Application application = applicationRepository.findOne(applicationId);
 
-        //Get the application users 
-        List<User> appUsersList = application.getListUsers();
+      // If application was deleted but the authentication token wasn't removed
+      if (application == null) {
+         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+      }
 
-        //returns the list of users sorted in order of decreasing awards earned.
-        
-        List<LeaderBoardsAwardsOutputDTO> awardLeaderboardDTO = new ArrayList<>();
-        List<PointsAward> pointAwards;
-        List< PointAwardOutputDTO> pointAwardsDTO = new ArrayList<>();
-        
-        List<LeaderBoardsPointscaleOutputDTO> pointScaleLeaderboardsDTO = new ArrayList<>();
-        for (int i = 0; i < appUsersList.size(); i++) {
-         
-            pointAwards = awardRepository.findUserPointAwards(appUsersList.get(i), applicationId,"pointaward");
-            
-            for(PointsAward pa : pointAwards){
-                pointAwardsDTO.add(toDTO(pa));   
-            }
-            
-           pointScaleLeaderboardsDTO.add(toPointAwardDTO(appUsersList.get(i), applicationId, pointAwardsDTO));
-        }
+      //Get the application users 
+      List<User> appUsersList = application.getListUsers();
 
-        Collections.sort(pointScaleLeaderboardsDTO, (LeaderBoardsPointscaleOutputDTO u1, LeaderBoardsPointscaleOutputDTO u2) -> {
-            if (u1.getTotalScores() < u2.getTotalScores()) {
-                return 1;
-            } else if (u1.getTotalScores() > u2.getTotalScores()) {
-                return -1;
-            } else {
-                return 0;
-            }
-        });
+      //returns the list of users sorted in order of decreasing awards earned.
+      List<LeaderBoardsAwardsOutputDTO> awardLeaderboardDTO = new ArrayList<>();
+      List<PointsAward> pointAwards;
+      List< PointAwardOutputDTO> pointAwardsDTO = new ArrayList<>();
 
-        return new ResponseEntity<>(pointScaleLeaderboardsDTO, HttpStatus.OK);
-    }
+      List<LeaderBoardsPointscaleOutputDTO> pointScaleLeaderboardsDTO = new ArrayList<>();
+      for (int i = 0; i < appUsersList.size(); i++) {
 
+         pointAwards = awardRepository.findUserPointAwards(appUsersList.get(i), applicationId, "pointaward");
 
+         for (PointsAward pa : pointAwards) {
+            pointAwardsDTO.add(toDTO(pa));
+         }
 
-    public LeaderBoardsAwardsOutputDTO toDTO(User user, Long appID, List<String> awardTypesAndNames) {
-        LeaderBoardsAwardsOutputDTO dto = new LeaderBoardsAwardsOutputDTO();
-        dto.setAppId(appID);
-        dto.setUserId(user.getId());
-        dto.setUserIdApp(user.getUserIdApp());
-        dto.setAwards(awardTypesAndNames);
-        return dto;
-    }
-    
-    public LeaderBoardsBadgesOutputDTO toBadgesAwardDTO(User user, Long appID, List<String> badgeNames){
-        LeaderBoardsBadgesOutputDTO dto = new LeaderBoardsBadgesOutputDTO();
-        dto.setAppId(appID);
-        dto.setUserId(user.getId());
-        dto.setUserIdApp(user.getUserIdApp());
-        dto.setBadges(badgeNames); 
-        return dto;
-    }
-    
-    public  PointAwardOutputDTO toDTO(PointsAward pointAward){
-         PointAwardOutputDTO dto = new  PointAwardOutputDTO();
-         dto.setCoefficient(pointAward.getPointScale().getCoefficient());
-         dto.setName(pointAward.getPointScale().getName());
-         dto.setScore(pointAward.getScore());
-         return dto;
-    }
-    public LeaderBoardsPointscaleOutputDTO toPointAwardDTO(User user, Long appID, List<PointAwardOutputDTO> pa ){
-        
-        LeaderBoardsPointscaleOutputDTO dto = new LeaderBoardsPointscaleOutputDTO();
-        dto.setAppId(appID);
-        dto.setUserId(user.getId());
-        dto.setUserIdApp(user.getUserIdApp()); 
-        dto.setPointAwards(pa);
-        dto.setTotalScores(new Long(0));
-        
-        pa.stream().forEach((p) -> {
-            dto.setTotalScores(dto.getTotalScores() + p.getScore() * p.getCoefficient());
-        });
-        
-        return dto;
-    }
+         pointScaleLeaderboardsDTO.add(toPointAwardDTO(appUsersList.get(i), applicationId, pointAwardsDTO));
+      }
+
+      Collections.sort(pointScaleLeaderboardsDTO, (LeaderBoardsPointscaleOutputDTO u1, LeaderBoardsPointscaleOutputDTO u2) -> {
+         if (u1.getTotalScores() < u2.getTotalScores()) {
+            return 1;
+         }
+         else if (u1.getTotalScores() > u2.getTotalScores()) {
+            return -1;
+         }
+         else {
+            return 0;
+         }
+      });
+
+      return new ResponseEntity<>(pointScaleLeaderboardsDTO, HttpStatus.OK);
+   }
+
+   public LeaderBoardsAwardsOutputDTO toDTO(User user, Long appID, List<String> awardTypesAndNames) {
+      LeaderBoardsAwardsOutputDTO dto = new LeaderBoardsAwardsOutputDTO();
+      dto.setAppId(appID);
+      dto.setUserId(user.getId());
+      dto.setUserIdApp(user.getUserIdApp());
+      dto.setAwards(awardTypesAndNames);
+      return dto;
+   }
+
+   public LeaderBoardsBadgesOutputDTO toBadgesAwardDTO(User user, Long appID, List<String> badgeNames) {
+      LeaderBoardsBadgesOutputDTO dto = new LeaderBoardsBadgesOutputDTO();
+      dto.setAppId(appID);
+      dto.setUserId(user.getId());
+      dto.setUserIdApp(user.getUserIdApp());
+      dto.setBadges(badgeNames);
+      return dto;
+   }
+
+   public PointAwardOutputDTO toDTO(PointsAward pointAward) {
+      PointAwardOutputDTO dto = new PointAwardOutputDTO();
+      dto.setCoefficient(pointAward.getPointScale().getCoefficient());
+      dto.setName(pointAward.getPointScale().getName());
+      dto.setScore(pointAward.getScore());
+      return dto;
+   }
+
+   public LeaderBoardsPointscaleOutputDTO toPointAwardDTO(User user, Long appID, List<PointAwardOutputDTO> pa) {
+
+      LeaderBoardsPointscaleOutputDTO dto = new LeaderBoardsPointscaleOutputDTO();
+      dto.setAppId(appID);
+      dto.setUserId(user.getId());
+      dto.setUserIdApp(user.getUserIdApp());
+      dto.setPointAwards(pa);
+      dto.setTotalScores(new Long(0));
+
+      pa.stream().forEach((p) -> {
+         dto.setTotalScores(dto.getTotalScores() + p.getScore() * p.getCoefficient());
+      });
+
+      return dto;
+   }
 
 }

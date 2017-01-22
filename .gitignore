@@ -4,4 +4,5 @@
 #untracked directories
 target
 tests/node_modules
+demo-website/node_modules
 >>>>>>> refs/remotes/origin/master

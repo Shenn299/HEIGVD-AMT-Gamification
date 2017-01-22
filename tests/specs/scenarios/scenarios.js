@@ -1,5 +1,7 @@
+var badges = require("../api/support/badges.js");
 var applications = require("../api/support/applications.js");
 var authentications = require("../api/support/authentications.js");
+var rules = require("../api/support/rules.js");
 var env = require('../../env.local.json');
 var chai = require("chai");
 var jwt = require('jsonwebtoken');
@@ -11,48 +13,22 @@ const BEARER = "Bearer ";
 
 chai.should();
 
-// API tests with workflow
-describe("Workflows :", function () {
-
-    // CRUD operations on badges endpoint
-    describe("CRUD operation on badges endpoint :", function () {
-        it("A new badge created should be present in the list returned by GET request and should contain all provided fields");
-        it("An existing badge that is completely updated should be present in the list returned by GET request and should contain all updated fields");
-        it("An existing badge that is deleted should not be present in the list returned by GET request");
-
-    });
+// API tests with scenarios
+describe("Scenarios :", function () {
 
     // Authentications & applications endpoints
     describe("Authentications & applications operation :", function () {
         it("should allow an unauthenticated user to create a new application, to authenticate itself and to get an authentication token", itShouldAllowUnauthenticatedUserToCreateApplicationToAuthenticateItselfAndToGetAuthenticationToken);
     });
 
+    // The sending of an event must update the concerned user by applying the correct rule
+    describe("The sending of an event must update the concerned user by applying the correct rule", function () {
+        it("should allow an authenticated user to send an event and to see user badge update through the application of the correct rule", itShouldAllowAuthenticatedUserToSendEventAndToSeeUserBadgeUpdateThroughTheApplicationOfTheCorrectRule);
+    });
+
 });
 
-function aNewBadgeCreatedShouldBePresentInTheListReturnedByTheGetRequestAndShouldContainAllPostedFields() {
-    // Generation of a new badge
-    var badge = badges.generateBadge();
-    // Creation of the new badge
-    return badges.createBadge(badge)
-        .then(function (response) {
-
-            // Get all created badges
-            return badges.getBadges()
-                .then(function (response) {
-                    var nbBadges = response.body.length;
-                    var badge = response.body[nbBadges - 1];
-
-                    // HTTP response body should contain the new badge created with all posted fields
-                    badge.should.have.property("badgeId");
-                    badge.should.have.property("name", badge.name);
-                    badge.should.have.property("description", badge.description);
-                    badge.should.have.property("imageURL", badge.imageURL);
-
-                });
-
-        });
-}
-
+// Authentications & applications endpoints
 function itShouldAllowUnauthenticatedUserToCreateApplicationToAuthenticateItselfAndToGetAuthenticationToken() {
     // Generation of a new application
     var application = applications.generateApplication();
@@ -91,4 +67,35 @@ function itShouldAllowUnauthenticatedUserToCreateApplicationToAuthenticateItself
 
         })
 
+}
+
+// The sending of an event must update the concerned user by applying the correct rule
+function itShouldAllowAuthenticatedUserToSendEventAndToSeeUserBadgeUpdateThroughTheApplicationOfTheCorrectRule() {
+    // Generation of a new application
+    const APPLICATION = applications.generateApplication();
+    // Generation of a new badge
+    const BADGE = badges.generateBadge();
+    // Rule to execute
+    var rule = {
+        name: ""
+    }
+    // Authentication token for the application above
+    var authenticationToken = BEARER;
+    return applications.createApplicationAuthenticateApplicationAndReturnAuthenticationTokenReceived(APPLICATION)
+        .then(function (response) {
+            // Valid authentication token received
+            authenticationToken += response;
+
+            // Create a new badge on this application
+            return badges.createBadge(BADGE, authenticationToken);
+
+        })
+
+        .then(function (response) {
+
+            // Create a new rule on this application
+            
+
+
+        })
 }

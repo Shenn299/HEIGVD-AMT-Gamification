@@ -1,7 +1,7 @@
 swagger: '2.0'
 info:
   title: Gamification API
-  description: Move your app forward with the RFPS API.
+  description: Move your app forward with the Gamification API.
   version: "1.0.0"
 # the domain of the service
 host: localhost:8080
@@ -677,7 +677,7 @@ paths:
         500:
           description: Internal server error, if database isn't reachable.
           
-  /leaderboards/pointscale:
+  /leaderboards/pointScales:
     get:
       description: 
         The Leaderboards endpoint returns information about awards(badges and pointscale) belonging to a user in a specified application whose id is present in the authentication token. The response includes the  user_id, userAppId, appId, awardNumber for each user. This response is a list of users sorted by the in order decreasing award number.

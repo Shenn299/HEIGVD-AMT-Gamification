@@ -1,0 +1,38 @@
+<div class="md-padding" flex layout-sm="column">
+    <md-card>
+        <md-card-content>
+            <h2 class="md-title">Create and send events !</h2>
+
+            <form class="form" name="form">
+
+                <div class="form-group">
+                    <input type="text" name="eventName" class="form-control" placeholder="Enter the event name" ng-model="vm.event.name" required
+                        size="35">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="eventDescription" class="form-control" placeholder="Enter the event description" ng-model="vm.event.description"
+                        required size="35">
+                </div>
+
+                <div class="form-group">
+                    <input type="text" name="eventUserId" class="form-control" placeholder="Enter the user id" ng-model="vm.event.userAppId"
+                        required size="35">
+                </div>
+
+            </form>
+
+            <div>
+                <p></p>
+                <button class="btn btn-inverse" type="submit" ng-click="vm.sendEvent()">
+                    Send
+                </button>
+
+                <p>{{ vm.noValidErrorMsg }}</p>
+                <p>{{ vm.response }}</p>
+
+            </div>
+
+        </md-card-content>
+    </md-card>
+</div>
