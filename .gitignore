@@ -5,4 +5,5 @@
 target
 tests/node_modules
 demo-website/node_modules
+demo-website/src/bower_components
 >>>>>>> refs/remotes/origin/master
