@@ -26,7 +26,7 @@ import javax.persistence.ManyToOne;
  */
 
 @Entity
-@DiscriminatorValue(value = "badgeAward")
+@DiscriminatorValue(value = "badgeaward")
 public class BadgeAward extends Award implements Serializable{
 
     

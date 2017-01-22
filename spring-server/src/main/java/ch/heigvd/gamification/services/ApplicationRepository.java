@@ -13,6 +13,8 @@
 package ch.heigvd.gamification.services;
 
 import ch.heigvd.gamification.model.Application;
+import ch.heigvd.gamification.model.User;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
@@ -25,5 +27,6 @@ public interface ApplicationRepository extends JpaRepository<Application, Long>{
     
     Application findByName (String name);
     Application findOne(long id);
+    List<User> findById(Long id);
     
 }

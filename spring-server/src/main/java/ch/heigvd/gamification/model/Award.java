@@ -36,13 +36,14 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "award_type")
+@DiscriminatorColumn(name = "awardtype")
 public abstract class Award implements Serializable {
     
      @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
      
+    private Long appId;
     private String reason;
     
     //@Basic(optional = false)
@@ -74,6 +75,10 @@ public abstract class Award implements Serializable {
         return user;
     }
     
+    public Long getAppId() {
+        return appId;
+    }
+    
 
     public void setReason(String reason) {
         this.reason = reason;
@@ -85,6 +90,10 @@ public abstract class Award implements Serializable {
 
     public void setUser(User user) {
         this.user = user;
+    }
+    
+    public void setAppId(Long appId) {
+        this.appId = appId;
     }
     
     

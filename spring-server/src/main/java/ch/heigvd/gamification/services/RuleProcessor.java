@@ -83,6 +83,7 @@ public class RuleProcessor {
                     else{
                         userPointAward = new PointsAward(rule.getPointScale(), "Got some points", new Date(), event.getUser());
                         userPointAward.setScore(rule.getPoints());
+                        userPointAward.setAppId(targetApplication.getId());
                     }
                     awardRepository.save(userPointAward);
                 }
@@ -94,6 +95,7 @@ public class RuleProcessor {
                     // If the user hasn't got any badge yet, he gets one, if he has he gets nothing
                     if(userBadgeAward == null){
                         userBadgeAward = new BadgeAward(rule.getBadge(), "Got a badge", new Date(), event.getUser());
+                        userBadgeAward.setAppId(targetApplication.getId());
                         awardRepository.save(userBadgeAward);
                     }
                 }

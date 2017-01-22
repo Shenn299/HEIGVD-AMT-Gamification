@@ -18,7 +18,10 @@ import ch.heigvd.gamification.model.BadgeAward;
 import ch.heigvd.gamification.model.PointScale;
 import ch.heigvd.gamification.model.PointsAward;
 import ch.heigvd.gamification.model.User;
+import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 /**
  *
@@ -28,5 +31,15 @@ import org.springframework.data.jpa.repository.JpaRepository;
  */
 public interface AwardRepository extends JpaRepository<Award, Long>{
     BadgeAward findByUserAndBadge(User user, Badge badge);
+    
     PointsAward findByUserAndPointScale(User user, PointScale pointScale);
+    
+    List<Award> findByUserAndAppId(User user, Long appId);
+
+    @Query("SELECT a fROM Award a WHERE a.user =:user and a.appId = :appid and awardtype =:ba")
+    List<BadgeAward> findUserBadgeAwards(@Param("user") User user, @Param("appid") Long appId, @Param("ba") String ba);
+
+    @Query("SELECT a fROM Award a WHERE a.user =:user and a.appId = :appid and awardtype =:pa")
+    List<PointsAward> findUserPointAwards(@Param("user") User user, @Param("appid") Long appId, @Param("pa") String ba);
+
 }

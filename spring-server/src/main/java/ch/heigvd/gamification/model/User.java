@@ -97,5 +97,8 @@ public class User implements Serializable {
         return application;
     }
     
-
+     public List<Award> getListAwards() {
+        return listAwards;
+    }
+    
 }

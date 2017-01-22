@@ -46,6 +46,8 @@ paths:
       description: Create a new badge belonging to the application whose id is present in the authentication token.
       consumes:
         - application/json
+      tags:
+        - Badges
       parameters:
         - in: body
           name: badge
@@ -84,6 +86,8 @@ paths:
       description: Returns the badge which has the specified id belonging to the application whose id is present in the authentication token.
       produces:
         - application/json
+      tags:
+        - Badges
       parameters:
         - name: id
           in: path
@@ -116,6 +120,8 @@ paths:
       description: Modify completely the existing badge which has the specified id belonging to the application whose id is present in the authentication token.
       consumes:
         - application/json
+      tags:
+        - Badges
       parameters:
         - name: id
           in: path
@@ -157,6 +163,8 @@ paths:
 
     delete:
       description: Delete the badge which has the specified id belonging to the application whose id is present in the authentication token.
+      tags:
+        - Badges
       parameters:
         - name: id
           in: path
@@ -217,6 +225,8 @@ paths:
       description: Create a new point scale for this application.
       consumes:
         - application/json
+      tags:
+        - PointScales
       parameters:
         - in: body
           name: pointScale
@@ -254,6 +264,8 @@ paths:
       description: Returns the point scale which has the specified id.
       produces:
         - application/json
+      tags:
+        - PointScales
       parameters:
         - name: id
           in: path
@@ -286,6 +298,8 @@ paths:
       description: Modify completely the existing point scale which has the specified id.
       consumes:
         - application/json
+      tags:
+        - PointScales
       parameters:
         - name: id
           in: path
@@ -326,6 +340,8 @@ paths:
           
     delete:
       description: Delete the point scale which has the specified id.
+      tags:
+        - PointScales
       parameters:
         - name: id
           in: path
@@ -384,6 +400,8 @@ paths:
       description: Create a new application.
       consumes:
         - application/json
+      tags:
+        - Applications
       parameters:
         - in: body
           name: application
@@ -409,6 +427,8 @@ paths:
       description: Modify completely this application whose id is present in the authentication token.
       consumes:
         - application/json
+      tags:
+        - Applications
       parameters:
         - name: application
           in: body
@@ -443,6 +463,8 @@ paths:
 
     delete:
       description: Delete the application which has the specified id.
+      tags:
+        - Applications
       parameters:
         - name: authenticationToken
           in: header
@@ -525,6 +547,7 @@ paths:
         500:
           description: Internal server error, if database isn't reachable.
           
+          
   /users:
     get:
       description: 
@@ -533,6 +556,12 @@ paths:
         - application/json
       tags:
         - Users
+      parameters:
+        - name: authenticationToken
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
       responses:
         200:
           description: OK, an array of users.
@@ -540,23 +569,158 @@ paths:
             type: array
             items:
               $ref: '#/definitions/UserOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        404:
+          description: Not found, if id provided doesn't exist for this application.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.  
+        500:
+          description: Internal server error, if database isn't reachable. 
+          
+  /users/{id}:
+    get:
+      description: 
+        The Applications endpoint returns information about an users which are available.
+      produces:
+        - application/json
+      tags:
+        - Users
+      parameters:
+        - name: id
+          in: path
+          type: integer 
+          format: int64
+          description: id of the target user
+          required: true
+        - name: authenticationToken
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+              $ref: '#/definitions/UserOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired. 
+        404:
+          description: Not found, if id provided doesn't exist for this application.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.  
+        500:
+          description: Internal server error, if database isn't reachable. 
+          
+          
+  /leaderboards/awards:
+    get:
+      description: 
+        The Leaderboards endpoint returns information about awards(badges and pointscale) belonging to a user in a specified application whose id is present in the authentication token. The response includes the  user_id, userAppId, appId, awardNumber for each user. This response is a list of users sorted by the in order decreasing award number.
+      produces:
+        - application/json
+      tags:
+        - LeaderBoards
+      parameters:
+        - name: authenticationToken
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK, an array of Users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LeaderBoardsAwardsOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.  
         500:
           description: Internal server error, if database isn't reachable.
           
+  /leaderboards/badges:
+    get:
+      description: 
+        The Leaderboards endpoint returns information about awards(badges and pointscale) belonging to a user in a specified application whose id is present in the authentication token. The response includes the  user_id, userAppId, appId, awardNumber for each user. This response is a list of users sorted by the in order decreasing award number.
+      produces:
+        - application/json
+      tags:
+        - LeaderBoards
+      parameters:
+        - name: authenticationToken
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK, an array of Users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/  LeaderBoardsBadgesOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.  
+        500:
+          description: Internal server error, if database isn't reachable.
+          
+  /leaderboards/pointscale:
+    get:
+      description: 
+        The Leaderboards endpoint returns information about awards(badges and pointscale) belonging to a user in a specified application whose id is present in the authentication token. The response includes the  user_id, userAppId, appId, awardNumber for each user. This response is a list of users sorted by the in order decreasing award number.
+      produces:
+        - application/json
+      tags:
+        - LeaderBoards
+      parameters:
+        - name: authenticationToken
+          in: header
+          description: Token used to authenticate the client application. This token must be preceded by "Bearer " pattern.
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK, an array of Users.
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/LeaderBoardsPointscaleOutputDTO'
+        400:
+          description: Bad request, if Authorization header isn't provided or if it's not properly named.
+        401:
+          description: Unauthorized, if authentication token provided in the Authorization header is malformed, not signed by the gamification API server or expired.
+        410:
+          description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.  
+        500:
+          description: Internal server error, if database isn't reachable.
+        
   /rules:
     get:
       description: 
         The rules of the application whose id is present in the authentication token.
       produces:
         - application/json
+      tags:
+        - Rules
       parameters:
         - name: authenticationToken
           in: header
           description: Token used to authenticate the client application. Token must be preceded by "Bearer " pattern.
           required: true
           type: string
-      tags:
-        - Rules
       responses:
         200:
           description: OK, an array of rules.
@@ -577,6 +741,8 @@ paths:
       description: Create a new rule for the application whose id is present in the authentication token.
       consumes:
         - application/json
+      tags:
+        - Rules
       parameters:
         - in: body
           name: rule
@@ -613,6 +779,8 @@ paths:
       description: Returns the rule which has the specified id.
       produces:
         - application/json
+      tags:
+        - Rules
       parameters:
         - name: id
           in: path
@@ -643,6 +811,8 @@ paths:
       description: Modify completely the existing rule which has the specified id.
       consumes:
         - application/json
+      tags:
+        - Rules
       parameters:
         - name: id
           in: path
@@ -682,6 +852,8 @@ paths:
 
     delete:
       description: Delete the rule which has the specified id.
+      tags:
+        - Rules
       parameters:
         - name: id
           in: path
@@ -810,19 +982,117 @@ definitions:
           type: string
           description: Unique URL to access the new object created.
           
+         
   UserOutputDTO:
     type: object
     required: [user_id, userIdApp, appId]
     properties:
       user_id:
         type: integer
+        format: int64
         description: Unique identifier representing a specific user.
       userIdApp:
         type: integer
+        format: int64
         description: Unique identifier of a user in the gamification platform.
       appId:
         type: integer
+        format: int64
         description: Unique identifier of the application
+      bagdesOwned:
+        type: array
+        items:
+              $ref: '#/definitions/BadgeOutputDTO'
+        description: list of names of the badges owned by the user
+      pointscalesOwned:
+        type: array
+        items:
+              $ref: '#/definitions/PointScaleOutputDTO'
+        description: list of names of the pointscales owned by the user
+        
+        
+        
+  LeaderBoardsAwardsOutputDTO:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: Unique identifier representing a specific user.
+      userIdApp:
+        type: integer
+        format: int64
+        description: Unique identifier of a user in the gamification platform.
+      appId:
+        type: integer
+        format: int64
+        description: Unique identifier of the application
+      awards:
+        type: array
+        items:
+         type: string
+        
+      
+  LeaderBoardsBadgesOutputDTO:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: Unique identifier representing a specific user.
+      userIdApp:
+        type: integer
+        format: int64
+        description: Unique identifier of a user in the gamification platform.
+      appId:
+        type: integer
+        format: int64
+        description: Unique identifier of the application
+      badges:
+        type: array
+        items:
+         type: string        
+        
+
+  PointAwardOutputDTO:
+    type: object
+    required: [name, coefficient]
+    properties:
+      name:
+        type: string
+        description: Display name of point scale.
+      coefficient:
+        type: integer
+        description: Coeffcient of the point scale.
+      score:
+        type: integer
+        format: int64
+        description: number of points earned on a given pointscale
+
+  
+  LeaderBoardsPointscaleOutputDTO:
+    type: object
+    properties:
+      user_id:
+        type: integer
+        format: int64
+        description: Unique identifier representing a specific user.
+      userIdApp:
+        type: integer
+        format: int64
+        description: Unique identifier of a user in the gamification platform.
+      appId:
+        type: integer
+        format: int64
+        description: Unique identifier of the application
+      totalScores:
+        type: integer
+        format: int64
+      pointAwards:
+        type: array
+        items:
+              $ref: '#/definitions/PointAwardOutputDTO' 
+        
   
   RuleOutputDTO:
     type: object
