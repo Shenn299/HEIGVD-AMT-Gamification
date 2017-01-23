@@ -16,6 +16,7 @@
 As we're a team of 4 people, we've chosen to follow the top-down style. We began to document our REST API with Swagger in yaml. Then :
 * software quality engineers implement API tests in Javascript.
 * software developers implement the API in Java with Spring Boot.
+But, we use the bottom-up too, to generate a interactive documentation of the Gamification API with SpringFox from the Java code annotated with Swagger annotations.
 
 ## Instruction for running automatised Mocha Tests
 Application must be started.
