@@ -70,7 +70,7 @@ public class UsersEndpoint implements UsersApi {
 
         // If application was deleted but the authentication token wasn't removed
         if (application == null) {
-            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>(HttpStatus.GONE);
         }
 
         //Get the application users 
