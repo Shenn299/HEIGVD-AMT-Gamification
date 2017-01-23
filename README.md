@@ -1,6 +1,10 @@
 # HEIGVD-AMT-Gamification
 
-## Goals & objectives of the lab
+## Context of the lab
+
+## Objectives of the lab
+
+## Goals of the lab
 
 ## Outils specification & version
 
