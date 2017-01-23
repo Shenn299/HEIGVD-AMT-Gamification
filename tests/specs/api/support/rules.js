@@ -41,7 +41,7 @@ function getRule(id, authenticationToken) {
 }
 
 // GET desired rule for the application without Authorization header
-function getBadgeWithoutAuthorizationHeader(id) {
+function getRuleWithoutAuthorizationHeader(id) {
     return api
         .get("/rules/" + id)
         .set("Accept", "application/json")
