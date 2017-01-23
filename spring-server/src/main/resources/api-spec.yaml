@@ -981,7 +981,28 @@ definitions:
         locationEvent:
           type: string
           description: Unique URL to access the new object created.
-          
+   
+  PointScaleSummaryOutputDTO:
+    type: object
+    required: [pointScale_id, name, description, coefficient]
+    properties:
+      pointScale_id:
+        type: integer
+        format: int64
+        description: Unique identifier representing a specific point scale.
+      name:
+        type: string
+        description: Display name of point scale.
+      description:
+        type: string
+        description: Description of point scale.
+      coefficient:
+        type: integer
+        description: Coeffcient of the point scale.
+      Score:
+        type: integer 
+        format: int64
+   
          
   UserOutputDTO:
     type: object
@@ -1004,10 +1025,13 @@ definitions:
         items:
               $ref: '#/definitions/BadgeOutputDTO'
         description: list of names of the badges owned by the user
+      totalScores:
+        type: integer
+        format: int64
       pointscalesOwned:
         type: array
         items:
-              $ref: '#/definitions/PointScaleOutputDTO'
+              $ref: '#/definitions/PointScaleSummaryOutputDTO'
         description: list of names of the pointscales owned by the user
         
         

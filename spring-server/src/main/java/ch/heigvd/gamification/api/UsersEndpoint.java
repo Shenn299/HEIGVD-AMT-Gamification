@@ -7,6 +7,7 @@ package ch.heigvd.gamification.api;
 
 import ch.heigvd.gamification.api.dto.BadgeOutputDTO;
 import ch.heigvd.gamification.api.dto.PointScaleOutputDTO;
+import ch.heigvd.gamification.api.dto.PointScaleSummaryOutputDTO;
 import ch.heigvd.gamification.api.dto.UserOutputDTO;
 import ch.heigvd.gamification.model.Application;
 import ch.heigvd.gamification.model.Award;
@@ -80,7 +81,7 @@ public class UsersEndpoint implements UsersApi {
         //Return the UsersOutputDTO
         List<UserOutputDTO> usersDTO = new ArrayList<>();
         List<BadgeOutputDTO> userBadgesDTO;
-        List<PointScaleOutputDTO> userPointscalesDTO;
+        List<PointScaleSummaryOutputDTO> userPointscalesDTO;
         List<BadgeAward> badgeAwards;
         List<PointsAward> pointAwards;
 
@@ -97,7 +98,7 @@ public class UsersEndpoint implements UsersApi {
             pointAwards = awardRepository.findUserPointAwards(appUsersList.get(i), application.getId(), "pointaward");
 
             for (PointsAward pointAward : pointAwards) {
-                userPointscalesDTO.add(toDTO(pointAward.getPointScale()));
+                userPointscalesDTO.add(toDTO(pointAward.getPointScale(), pointAward.getScore()));
             }
             usersDTO.add(i, toDTO(application.getId(), appUsersList.get(i), userBadgesDTO, userPointscalesDTO));
         }
@@ -141,7 +142,7 @@ public class UsersEndpoint implements UsersApi {
         // Return the user DTO
         UserOutputDTO userDTO;
         List<BadgeOutputDTO> userBadgesDTO = new ArrayList<>();
-        List<PointScaleOutputDTO> userPointscalesDTO = new ArrayList<>();
+        List<PointScaleSummaryOutputDTO> userPointscalesDTO = new ArrayList<>();
         List<BadgeAward> badgeAwards;
         List<PointsAward> pointAwards;
 
@@ -153,7 +154,7 @@ public class UsersEndpoint implements UsersApi {
         pointAwards = awardRepository.findUserPointAwards(user, application.getId(), "pointaward");
 
         pointAwards.stream().forEach((pointAward) -> {
-            userPointscalesDTO.add(toDTO(pointAward.getPointScale()));
+            userPointscalesDTO.add(toDTO(pointAward.getPointScale(), pointAward.getScore()));
         });
         userDTO = toDTO(application.getId(), user, userBadgesDTO, userPointscalesDTO);
         
@@ -161,13 +162,17 @@ public class UsersEndpoint implements UsersApi {
 
     }
 
-    public UserOutputDTO toDTO(Long id, User user, List<BadgeOutputDTO> badgesOwned, List<PointScaleOutputDTO> pointScalesOwned) {
+    public UserOutputDTO toDTO(Long id, User user, List<BadgeOutputDTO> badgesOwned, List<PointScaleSummaryOutputDTO> pointScalesOwned) {
         UserOutputDTO dto = new UserOutputDTO();
         dto.setAppId(id);
         dto.setUserId(user.getId());
         dto.setUserIdApp(user.getUserIdApp());
         dto.setBagdesOwned(badgesOwned);
         dto.pointscalesOwned(pointScalesOwned);
+        dto.setTotalScores(new Long(0));
+         pointScalesOwned.stream().forEach((p) -> {
+         dto.setTotalScores(dto.getTotalScores() + p.getScore() * p.getCoefficient());
+      });
 
         return dto;
     }
@@ -181,11 +186,12 @@ public class UsersEndpoint implements UsersApi {
         return dto;
     }
 
-      public PointScaleOutputDTO toDTO(PointScale pointScale) {
-      PointScaleOutputDTO pointScaleDTO = new PointScaleOutputDTO();
+      public PointScaleSummaryOutputDTO toDTO(PointScale pointScale, long score) {
+      PointScaleSummaryOutputDTO pointScaleDTO = new PointScaleSummaryOutputDTO();
       pointScaleDTO.setPointScaleId(pointScale.getId());
       pointScaleDTO.setName(pointScale.getName());
       pointScaleDTO.setCoefficient(pointScale.getCoefficient());
+      pointScaleDTO.setScore(score);
       pointScaleDTO.setDescription(pointScale.getDescription());
       return pointScaleDTO;
    }
