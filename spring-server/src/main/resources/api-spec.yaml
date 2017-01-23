@@ -547,7 +547,6 @@ paths:
         500:
           description: Internal server error, if database isn't reachable.
           
-          
   /users:
     get:
       description: 
@@ -615,7 +614,6 @@ paths:
           description: Gone, if authentication token contains an application_id that doesn't exist. Typically, if the application was deleted.  
         500:
           description: Internal server error, if database isn't reachable. 
-          
           
   /leaderboards/awards:
     get:
@@ -1003,7 +1001,6 @@ definitions:
         type: integer 
         format: int64
    
-         
   UserOutputDTO:
     type: object
     required: [user_id, userIdApp, appId]
@@ -1020,7 +1017,7 @@ definitions:
         type: integer
         format: int64
         description: Unique identifier of the application
-      bagdesOwned:
+      badgesOwned:
         type: array
         items:
               $ref: '#/definitions/BadgeOutputDTO'
@@ -1033,8 +1030,6 @@ definitions:
         items:
               $ref: '#/definitions/PointScaleSummaryOutputDTO'
         description: list of names of the pointscales owned by the user
-        
-        
         
   LeaderBoardsAwardsOutputDTO:
     type: object

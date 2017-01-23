@@ -167,7 +167,7 @@ public class UsersEndpoint implements UsersApi {
         dto.setAppId(id);
         dto.setUserId(user.getId());
         dto.setUserIdApp(user.getUserIdApp());
-        dto.setBagdesOwned(badgesOwned);
+        dto.setBadgesOwned(badgesOwned);
         dto.pointscalesOwned(pointScalesOwned);
         dto.setTotalScores(new Long(0));
          pointScalesOwned.stream().forEach((p) -> {
