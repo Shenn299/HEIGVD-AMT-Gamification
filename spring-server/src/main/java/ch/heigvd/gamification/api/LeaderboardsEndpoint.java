@@ -166,7 +166,8 @@ public class LeaderboardsEndpoint implements LeaderboardsApi { // Comparable<Use
 
    @Override
    @RequestMapping(path = "/pointScales", method = RequestMethod.GET)
-   public ResponseEntity<List<LeaderBoardsPointscaleOutputDTO>> leaderboardsPointscaleGet(@RequestHeader("Authorization") String authenticationToken) {
+   public ResponseEntity<List<LeaderBoardsPointscaleOutputDTO>> leaderboardsPointScalesGet(@RequestHeader("Authorization") String authenticationToken) {
+
       // Check if the JWT isn't valid
       if (!TokenKeyTools.jwtIsOk(authenticationToken)) {
          return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -189,10 +190,12 @@ public class LeaderboardsEndpoint implements LeaderboardsApi { // Comparable<Use
       //returns the list of users sorted in order of decreasing awards earned.
       List<LeaderBoardsAwardsOutputDTO> awardLeaderboardDTO = new ArrayList<>();
       List<PointsAward> pointAwards;
-      List< PointAwardOutputDTO> pointAwardsDTO = new ArrayList<>();
+      List<PointAwardOutputDTO> pointAwardsDTO;
 
       List<LeaderBoardsPointscaleOutputDTO> pointScaleLeaderboardsDTO = new ArrayList<>();
       for (int i = 0; i < appUsersList.size(); i++) {
+
+         pointAwardsDTO = new ArrayList<>();
 
          pointAwards = awardRepository.findUserPointAwards(appUsersList.get(i), applicationId, "pointaward");
 

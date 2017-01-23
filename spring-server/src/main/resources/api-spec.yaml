@@ -667,7 +667,7 @@ paths:
           schema:
             type: array
             items:
-              $ref: '#/definitions/  LeaderBoardsBadgesOutputDTO'
+              $ref: '#/definitions/LeaderBoardsBadgesOutputDTO'
         400:
           description: Bad request, if Authorization header isn't provided or if it's not properly named.
         401:

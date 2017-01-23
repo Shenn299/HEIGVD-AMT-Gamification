@@ -44,7 +44,6 @@
 
 				// Get the authentication token from the browser local storage
 				var authenticationToken = ManagelocalstorageService.getTokenFromBrowserLocalStorage();
-				console.log(authenticationToken);
 
 				// Send event
 				EventsService.sendEvent(vm.event, authenticationToken, vm.API_URL)

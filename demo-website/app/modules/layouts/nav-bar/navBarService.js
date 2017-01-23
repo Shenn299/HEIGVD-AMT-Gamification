@@ -36,11 +36,6 @@
 							name: 'Users'
 					},
 			    
-					{
-						link: 'managelocalstorage',
-							name: 'Managelocalstorage'
-					},
-			    
 		  	];
 
 			return {
