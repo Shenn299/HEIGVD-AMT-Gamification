@@ -10,7 +10,11 @@
 
 ## Login and password for application
 
-## API documentation
+## Documentation of the API (generated with Swagger)
+url
+
+## Interactive documentation of the API (generated with SpringFox)
+url
 
 ## Top-down style
 As we're a team of 4 people, we've chosen to follow the top-down style. We began to document our REST API with Swagger in yaml. Then :
