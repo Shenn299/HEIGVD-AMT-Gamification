@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	'use strict';
 
 	/**
@@ -9,16 +9,33 @@
 	 * Service of the app
 	 */
 
-  	angular
+	angular
 		.module('users')
-		.factory('UsersService', Users);
-		// Inject your dependencies as .$inject = ['$http', 'someSevide'];
-		// function Name ($http, someSevide) {...}
+		.factory('UsersService', UsersService);
 
-		Users.$inject = ['$http'];
+	UsersService.$inject = ['$http'];
 
-		function Users ($http) {
+	function UsersService($http) {
 
-		}
+		var service = {
+
+			// Authenticate the application
+			getUsers: function (authenticationToken, apiUrl) {
+				return $http({
+					method: 'GET',
+					url: apiUrl + '/users',
+					headers: {
+						'Accept': 'application/json',
+						'Authorization': 'Bearer ' + authenticationToken
+					}
+				});
+
+			}
+
+		};
+
+		return service;
+
+	}
 
 })();

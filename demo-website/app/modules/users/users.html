@@ -1,7 +1,58 @@
+<style>
+    table
+    {
+        border-collapse: collapse;
+        display:inline-block;
+        vertical-align:top;
+    }
+    td, th /* Mettre une bordure sur les td ET les th */
+    {
+        border: 1px solid black;
+    }
+</style>
+
 <div class="md-padding" flex layout-sm="column">
     <md-card>
         <md-card-content>
-            <h2 class="md-title">Content from: users page</h2>
-        </md-card-content>
-    </md-card>
+            <div>
+                <div ng-repeat="user in vm.data">
+                    <p>User_{{ user.userId }}</p>
+                    <table ng-if="user.badgesOwned.length">
+                        <thead>
+                            <tr>
+                                <th colspan=2>Badges owned</th>
+                            </tr>
+                            <tr>
+                                <th>name</th>
+                                <th>Icone</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="badge in user.badgesOwned">
+                            <td>{{ badge.name }}</td>
+                            <td><img ng-src="{{badge.imageURL}}" width="50" height="50" /></td>
+                        </tr>
+                    </table>
+
+                    <table ng-if="user.pointscalesOwned.length">
+                        <thead>
+                            <tr>
+                                <th colspan=3>Nb of points on pointScales : {{ user.totalScores }}</th>
+                            </tr>
+                            <tr>
+                                <th>PointScale name</th>
+                                <th>Nb of points</th>
+                                <th>Coefficient</th>
+                            </tr>
+                        </thead>
+                        <tr ng-repeat="pointScale in user.pointscalesOwned">
+                            <td>{{ pointScale.name }}</td>
+                            <td>{{ pointScale.score }}</td>
+                            <td>{{ pointScale.coefficient }}</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+</div>
+</md-card-content>
+</md-card>
 </div>

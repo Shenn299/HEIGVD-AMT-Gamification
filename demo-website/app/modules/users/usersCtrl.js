@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	'use strict';
 
 	/**
@@ -9,22 +9,36 @@
 	* Controller of the app
 	*/
 
-  	angular
+	angular
 		.module('users')
 		.controller('UsersCtrl', Users);
 
-		Users.$inject = [];
+	Users.$inject = ['UsersService', 'ManagelocalstorageService'];
 
-		/*
-		* recommend
-		* Using function declarations
-		* and bindable members up top.
-		*/
+	/*
+	* recommend
+	* Using function declarations
+	* and bindable members up top.
+	*/
 
-		function Users() {
-			/*jshint validthis: true */
-			var vm = this;
+	function Users(UsersService, ManagelocalstorageService) {
+		/*jshint validthis: true */
+		var vm = this;
 
-		}
+		// Gamification API URL
+		vm.API_URL = "http://localhost:8090/api";
+
+		// Get the authentication token from the browser local storage
+		var authenticationToken = ManagelocalstorageService.getTokenFromBrowserLocalStorage();
+
+		// Get users
+		UsersService.getUsers(authenticationToken, vm.API_URL)
+			.then(function successCallback(response) {
+				if (response.status == 200) {
+					vm.data = response.data;
+				}
+			})
+
+	}
 
 })();
