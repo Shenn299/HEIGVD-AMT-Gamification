@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html lang="pt" ng-app="gamificationapiwebsitedemo">
+
 <head>
-	<meta charset="utf-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<base href="/">
-	<title>gamificationapiwebsitedemo</title>
-	<meta name="description" content="Modular AngularJS with Angm-generator" />
-	<meta name="author" content="" />
-	<meta name="keywords" content="" />
-	<meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=yes" />
-	<link rel="shortcut icon" href="app/assets/images/favicon.ico" />
-	<link rel="apple-touch-icon" href="app/assets/images/apple-touch-icon.png" />
-	<link rel="apple-touch-icon" sizes="72x72" href="app/assets/images/apple-touch-icon-72x72.png" />
-	<link rel="apple-touch-icon" sizes="114x114" href="app/assets/images/apple-touch-icon-114x114.png" />
-	<!-- injector:css -->
-	<link rel="stylesheet" href="/src/bower_components/angular-material-icons/angular-material-icons.css">
-	<link rel="stylesheet" href="/src/bower_components/angular-material/angular-material.css">
-	<!-- endinjector -->
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <base href="/">
+    <title>gamificationapiwebsitedemo</title>
+    <meta name="description" content="Modular AngularJS with Angm-generator" />
+    <meta name="author" content="" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=yes" />
+    <link rel="shortcut icon" href="app/assets/images/favicon.ico" />
+    <link rel="apple-touch-icon" href="app/assets/images/apple-touch-icon.png" />
+    <link rel="apple-touch-icon" sizes="72x72" href="app/assets/images/apple-touch-icon-72x72.png" />
+    <link rel="apple-touch-icon" sizes="114x114" href="app/assets/images/apple-touch-icon-114x114.png" />
+    <!-- injector:css -->
+    <link rel="stylesheet" href="/src/bower_components/angular-material-icons/angular-material-icons.css">
+    <link rel="stylesheet" href="/src/bower_components/angular-material/angular-material.css">
+    <!-- endinjector -->
 
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=RobotoDraft:300,400,500,700,400italic">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
@@ -58,16 +59,20 @@
 		}
     </style>
 
+<!-- Load environment variables -->
+<script src="env.local.js"></script>
+
 </head>
+
 <body ng-cloak>
 
-<!--Beginning-->
-<div ui-view layout="row" layout-fill></div>
-<!--End-->
+    <!--Beginning-->
+    <div ui-view layout="row" layout-fill></div>
+    <!--End-->
 
-<!--Templates. Remove then to a better location -->
+    <!--Templates. Remove then to a better location -->
 
-<script type="text/ng-template" id="tabDialog.tmpl.html">
+    <script type="text/ng-template" id="tabDialog.tmpl.html">
     <md-dialog
     aria-label="Profile">
     <form>
@@ -148,7 +153,6 @@
 </script>
 <!-- End templates -->
 
-
 <!-- injector:js -->
 <script src="/src/bower_components/jquery/dist/jquery.js"></script>
 <script src="/src/bower_components/es5-shim/es5-shim.js"></script>
@@ -195,4 +199,5 @@
 
 
 </body>
+
 </html>

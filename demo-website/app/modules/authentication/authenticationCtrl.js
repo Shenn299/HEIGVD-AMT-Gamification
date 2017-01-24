@@ -25,9 +25,6 @@
 		/*jshint validthis: true */
 		var vm = this;
 
-		// Gamification API URL
-		vm.API_URL = "http://localhost:8090/api";
-
 		vm.response = "";
 
 		vm.application = {
@@ -40,7 +37,7 @@
 
 			if (vm.application.name && vm.application.password) {
 
-				AuthenticationService.authenticate(vm.application, vm.API_URL)
+				AuthenticationService.authenticate(vm.application)
 					.then(function successCallback(response) {
 						if (response.status == 200) {
 							vm.response = "Authentication successful ! \nYour authentication token is saved in your browser local storage";

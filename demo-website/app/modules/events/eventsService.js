@@ -13,9 +13,9 @@
 		.module('events')
 		.factory('EventsService', EventsService);
 
-	EventsService.$inject = ['$http'];
+	EventsService.$inject = ['$http', '__env'];
 
-	function EventsService($http) {
+	function EventsService($http, __env) {
 		
 		var service = {
 
@@ -23,7 +23,7 @@
 			sendEvent: function (event, authenticationToken, apiUrl) {
 				return $http({
 					method: 'POST',
-					url: apiUrl + '/events',
+					url: __env.API_URL + '/events',
 					data: { name: event.name, description: event.description, userAppId: event.userAppId },
 					headers: {
 						'Content-Type': 'application/json',

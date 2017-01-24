@@ -1,4 +1,4 @@
-(function() {
+(function () {
 	'use strict';
 
 	/**
@@ -10,11 +10,18 @@
 	 * Main modules of the application.
 	 */
 
+	var env = {};
+
+	// Import variables if present (from env.local.js)
+	if (window) {
+		Object.assign(env, window.__env);
+	}
+
 	angular.module('gamificationapiwebsitedemo', [
 		'ngResource',
 		'ngAria',
-		 'ui.bootstrap',
-		 'ngMaterial',
+		'ui.bootstrap',
+		'ngMaterial',
 		'ngMdIcons',
 		'ngCookies',
 		'ngAnimate',
@@ -26,6 +33,9 @@
 		'events',
 		'users',
 		'managelocalstorage',
-	]);
+	])
+
+		// Register environment in AngularJS as constant
+		.constant('__env', env);
 
 })();

@@ -13,9 +13,9 @@
 		.module('authentication')
 		.factory('AuthenticationService', AuthenticationService);
 
-	AuthenticationService.$inject = ['$http'];
+	AuthenticationService.$inject = ['$http', '__env'];
 
-	function AuthenticationService($http) {
+	function AuthenticationService($http, __env) {
 
 		var service = {
 
@@ -23,7 +23,7 @@
 			authenticate: function (application, apiUrl) {
 				return $http({
 					method: 'POST',
-					url: apiUrl + '/authentications',
+					url: __env.API_URL + '/authentications',
 					data: { name: application.name, password: application.password },
 					headers: {
 						'Content-Type': 'application/json',

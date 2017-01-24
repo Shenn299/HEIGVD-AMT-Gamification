@@ -25,10 +25,6 @@
 		/*jshint validthis: true */
 		var vm = this;
 
-		// Gamification API URL
-		vm.API_URL = "http://localhost:8090/api";
-
-		vm.noValidErrorMsg = "";
 		vm.response = "";
 
 		vm.event = {
@@ -46,7 +42,7 @@
 				var authenticationToken = ManagelocalstorageService.getTokenFromBrowserLocalStorage();
 
 				// Send event
-				EventsService.sendEvent(vm.event, authenticationToken, vm.API_URL)
+				EventsService.sendEvent(vm.event, authenticationToken)
 					.then(function successCallback(response) {
 						if (response.status == 201) {
 							vm.response = "Event created successfully !";
