@@ -10,6 +10,12 @@
 
 ## Informations about Docker images
 
+The present topology is composed of three Docker containers:
+
+* API : The container that contains the gamification API.
+* Database : This container run a MySQL instance that comunicate with the API.
+* PHPMyAdmin : A graphical frontend for MySQL.
+
 ## Instructions about running the application via Docker
 
 In order to run the application via Docker, you must have the latest version of `docker-engine` and `docker-compose`
