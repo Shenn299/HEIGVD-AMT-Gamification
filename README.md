@@ -27,7 +27,9 @@ As we're a team of 4 people, we've chosen to follow the top-down style. We began
 
 But, we use the bottom-up too, to generate a interactive documentation of the Gamification API with SpringFox from the Java code annotated with Swagger annotations.
 
-## Instruction for running automatised Mocha Tests
+## Testing
+
+### Instruction for running automatised Mocha Tests
 Application must be started.
 
 Run these commands under the `tests` directory :
@@ -39,6 +41,8 @@ Furthermore, you can specify your own environment variables :
 * DATABASE_USER_NAME
 * DATABASE_USER_PASSWORD
 * SIGNATURE_KEY_FOR_JWT (shared secret to sign Json Web Token)
+
+### Load testing
 
 ## Credits
 Software quality engineers:
