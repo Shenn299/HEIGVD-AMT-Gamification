@@ -12,6 +12,29 @@
 
 ## Instructions about running the application via Docker
 
+In order to run the application via Docker, you must have the latest version of `docker-engine` and `docker-compose`
+properly installed and configured.
+
+* Go to the `topology` directory
+
+```
+$ cd topology/
+```
+
+* Build the docker images with `docker-compose`
+
+```
+$ docker-compose build
+```
+
+* Run the topology with `docker-compose`
+
+```
+$ docker-compose up
+```
+
+Now you should be able to communicate with the API at http://127.0.0.1:8090/api
+
 ## Login and password for application
 
 ## Documentation of the API (generated with Swagger)
