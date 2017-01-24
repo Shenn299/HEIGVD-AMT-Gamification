@@ -73,6 +73,16 @@ Furthermore, you can specify your own environment variables :
 
 ### Load testing
 
+In order to run the load testing scripts you must have the latest version of `JMeter` properly installed and configured.
+
+* Go to the testing directory:
+
+```
+$ cd tests/jmeter/
+```
+
+* Open the `tester.jmx` with `JMeter` and run it.
+
 ## Credits
 Software quality engineers:
 * FRANCHINI Fabien
