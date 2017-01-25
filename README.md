@@ -88,7 +88,6 @@ Run these commands under the `tests` directory :
 Furthermore, you can specify your own environment variables :
 * API_URL
 * DATABASE_IP
-* DATABASE_PORT
 * DATABASE_NAME
 * DATABASE_USER_NAME
 * DATABASE_USER_PASSWORD
