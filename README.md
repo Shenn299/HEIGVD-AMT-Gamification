@@ -104,8 +104,7 @@ We have tests that verify completely the behavior for these endpoints:
 We tried to be as systematic as possible.
 
 We have scenarios tests too, that use several endpoints.
-
-For example, firtly, we create an application, we authenticate it and we get the authentication token.
+For example, firstly, we create an application, we authenticate it and we get the authentication token.
 
 Then, we create a new badge and a new rule that give the badge created to the user if this rule is activated on this application.
 
