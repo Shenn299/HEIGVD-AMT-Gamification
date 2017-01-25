@@ -1,8 +1,19 @@
 # HEIGVD-AMT-Gamification
 
 ## Context of the lab
+This laboratory was realised for the Multi-Third Application (AMT) course at HEIGVD.
 
 ## Objectives of the lab
+Learn how to use technology below for a projet :
+* Spring Boot
+* JPA
+* Spring Fox
+* Swagger
+* Mocha
+* Chai
+* JMeter
+
+An other objective is to follow and use both "top-down" and "bottom-up" style. We used first "top-down" to create a static documentation of the Gamification API, and then we implemented functionality in Java and automatised tests in Javascript. In a second time, we generated an interactive documentation of the API with Spring Fox.
 
 ## Goals of the lab
 
