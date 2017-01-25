@@ -99,7 +99,7 @@ Now, you can run the website by running these cmmands under `demo-website` direc
 Website should be available in http://127.0.0.1:4000.
 
 You should obtain this :
-![alt tag](https://github.com/Shenn299/HEIGVD-AMT-Gamification/pictures/welcome.png)
+![Alt text](/pictures/welcome.png?raw=true)
 
 You can authenticate the application created with the Authentication menu :
 * name: heigvdoverflow
