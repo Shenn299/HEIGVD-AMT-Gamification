@@ -20,6 +20,7 @@ An other objective is to follow and use both "top-down" and "bottom-up" style. W
 
 ## Outils specification & version
 * Java 8
+* Maven 3.3.9
 * Spring Fox 2.6.1
 * Spring Boot 1.4.2
 * Swagger 2.2.1
