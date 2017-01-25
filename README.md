@@ -75,6 +75,46 @@ As we're a team of 4 people, we've chosen to follow the top-down style. We began
 
 But, we use the bottom-up too, to generate a interactive documentation of the Gamification API with SpringFox from the Java code annotated with Swagger annotations.
 
+## Demo website
+You can use Docker version this time ;)
+
+We created a minimal website that show what can we do with our Gamification API.
+
+We implemented it with Angular1 in Javascript. we used the `yeoman` generator called [angm](https://github.com/newaeonweb/generator-angm#readme).
+
+You can found this demo website under the directory `demo-website`.
+
+Before to run it, you need to have postman scripts that populate the test data. You can find its under `postman` directory.
+
+Firstly, send the two requests in the collection called `Creation and authentication of the application`.
+
+Then, save the authentication token that you get in the postman variable called `AUTHENTICATION_TOKEN`.
+
+Finally, run requests that are in the collection called `Creation Badges, PointScales and Rules`.
+
+Now, you can run the website by running these cmmands under `demo-website` directory :
+* `npm install`
+* `grunt dev`
+
+Website should be available in http://127.0.0.1:4000.
+
+You should obtain this :
+![alt tag](https://github.com/Shenn299/HEIGVD-AMT-Gamification/picture/welcome.png)
+
+You can authenticate the application created with the Authentication menu :
+* name: heigvdoverflow
+* password: heigvdoverflow
+
+Then, you can simulate users actions in the website by sending events with the Events menu, below there are the events that you can send :
+* solveMathsProblems -> give the maths lover badge to the user
+* solveHtmlProblems -> give the Html lover badge and 1 point on the web development point scale to the user
+* answerAccurately -> give 1 point on the Accuracy point scale to the user
+* answerNotAccurately -> remove 1 point on the Accuracy point scale to the user
+
+You can send each event more that one time, but a user can have only one badge of each kind.
+
+You can view User badges and point scale with the Users menu.
+
 ## Testing
 
 ### Instruction for running automatised Mocha Tests
