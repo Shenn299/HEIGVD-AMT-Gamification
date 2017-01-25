@@ -85,6 +85,8 @@ Run these commands under the `tests` directory :
 * `npm install` (to install NodeJS dependency)
 * `npm test` (to run functional test)
 
+The 136 tests should be ok.
+
 Furthermore, you can specify your own environment variables :
 * API_URL
 * DATABASE_IP
@@ -92,6 +94,22 @@ Furthermore, you can specify your own environment variables :
 * DATABASE_USER_NAME
 * DATABASE_USER_PASSWORD
 * SIGNATURE_KEY_FOR_JWT (shared secret to sign Json Web Token)
+
+We have tests that verify completely the behavior for these endpoints:
+* /Authentications
+* /Applications
+* /Badges
+* /PointScales
+
+We tried to be as systematic as possible.
+
+We have scenarios tests too, that use several endpoints.
+
+For example, firtly, we create an application, we authenticate it and we get the authentication token.
+
+Then, we create a new badge and a new rule that give the badge created to the user if this rule is activated on this application.
+
+Finally, we generate the expected event that is intercepted by the rule, and we check if the user that sends the event has the badge now.
 
 ### Load testing
 
