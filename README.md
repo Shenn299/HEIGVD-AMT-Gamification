@@ -16,10 +16,10 @@ Learn how to use technology below for a projet :
 * Chai
 * JMeter
 
+An other objective is to follow and use both "top-down" and "bottom-up" style. We used first "top-down" to create a static documentation of the Gamification API, and then we implemented functionality in Java and automatised tests in Javascript. In a second time, we generated an interactive documentation of the API with Spring Fox.
+
 ## Our demo presentation
 [Gamification-API-Presentation](Gamification-API-Presentation.pdf)
-
-An other objective is to follow and use both "top-down" and "bottom-up" style. We used first "top-down" to create a static documentation of the Gamification API, and then we implemented functionality in Java and automatised tests in Javascript. In a second time, we generated an interactive documentation of the API with Spring Fox.
 
 ## Outils specification & version
 * Java 8
