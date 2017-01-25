@@ -3,6 +3,9 @@
 ## Context of the lab
 This laboratory was realised for the Multi-Third Application (AMT) course at HEIGVD.
 
+## Goals of the lab
+Create a Gamification API. The main goal is to provide an API that administrators and developers could use to add Gamification on their website.
+
 ## Objectives of the lab
 Learn how to use technology below for a projet :
 * Spring Boot
@@ -14,8 +17,6 @@ Learn how to use technology below for a projet :
 * JMeter
 
 An other objective is to follow and use both "top-down" and "bottom-up" style. We used first "top-down" to create a static documentation of the Gamification API, and then we implemented functionality in Java and automatised tests in Javascript. In a second time, we generated an interactive documentation of the API with Spring Fox.
-
-## Goals of the lab
 
 ## Outils specification & version
 
