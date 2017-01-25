@@ -19,13 +19,13 @@ Learn how to use technology below for a projet :
 An other objective is to follow and use both "top-down" and "bottom-up" style. We used first "top-down" to create a static documentation of the Gamification API, and then we implemented functionality in Java and automatised tests in Javascript. In a second time, we generated an interactive documentation of the API with Spring Fox.
 
 ## Outils specification & version
-Java 8
-Spring Fox 2.6.1
-Spring Boot 1.4.2
-Swagger 2.2.1
-Hibernate 4.1.9
-Docker 1.13.0
-Docker-compose 1.10.0
+* Java 8
+* Spring Fox 2.6.1
+* Spring Boot 1.4.2
+* Swagger 2.2.1
+* Hibernate 4.1.9
+* Docker 1.13.0
+* Docker-compose 1.10.0
 
 ## Informations about Docker images
 
