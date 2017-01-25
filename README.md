@@ -64,7 +64,7 @@ Now you should be able to communicate with the API at http://127.0.0.1:8090/api
 ## Documentation of the API
 If you have started the server, simply go to http://127.0.0.1:8090/api to have the interactive version.
 
-Otherwise, you can found the yaml file [here](HEIGVD-AMT-Gamification/spring-server/src/main/resources/api-spec.yaml).
+Otherwise, you can found the yaml file [here](https://shenn299.github.io/HEIGVD-AMT-Gamification/spring-server/src/main/resources/api-spec.yaml).
 Copy-paste it on Swagger online editor http://editor.swagger.io/#/ to visualize it.
 
 ## Interactive documentation of the API (generated with SpringFox)
