@@ -39,9 +39,9 @@ public class TokenKeyTools {
 
    // File that contains the signature key to sign the JWT
    // For local deployment
-   //private static final String FILE_NAME = "src/main/resources/application.properties";
+   private static final String FILE_NAME = "src/main/resources/application.properties";
    // For Docker deployment
-   private static final String FILE_NAME = "config/config.properties";
+   //private static final String FILE_NAME = "config/config.properties";
    // Kind of authentication
    private static final String BEARER = "Bearer ";
    // Signature key to sign JWT
