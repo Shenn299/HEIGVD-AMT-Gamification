@@ -25,7 +25,6 @@ describe("The /pointScales endpoint :", function () {
     // GET
     describe("Test success for HTTP GET method :", function () {
         it("should allow an authenticated user to get the list of pointScales of the application\n", itShouldAllowAuthenticatedUserToGetTheListOfPointScalesOfTheApplication);
-
     });
 
     // Success

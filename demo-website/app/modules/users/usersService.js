@@ -20,7 +20,7 @@
 		var service = {
 
 			// Authenticate the application
-			getUsers: function (authenticationToken, apiUrl) {
+			getUsers: function (authenticationToken) {
 				return $http({
 					method: 'GET',
 					url: __env.API_URL + '/users',

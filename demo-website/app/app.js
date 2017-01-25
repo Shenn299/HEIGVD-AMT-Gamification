@@ -34,7 +34,7 @@
 		'users',
 		'managelocalstorage',
 	])
-
+	
 		// Register environment in AngularJS as constant
 		.constant('__env', env);
 

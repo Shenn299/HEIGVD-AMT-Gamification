@@ -35,7 +35,7 @@
 						link: 'users',
 							name: 'Users'
 					},
-			    
+								    
 		  	];
 
 			return {

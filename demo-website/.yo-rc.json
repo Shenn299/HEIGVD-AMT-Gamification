@@ -18,6 +18,12 @@
       },
       {
         "name": "managelocalstorage"
+      },
+      {
+        "name": "populate-test-data"
+      },
+      {
+        "name": "populatedata"
       }
     ],
     "menu": [
@@ -36,6 +42,14 @@
       {
         "link": "managelocalstorage",
         "title": "Managelocalstorage"
+      },
+      {
+        "link": "populate-test-data",
+        "title": "Populate-test-data"
+      },
+      {
+        "link": "populatedata",
+        "title": "Populatedata"
       }
     ]
   }

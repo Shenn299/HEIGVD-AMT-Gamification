@@ -20,7 +20,7 @@
 		var service = {
 
 			// Authenticate the application
-			authenticate: function (application, apiUrl) {
+			authenticate: function (application) {
 				return $http({
 					method: 'POST',
 					url: __env.API_URL + '/authentications',

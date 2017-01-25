@@ -1,0 +1,55 @@
+{
+	"id": "a9ef9c58-b68c-d081-6136-ab4c2c5b4247",
+	"name": "Creation and authentication of the application",
+	"description": "",
+	"order": [
+		"741419b2-e181-d39b-8ba1-2c14c8029706",
+		"8ec14c19-0e5c-00fa-759d-87cba5bfc6a1"
+	],
+	"folders": [],
+	"timestamp": 1485290415884,
+	"owner": "1111042",
+	"public": false,
+	"requests": [
+		{
+			"id": "741419b2-e181-d39b-8ba1-2c14c8029706",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{IP}}:{{PORT}}/api/applications",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485286119859,
+			"name": "http://localhost:8090/api/applications",
+			"description": "",
+			"collectionId": "a9ef9c58-b68c-d081-6136-ab4c2c5b4247",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\":\"heigvdoverflow\",\n\t\"description\":\"A support forum for all students that study at HEIGVD\",\n\t\"password\":\"heigvdoverflow\"\n}"
+		},
+		{
+			"id": "8ec14c19-0e5c-00fa-759d-87cba5bfc6a1",
+			"headers": "Content-Type: application/json\n",
+			"url": "{{IP}}:{{PORT}}/api/authentications",
+			"preRequestScript": null,
+			"pathVariables": {},
+			"method": "POST",
+			"data": [],
+			"dataMode": "raw",
+			"version": 2,
+			"tests": null,
+			"currentHelper": "normal",
+			"helperAttributes": {},
+			"time": 1485286116703,
+			"name": "http://localhost:8090/api/authentications copy",
+			"description": "",
+			"collectionId": "a9ef9c58-b68c-d081-6136-ab4c2c5b4247",
+			"responses": [],
+			"rawModeData": "{\n\t\"name\":\"heigvdoverflow\",\n\t\"password\":\"heigvdoverflow\"\n}"
+		}
+	]
+}

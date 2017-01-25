@@ -52,6 +52,16 @@ module.exports = function (config) {
 			'app/modules/managelocalstorage/managelocalstorageRoute.js',
 			'app/modules/managelocalstorage/managelocalstorageService.js',
 			'app/modules/managelocalstorage/managelocalstorage-test.js',
+			'app/modules/populate-test-data/populate-test-dataModule.js',
+			'app/modules/populate-test-data/populate-test-dataCtrl.js',
+			'app/modules/populate-test-data/populate-test-dataRoute.js',
+			'app/modules/populate-test-data/populate-test-dataService.js',
+			'app/modules/populate-test-data/populate-test-data-test.js',
+			'app/modules/populatedata/populatedataModule.js',
+			'app/modules/populatedata/populatedataCtrl.js',
+			'app/modules/populatedata/populatedataRoute.js',
+			'app/modules/populatedata/populatedataService.js',
+			'app/modules/populatedata/populatedata-test.js',
 		],
 
 		// Test results reporter to use

@@ -20,7 +20,7 @@
 		var service = {
 
 			// Send event
-			sendEvent: function (event, authenticationToken, apiUrl) {
+			sendEvent: function (event, authenticationToken) {
 				return $http({
 					method: 'POST',
 					url: __env.API_URL + '/events',
