@@ -64,7 +64,7 @@ Now you should be able to communicate with the API at http://127.0.0.1:8090/api
 ## Documentation of the API
 If you have started the server, simply go to http://127.0.0.1:8090/api to have the interactive version.
 
-Otherwise, you can found the yaml file here under spring-server/src/main/resources/api-spec.yaml.
+Otherwise, you can found the yaml file here under `spring-server/src/main/resources/api-spec.yaml`
 
 Copy-paste it on Swagger online editor http://editor.swagger.io/#/ to visualize it.
 
@@ -86,6 +86,8 @@ Run these commands under the `tests` directory :
 * `npm test` (to run functional test)
 
 The 136 tests should be ok.
+
+`env.local.json` is the file that contains default environment variable and is in the `tests` directory.
 
 Furthermore, you can specify your own environment variables :
 * API_URL
@@ -109,6 +111,8 @@ For example, firstly, we create an application, we authenticate it and we get th
 Then, we create a new badge and a new rule that give the badge created to the user if this rule is activated on this application.
 
 Finally, we generate the expected event that is intercepted by the rule, and we check if the user that sends the event has the badge now.
+
+You can find tests in Javascript under `/tests/specs/api/`
 
 ### Load testing
 
