@@ -68,9 +68,6 @@ Otherwise, you can found the yaml file here under spring-server/src/main/resourc
 
 Copy-paste it on Swagger online editor http://editor.swagger.io/#/ to visualize it.
 
-## Interactive documentation of the API (generated with SpringFox)
-url
-
 ## Top-down style
 As we're a team of 4 people, we've chosen to follow the top-down style. We began to document our REST API with Swagger in yaml. Then :
 * software quality engineers implement API tests in Javascript.
@@ -81,13 +78,17 @@ But, we use the bottom-up too, to generate a interactive documentation of the Ga
 ## Testing
 
 ### Instruction for running automatised Mocha Tests
-Application must be started.
+Server must be started locally without Docker !
+Indeed, if we run automatised tests with the Docker version, the tests in which we send our authentication token, fail. (Maybe, the trouble is the time zone of creation time of the token, or the charset used in images/spring-boot/config.properties)
 
 Run these commands under the `tests` directory :
 * `npm install` (to install NodeJS dependency)
-* `API_URL=http://`{DOCKER_MACHINE_IP:DOCKER_MACHINE_PORT}`/api DATABASE_IP=`{DOCKER_MACHINE_IP}` npm test` (to run functional test)
+* `npm test` (to run functional test)
 
 Furthermore, you can specify your own environment variables :
+* API_URL
+* DATABASE_IP
+* DATABASE_PORT
 * DATABASE_NAME
 * DATABASE_USER_NAME
 * DATABASE_USER_PASSWORD
