@@ -95,7 +95,7 @@ Then, save the authentication token that you get in the postman variable called 
 
 Finally, run requests that are in the collection called `Creation Badges, PointScales and Rules`.
 
-Now, you can run the website by running these cmmands under `demo-website` directory :
+Now, you can run the website by running these commands under `demo-website` directory :
 * `npm install`
 * `grunt dev`
 
